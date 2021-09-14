@@ -1,5 +1,6 @@
 import { Scenes } from "../constants";
 import Logger from "../utilities/logger";
+import DI from "../utilities/DI";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -12,5 +13,8 @@ export default class GameScene extends Phaser.Scene {
     Logger.i(`Game Config = ${JSON.stringify(gameConf)}`, "Game Scene");
   }
   preload() {}
-  create() {}
+  create() {
+    let game = DI.Get("Game");
+    console.log(game.testValue);
+  }
 }

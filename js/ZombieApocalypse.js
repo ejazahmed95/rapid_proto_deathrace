@@ -4,6 +4,7 @@ import { Tags } from "./constants";
 import MenuScene from "./scenes/MenuScene";
 import GameScene from "./scenes/GameScene";
 import GameoverScene from "./scenes/GameoverScene";
+import DI from "./utilities/DI";
 
 export default class ZombieApocalypse {
   constructor() {
@@ -21,14 +22,16 @@ export default class ZombieApocalypse {
         MenuScene, GameScene
       ]
     };
+    DI.objects = {};
     this.game = new Phaser.Game(this.config);
-
+    this.game.testValue = "Some test value";
+    DI.Register("Game", this.game);
     //bind methods
 
   }
 
   init () {
-    Logger.i("zombie apocalypse file is initialized", );
+    Logger.i("zombie apocalypse file is initialized");
   }
 
   preload() {
