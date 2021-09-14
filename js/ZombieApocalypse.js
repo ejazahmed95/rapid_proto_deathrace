@@ -1,5 +1,9 @@
 import Phaser from "phaser";
 import Logger from "./utilities/logger";
+import { Tags } from "./constants";
+import MenuScene from "./scenes/MenuScene";
+import GameScene from "./scenes/GameScene";
+import GameoverScene from "./scenes/GameoverScene";
 
 export default class ZombieApocalypse {
   constructor() {
@@ -13,11 +17,9 @@ export default class ZombieApocalypse {
           gravity: {y: 200}
         }
       },
-      scene: {
-        preload: this.preload,
-        create: this.create,
-        update: this.update,
-      }
+      scene: [
+        MenuScene, GameScene
+      ]
     };
     this.game = new Phaser.Game(this.config);
 
@@ -26,10 +28,11 @@ export default class ZombieApocalypse {
   }
 
   init () {
-    Logger.i("zombie apocalypse file is initialized");
+    Logger.i("zombie apocalypse file is initialized", );
   }
 
   preload() {
+
   }
 
   create() {

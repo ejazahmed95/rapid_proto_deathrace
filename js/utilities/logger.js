@@ -3,7 +3,7 @@ export default class Logger {
     console.log(`INFO: ${tag || ""} || ${string}`);
   }
 
-  static e(string) {
+  static e(string, tag) {
     console.error(`ERR: ${tag || ""} || ${string}`);
   }
 }
