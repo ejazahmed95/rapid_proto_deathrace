@@ -12,7 +12,7 @@ export default class GameScene extends Phaser.Scene {
   private pFrameTime: Date = new Date();
   private player: Player;
   // private zombies: GameObject[];
-  // private keys: object;
+  private keys: object;
   constructor() {
     super({
       key: Scenes.GAMEPLAY,
@@ -64,6 +64,7 @@ export default class GameScene extends Phaser.Scene {
 
   update() {
     var cFrameTime = new Date();
+    // @ts-ignore
     var deltaTime = (cFrameTime - this.pFrameTime) / 10.0;
     this.pFrameTime = cFrameTime;
 

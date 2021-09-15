@@ -31,9 +31,10 @@ export const ObjTags = {
 }
 
 export const Keys = {
-  Left: 'A',
-  Right: 'D',
-  Up: 'W',
-  Down: 'S'
+  Left: 'A', // Rotate left
+  Right: 'D', // Rotate right
+  Up: 'W', // Move Forward
+  Down: 'S', // Move backwards
+  Action: 'SPACE'
 }
 

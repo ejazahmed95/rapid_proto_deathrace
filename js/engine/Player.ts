@@ -4,6 +4,8 @@ import GameObject from './GameObject';
 export default class Player extends GameObject {
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, Images.Car, ObjTags.Player);
+    this.setCollideWorldBounds(true);
+    
   }
 
   update() {
