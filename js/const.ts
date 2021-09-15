@@ -16,6 +16,7 @@ export const Tags = {
 export const Images = {
   Car: "car",
   Square: "placeholder_square",
+  Cross: "cross"
 }
 
 export const Audio = {
@@ -25,7 +26,8 @@ export const Audio = {
 
 export const ObjTags = {
   Player: 0,
-  Zombie: 1
+  Zombie: 1,
+  Pedestrian: 2,
 }
 
 export const Keys = {

@@ -1,6 +1,8 @@
 import {Images, Scenes, Tags} from "../const";
 import GameConf from "../game/config";
 import Logger from "../utilities/logger";
+import GameObject from "../engine/GameObject";
+import Texture = Phaser.Textures.Texture;
 
 export default class MenuScene extends Phaser.Scene {
   constructor() {
@@ -16,6 +18,9 @@ export default class MenuScene extends Phaser.Scene {
     this.loadImages();
   }
 
+  temp(param1: any, param2: any, p3: any, p4: any) {
+
+  }
   create() {
     this.scene.launch(Scenes.CONTROLS, GameConf);
 
@@ -30,16 +35,23 @@ export default class MenuScene extends Phaser.Scene {
     //
     // }
 
+    this.setFactories();
     setTimeout(() => {
       this.scene.start(Scenes.GAMEPLAY, GameConf)
     }, 2);
   }
 
   private loadImages() {
-    this.load.setPath("../assets/images");
+    this.load.setPath("./assets/images");
     for(let image in Images) {
       // @ts-ignore
-      this.load.image(Images[image], Images[image]);
+      Logger.i(`loading asset: ${Images[image]}`, "LOAD");
+      // @ts-ignore
+      this.load.image(Images[image], Images[image] + ".png");
     }
+  }
+
+  private setFactories() {
+
   }
 }

@@ -2,6 +2,8 @@
 import GameConf from "../game/config";
 import Logger from "../utilities/logger";
 import {Scenes, Images, Tags} from "../const";
+import DI from "../utilities/DI";
+import GameInfra from "../utilities/GameInfra";
 
 export default class ControlsScene extends Phaser.Scene {
   constructor() {
@@ -20,6 +22,12 @@ export default class ControlsScene extends Phaser.Scene {
     // this.load.setPath
   }
   create() {
-    this.add.image(0, 0, Images.Square);
+    let layout = (DI.Get("GameInfra") as GameInfra).layout;
+    const controlBg = this.add.sprite(0, layout.GameHeight + layout.Border*2, Images.Square);
+    controlBg.setOrigin(0, 0);
+    controlBg.displayWidth = layout.TotalWidth;
+    controlBg.displayHeight = layout.ControlsHeight;
+    controlBg.tint = 0xffee0d;
+    controlBg.alpha = 0.5;
   }
 }

@@ -1,13 +1,13 @@
-import {ObjTags} from '../const';
+import {Images, ObjTags} from '../const';
 import GameObject from './GameObject';
 
 export default class Player extends GameObject {
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'car', ObjTags.Player);
+    super(scene, x, y, Images.Car, ObjTags.Player);
   }
 
   update() {
-    // console.log('Player object update.');
+    console.log('Player object update.');
   }
 
   onHitEnter(player: Player, others: GameObject) {
@@ -24,9 +24,3 @@ export default class Player extends GameObject {
     }
   }
 }
-
-Phaser.GameObjects.GameObjectFactory.register('player',
-  function(this: Phaser.GameObjects.GameObjectFactory, x: number, y: number) {
-  const player = new Player(this.scene, x, y);
-  return player;
-})

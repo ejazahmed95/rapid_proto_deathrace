@@ -24,9 +24,9 @@ declare interface IPlayer extends IGameObject {
 
 }
 
-declare namespace Phaser.GameObjects {
+export declare namespace Phaser.GameObjects {
   interface GameObjectFactory {
-    object(): IGameObject
+    gameObject(): IGameObject
   }
 
   interface GameObjectFactory {
