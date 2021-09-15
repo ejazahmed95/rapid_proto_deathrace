@@ -1,4 +1,4 @@
-import { Scenes } from "../constants";
+import { Scenes } from "../const";
 
 export default class GameoverScene extends Phaser.Scene {
   constructor() {
