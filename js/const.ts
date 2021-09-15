@@ -21,3 +21,17 @@ export const Images = {
 export const Audio = {
   BgMusic: "BgMusic",
 }
+
+
+export const ObjTags = {
+  Player: 0,
+  Zombie: 1
+}
+
+export const Keys = {
+  Left: 'A',
+  Right: 'D',
+  Up: 'W',
+  Down: 'S'
+}
+

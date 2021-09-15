@@ -1,8 +1,8 @@
-import {ObjTags} from '../constants';
+import {ObjTags} from '../const';
 import GameObject from './GameObject';
 
 export default class Player extends GameObject {
-  constructor(scene, x, y) {
+  constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'car', ObjTags.Player);
   }
 
@@ -10,7 +10,7 @@ export default class Player extends GameObject {
     // console.log('Player object update.');
   }
 
-  onHitEnter(player, others) {
+  onHitEnter(player: Player, others: GameObject) {
     console.log(others.getTag());
 
     if (player.body.touching.left) {
@@ -25,8 +25,8 @@ export default class Player extends GameObject {
   }
 }
 
-Phaser.GameObjects.GameObjectFactory.register('player', function(x, y) {
+Phaser.GameObjects.GameObjectFactory.register('player',
+  function(this: Phaser.GameObjects.GameObjectFactory, x: number, y: number) {
   const player = new Player(this.scene, x, y);
-
   return player;
 })
