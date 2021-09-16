@@ -25,4 +25,8 @@ export default class EventManager {
       handler(eventData);
     }
   }
+
+  public clearAll() {
+    this.eventHandlers = {};
+  }
 }

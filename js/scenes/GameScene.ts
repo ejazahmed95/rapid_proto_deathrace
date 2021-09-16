@@ -2,17 +2,27 @@ import {Scenes, Keys, ObjTags, Images, Tags} from "../const";
 import Logger from "../utilities/logger";
 import DI from "../utilities/DI";
 import Player from "../engine/Player";
-import Phaser from "phaser";
+import Phaser, { Game } from "phaser";
 import GameObject from "../engine/GameObject";
 import {IGameObject, IPlayer} from "../types/types";
 import Texture = Phaser.Textures.Texture;
 import Pedestrian from "../game/Pedestrian";
+import GameInfra from "../utilities/GameInfra";
+
+import GameConf from "../game/config";
+import EventManager from "../utilities/EventManager";
+import {GameEvents} from "../utilities/events";
+import InputManager from "../engine/InputManager";
 
 export default class GameScene extends Phaser.Scene {
-  private pFrameTime: Date = new Date();
+  private gameTime: Date = new Date();
   private player: Player;
-  // private zombies: GameObject[];
-  private keys: object;
+  private pedestrianGroup: Phaser.GameObjects.Group;
+  private inputManager: InputManager;
+
+  private pedestrians: Pedestrian[]=[];
+  private graves: GameObject[] = [];
+
   constructor() {
     super({
       key: Scenes.GAMEPLAY,
@@ -25,55 +35,67 @@ export default class GameScene extends Phaser.Scene {
 
   preload() {
     console.log('GameScene preload.');
-
-    this.load.image('player', '../assets/cross.png');
-    this.load.image('zombie', '../assets/car.png');
-
   }
 
-
   create() {
-    let game = DI.Get("Game");
+    let eventManager: EventManager = DI.Get('EventManager');
+    eventManager.clearAll();
+    eventManager.addHandler(GameEvents.Killed_Pedestrian, this.onPedestrianKilled);
 
-    this.pFrameTime = new Date();
+    this.inputManager = new InputManager(this);
+    DI.Register('InputManager', this.inputManager);
+
     this.createFactories();
-    // let go = new GameObject(this, 400, 200, Images.Car, ObjTags.Player);
+
+    //@ts-ignore
     this.player = this.add.player(300, 200);
-    let pedestrian = this.add.pedestrian(200, 200);
-    // this.player = this.add.player(400, 200);  // Player object
 
-    // create zombies
-    // this.zombies = [];
-    // console.log();
-    // this.zombies.push(this.add.object(400, 300, 'zombie', ObjTags.Zombie));
-    //
-    // let zombieGroup = this.add.group();
-    // this.zombies.forEach(zombie => {
-    //   zombieGroup.add(zombie);
-    // });
-    // zombieGroup.enableBody = true;
-    // zombieGroup.physicsBodyType = Phaser.Physics.Arcade;
-    //
-    // // add collider detection for player and zombies
-    // this.physics.add.overlap(
-    //   this.player, this.zombies[0], this.player.onHitEnter, null, this);
+    this.pedestrianGroup = this.add.group();
+     for(let index = 0; index < GameConf.PedestrianCount; index++)
+     {
+      this.pedestrians.push(this.add.pedestrian(200 + 50 * index, 300));
+      this.pedestrianGroup.add(this.pedestrians[index]);
+     }
+     this.pedestrianGroup.enableBody = true;
+     this.pedestrianGroup.physicsBodyType = Phaser.Physics.Arcade;
 
-    // keyboard event
-    // this.keys = this.input.keyboard.addKeys('W,S,A,D');
+    let layout = (DI.Get("GameInfra") as GameInfra).layout;
+    this.physics.world.setBounds(layout.Border, layout.Border, layout.GameWidth, layout.GameHeight);
+
+    // register collider with group
+    this.physics.add.overlap(this.player, this.pedestrianGroup, this.onPedestrianKilled, null, this)
+    this.physics.add.overlap(this.pedestrianGroup, this.pedestrianGroup, this.onPedestrianSelfHit, null, this)
   }
 
   update() {
-    var cFrameTime = new Date();
-    // @ts-ignore
-    var deltaTime = (cFrameTime - this.pFrameTime) / 10.0;
-    this.pFrameTime = cFrameTime;
+    let curtTime = new Date();
+    let deltaTime = curtTime - this.gameTime;
+    this.gameTime = curtTime;
 
-    let x =
-      (this.keys.A.isDown ? -1 : (this.keys.D.isDown ? 1 : 0)) * deltaTime;
-    let y =
-      (this.keys.W.isDown ? -1 : (this.keys.S.isDown ? 1 : 0)) * deltaTime;
+    this.inputManager.update(deltaTime);
+    this.player.update(deltaTime);
 
-    this.player?.move(x, y);
+    this.pedestrians.forEach(element => {
+        element.update(deltaTime);
+      });
+  }
+
+  onPedestrianKilled(player: Player, others: GameObject)
+  {
+    console.log('onPedestrianKilled' + others.getTag());
+    if(others.getTag() == ObjTags.Pedestrian)
+    {
+      let pedestrian = others as Pedestrian;
+      pedestrian.onKill();
+      this.pedestrianGroup.remove(pedestrian);
+      this.graves.push(this.add.gameObject(pedestrian.x, pedestrian.y, Images.Cross, ObjTags.Grave));
+    }
+  }
+
+  onPedestrianSelfHit(obj1: Pedestrian, obj2: Pedestrian)
+  {
+    obj1.onMoveReverse();
+    obj2.onFreeze();
   }
 
   createFactories() {

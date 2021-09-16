@@ -16,7 +16,8 @@ export const Tags = {
 export const Images = {
   Car: "car",
   Square: "placeholder_square",
-  Cross: "cross"
+  Cross: "cross",
+  Pedestrian: "pedestrian",
 }
 
 export const Audio = {
@@ -28,6 +29,15 @@ export const ObjTags = {
   Player: 0,
   Zombie: 1,
   Pedestrian: 2,
+  Grave: 3
+}
+
+export const Keys = {
+  Left: 'A',
+  Right: 'D',
+  Up: 'W',
+  Down: 'S',
+
 }
 
 export const Keys = {
@@ -35,6 +45,7 @@ export const Keys = {
   Right: 'D', // Rotate right
   Up: 'W', // Move Forward
   Down: 'S', // Move backwards
-  Action: 'SPACE'
+  Reset: 'R', // debug
+  Action: 'SPACE',
 }
 
