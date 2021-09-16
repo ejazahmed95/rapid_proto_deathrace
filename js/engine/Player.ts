@@ -11,7 +11,6 @@ export default class Player extends GameObject {
     super(scene, x, y, Images.Car, ObjTags.Player);
     this.body.collideWorldBounds = true;
 
-
     this.inputManager = DI.Get("InputManager") as InputManager;
 	this.speed = 20.0;
   }

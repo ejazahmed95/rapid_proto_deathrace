@@ -13,11 +13,14 @@ export const Tags = {
   Sound: "SOUND"
 }
 
-export const Images = {
+export const Images: Record<string, string> = {
   Car: "car",
   Square: "placeholder_square",
   Cross: "cross",
-  Pedestrian: "pedestrian",
+}
+
+export const Spritesheets = {
+	Pedestrian: "pedestrian"
 }
 
 export const Audio = {

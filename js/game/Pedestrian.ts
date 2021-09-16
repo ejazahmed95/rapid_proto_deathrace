@@ -1,5 +1,5 @@
 import GameObject from "../engine/GameObject";
-import {Images, ObjTags} from "../const";
+import {Images, Spritesheets, ObjTags} from "../const";
 import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 
@@ -13,7 +13,7 @@ private boundX: [number, number] = [0, 0];
 private boundY: [number, number] = [0, 0];
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, Images.Pedestrian, ObjTags.Pedestrian);
+    super(scene, x, y, Spritesheets.Pedestrian, ObjTags.Pedestrian);
     //this.setCollideWorldBounds(true);
     this.id = Pedestrian.count;
     Pedestrian.count++;
@@ -21,6 +21,14 @@ private boundY: [number, number] = [0, 0];
     let layout = (DI.Get("GameInfra") as GameInfra).layout;
     this.boundX = [-layout.Border, layout.GameWidth + layout.Border];
     this.boundY = [-layout.Border, layout.GameHeight - layout.Border];
+
+	this.anims.create({
+		key: "walk",
+		frames: this.anims.generateFrameNumbers(Spritesheets.Pedestrian, {frames: [0, 1]}),
+		frameRate: 8,
+		repeat: -1,
+	});
+	this.play('walk');
   }
 
   getID(){
@@ -53,6 +61,7 @@ private boundY: [number, number] = [0, 0];
     }
 
     this.setVelocity(this.movement[0] * deltaTime * this.speed, this.movement[1] * deltaTime * this.speed);
+
   }
 
   onKill() {
