@@ -23,6 +23,7 @@ export default class GameScene extends Phaser.Scene {
 
   private pedestrians: Pedestrian[]=[];
   private graves: GameObject[] = [];
+	private eventManager: EventManager;
 
   constructor() {
     super({
@@ -40,9 +41,9 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
-    let eventManager: EventManager = DI.Get('EventManager');
-    eventManager.clearAll();
-    eventManager.addHandler(GameEvents.KilledPedestrian, this.onPedKilled);
+    this.eventManager = DI.Get('EventManager') as EventManager;
+    // this.eventManager.clearAll();
+    this.eventManager.addHandler(GameEvents.KilledPedestrian, this.onPedKilled);
 
     this.createFactories();
 
@@ -81,7 +82,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   onPedKilled(data?: PedestrianKillInfo) {
-	  Logger.i("Event manager callback says on Pedestrian Killed");
+	  Logger.i(`Event manager callback says on Pedestrian Killed: ${JSON.stringify(data || {})}`);
   }
 
   onPedestrianKilled(player: Player, others: GameObject)
@@ -93,6 +94,7 @@ export default class GameScene extends Phaser.Scene {
       pedestrian.onKill();
       this.pedestrianGroup.remove(pedestrian);
       this.graves.push(this.add.gameObject(pedestrian.x, pedestrian.y, Images.Cross, ObjTags.Grave));
+	  this.eventManager.sendEvent(GameEvents.KilledPedestrian, {Pedestrian: pedestrian})
     }
   }
 
