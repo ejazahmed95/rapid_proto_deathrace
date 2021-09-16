@@ -3,7 +3,7 @@ import Texture = Phaser.Textures.Texture;
 
 export default class GameObject extends Phaser.Physics.Arcade.Sprite {
   private tag: number;
-  private speed: number;
+  protected speed: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, sprite: string|Texture, tag: number) {
     super(scene, x, y, sprite);
