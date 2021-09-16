@@ -95,7 +95,7 @@ export default class GameScene extends Phaser.Scene {
   onPedestrianSelfHit(obj1: Pedestrian, obj2: Pedestrian)
   {
     obj1.onMoveReverse();
-    obj2.onFreeze();
+    obj2.onMoveReverse();
   }
 
   createFactories() {

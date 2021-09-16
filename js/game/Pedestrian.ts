@@ -1,6 +1,9 @@
 import GameObject from "../engine/GameObject";
 import {Images, ObjTags} from "../const";
 import DI from "../utilities/DI";
+import InputManager from './InputManager';
+import {Keys} from '../const'
+import GameInfra from "./utilities/GameInfra";
 
 export default class Pedestrian extends GameObject {
 static count = 0;
@@ -26,14 +29,12 @@ private boundY: [number, number] = [0, 0];
     return this.id;
   }
 
-  update(deltaTime: number) {
-    
-    this.statusDuration -= deltaTime;
+  update(deltaTime: number) 
+  {
+    if(this.visible == false)
+       return;
 
-    if(this.x < this.boundX[0] || this.x > this.boundX[1])
-      this.statusDuration = 0; 
-    if(this.y < this.boundY[0] || this.y > this.boundY[1])
-      this.statusDuration = 0; 
+    this.statusDuration -= deltaTime;
 
     if(this.statusDuration <= 0)
     {
@@ -41,17 +42,28 @@ private boundY: [number, number] = [0, 0];
       if(radio <= 0.3)
       {
         this.statusDuration = 1000; // ms
-        // do nothing
+          // do nothing
       } else
       {
         this.statusDuration = 3000;
-        // random move
+          // random move
         this.movement[0] = Phaser.Math.Between(-1, 1);
         this.movement[1] = Phaser.Math.Between(-1, 1);
       }
     }
-
     this.setVelocity(this.movement[0] * deltaTime * this.speed, this.movement[1] * deltaTime * this.speed);
+    
+    this.keepBodyInBound(deltaTime);
+  }
+
+  keepBodyInBound(deltaTime: number)
+  {
+    let bInside: boolean =  true;
+
+      this.x = Math.min(Math.max(this.x, this.boundX[0]), this.boundX[1]);
+      this.y = Math.min(Math.max(this.y, this.boundY[0]), this.boundY[1]);
+    
+    return bInside;
   }
 
   onKill() {
