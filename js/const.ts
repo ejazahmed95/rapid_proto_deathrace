@@ -13,10 +13,12 @@ export const Tags = {
   Sound: "SOUND"
 }
 
-export const Images: Record<string, string> = {
+export const Images = {
   Car: "car",
   Square: "placeholder_square",
   Cross: "cross",
+  Button: "button",
+  Frame: "frame",
 }
 
 export const Spritesheets = {
@@ -33,14 +35,6 @@ export const ObjTags = {
   Zombie: 1,
   Pedestrian: 2,
   Grave: 3
-}
-
-export const Keys = {
-  Left: 'A',
-  Right: 'D',
-  Up: 'W',
-  Down: 'S',
-
 }
 
 export const Keys = {

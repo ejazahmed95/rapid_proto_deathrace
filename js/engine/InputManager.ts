@@ -5,7 +5,6 @@ export default class InputManager {
 	private input: Set;
 
     constructor(scene: Phaser.Scene){
-
         this.keys = scene.input.keyboard.addKeys('W,S,A,D,R,SPACE');
         this.input = new Set();
     }

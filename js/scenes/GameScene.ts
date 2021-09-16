@@ -11,7 +11,7 @@ import GameInfra from "../utilities/GameInfra";
 
 import GameConf from "../game/config";
 import EventManager from "../utilities/EventManager";
-import {GameEvents} from "../utilities/events";
+import {GameEvents, PedestrianKillInfo} from "../utilities/events";
 import InputManager from "../engine/InputManager";
 
 export default class GameScene extends Phaser.Scene {
@@ -32,6 +32,7 @@ export default class GameScene extends Phaser.Scene {
 
   init(gameConf: any) {
     Logger.i(`Game Config = ${JSON.stringify(gameConf)}`, "Game");
+	this.inputManager = DI.Get("InputManager") as InputManager;
   }
 
   preload() {
@@ -41,10 +42,7 @@ export default class GameScene extends Phaser.Scene {
   create() {
     let eventManager: EventManager = DI.Get('EventManager');
     eventManager.clearAll();
-    eventManager.addHandler(GameEvents.Killed_Pedestrian, this.onPedestrianKilled);
-
-    this.inputManager = new InputManager(this);
-    DI.Register('InputManager', this.inputManager);
+    eventManager.addHandler(GameEvents.KilledPedestrian, this.onPedKilled);
 
     this.createFactories();
 
@@ -80,6 +78,10 @@ export default class GameScene extends Phaser.Scene {
     this.pedestrians.forEach(element => {
         element.update(deltaTime);
       });
+  }
+
+  onPedKilled(data?: PedestrianKillInfo) {
+	  Logger.i("Event manager callback says on Pedestrian Killed");
   }
 
   onPedestrianKilled(player: Player, others: GameObject)
