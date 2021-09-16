@@ -18,6 +18,7 @@ export default class GameScene extends Phaser.Scene {
   private gameTime: Date = new Date();
   private player: Player;
   private pedestrianGroup: Phaser.GameObjects.Group;
+  private gravesGroup: Phaser.GameObjects.Group;
   private inputManager: InputManager;
 
   private pedestrians: Pedestrian[]=[];
@@ -51,6 +52,7 @@ export default class GameScene extends Phaser.Scene {
     this.player = this.add.player(300, 200);
 
     this.pedestrianGroup = this.add.group();
+    this.gravesGroup = this.add.group();
      for(let index = 0; index < GameConf.PedestrianCount; index++)
      {
       this.pedestrians.push(this.add.pedestrian(200 + 50 * index, 300));
@@ -116,6 +118,12 @@ export default class GameScene extends Phaser.Scene {
       function(x: number, y: number) {
         const player = new Pedestrian(this.scene, x, y);
         return player;
+      });
+
+    Phaser.GameObjects.GameObjectFactory.register('grave',
+      function(x: number, y: number) {
+        const grave = new Grave(this.scene, x, y);
+        return grave;
       });
 
     // Phaser.GameObjects.GameObjectFactory.register('zombie',

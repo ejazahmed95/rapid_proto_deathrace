@@ -4,7 +4,7 @@ export default class EventManager {
   }
 
   public addHandler(eventName:string, handler: Function) {
-    if(this.eventHandlers[eventName] != null) {
+    if(this.eventHandlers[eventName] == null) {
       this.eventHandlers[eventName] = [];
     }
     this.eventHandlers[eventName].push(handler);

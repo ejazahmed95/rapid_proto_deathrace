@@ -1,6 +1,7 @@
 import GameObject from "../engine/GameObject";
 import {Images, ObjTags} from "../const";
 import DI from "../utilities/DI";
+import GameInfra from "../utilities/GameInfra";
 
 export default class Pedestrian extends GameObject {
 static count = 0;

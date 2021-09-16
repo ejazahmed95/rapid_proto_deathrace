@@ -1,9 +1,10 @@
 import {Keys} from '../const'
 
 export default class InputManager {
+
     constructor(scene: Phaser.Scene){
         //@ts-ignore
-        this.keys = scene.input.keyboard.addKeys('W,S,A,D,R');
+        this.keys = scene.input.keyboard.addKeys('W,S,A,D,R,SPACE');
         this.input = new Set();
     }
 

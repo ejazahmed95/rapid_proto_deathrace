@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import Logger from "./utilities/logger";
-import { Tags } from "./constants";
 import MenuScene from "./scenes/MenuScene";
 import GameScene from "./scenes/GameScene";
 import GameoverScene from "./scenes/GameoverScene";
@@ -20,9 +19,7 @@ export default class ZombieApocalypse {
       height: 1080,
       physics: {
         default: 'arcade',
-        arcade: {
-          gravity: {y: 200}
-        }
+        arcade: {},
       },
       scene: [
          MenuScene, ControlsScene, GameScene, GameoverScene
