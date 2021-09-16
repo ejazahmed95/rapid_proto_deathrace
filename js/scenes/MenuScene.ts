@@ -1,4 +1,4 @@
-import {Images, Scenes, Tags} from "../const";
+import {Images, Scenes, Spritesheets, Tags} from "../const";
 import GameConf from "../game/config";
 import Logger from "../utilities/logger";
 import GameObject from "../engine/GameObject";
@@ -44,11 +44,15 @@ export default class MenuScene extends Phaser.Scene {
   private loadImages() {
     this.load.setPath("./assets/images");
     for(let image in Images) {
-      // @ts-ignore
       Logger.i(`loading asset: ${Images[image]}`, "LOAD");
-      // @ts-ignore
       this.load.image(Images[image], Images[image] + ".png");
     }
+
+	for(let image in Spritesheets) {
+		Logger.i(`loading asset: ${Spritesheets[image]}`, "LOAD");
+		this.load.spritesheet(Spritesheets[image], Spritesheets[image] + ".png", {frameWidth: 32, frameHeight:32, endFrame: 2});
+		// this.load.multiatlas('pedestrian', 'pedestrian.json');
+	}
   }
 
   private setFactories() {

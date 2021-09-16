@@ -17,7 +17,12 @@ export const Images = {
   Car: "car",
   Square: "placeholder_square",
   Cross: "cross",
-  Pedestrian: "pedestrian",
+  Button: "button",
+  Frame: "frame",
+}
+
+export const Spritesheets = {
+	Pedestrian: "pedestrian"
 }
 
 export const Audio = {
@@ -33,10 +38,11 @@ export const ObjTags = {
 }
 
 export const Keys = {
-  Left: 'A',
-  Right: 'D',
-  Up: 'W',
-  Down: 'S',
-  Reset: 'R' // debug
+  Left: 'A', // Rotate left
+  Right: 'D', // Rotate right
+  Up: 'W', // Move Forward
+  Down: 'S', // Move backwards
+  Reset: 'R', // debug
+  Action: 'SPACE',
 }
 
