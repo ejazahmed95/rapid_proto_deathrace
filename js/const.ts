@@ -29,12 +29,14 @@ export const ObjTags = {
   Player: 0,
   Zombie: 1,
   Pedestrian: 2,
+  Grave: 3
 }
 
 export const Keys = {
   Left: 'A',
   Right: 'D',
   Up: 'W',
-  Down: 'S'
+  Down: 'S',
+  Reset: 'R' // debug
 }
 

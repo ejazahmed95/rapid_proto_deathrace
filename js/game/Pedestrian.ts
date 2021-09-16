@@ -1,27 +1,78 @@
 import GameObject from "../engine/GameObject";
 import {Images, ObjTags} from "../const";
+import DI from "../utilities/DI";
 
 export default class Pedestrian extends GameObject {
 static count = 0;
+
+private id: number;
+private statusDuration: number;
+private movement: [number, number] = [0, 0];
+private boundX: [number, number] = [0, 0];
+private boundY: [number, number] = [0, 0];
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, Images.Pedestrian, ObjTags.Pedestrian);
-    this.setCollideWorldBounds(true);
+    //this.setCollideWorldBounds(true);
     this.id = Pedestrian.count;
     Pedestrian.count++;
-    console.log('Pedestrian id ' + this.id);
+    this.statusDuration = 0;
+    let layout = (DI.Get("GameInfra") as GameInfra).layout;
+    this.boundX = [-layout.Border, layout.GameWidth + layout.Border];
+    this.boundY = [-layout.Border, layout.GameHeight - layout.Border];
   }
 
-  update(deltaTime: Number) {
+  getID(){
+    return this.id;
+  }
+
+  update(deltaTime: number) {
     
+    this.statusDuration -= deltaTime;
+
+    if(this.x < this.boundX[0] || this.x > this.boundX[1])
+      this.statusDuration = 0; 
+    if(this.y < this.boundY[0] || this.y > this.boundY[1])
+      this.statusDuration = 0; 
+
+    if(this.statusDuration <= 0)
+    {
+      let radio: number = Phaser.Math.FloatBetween(0, 1);
+      if(radio <= 0.3)
+      {
+        this.statusDuration = 1000; // ms
+        // do nothing
+      } else
+      {
+        this.statusDuration = 3000;
+        // random move
+        this.movement[0] = Phaser.Math.Between(-1, 1);
+        this.movement[1] = Phaser.Math.Between(-1, 1);
+      }
+    }
+
+    this.setVelocity(this.movement[0] * deltaTime * this.speed, this.movement[1] * deltaTime * this.speed);
   }
 
   onKill() {
     this.visible = false;
-    //this.body.checkCollision = false;
   }
 
   onSpawn()
   {
     this.visible = true;
+  }
+
+  onMoveReverse()
+  {
+    this.statusDuration = 3000;
+    this.movement[0] = -this.movement[0];  
+    this.movement[1] = -this.movement[1];  
+  }
+
+  onFreeze()
+  {
+    this.statusDuration = 3000;
+    this.movement = [0, 0];
   }
 }

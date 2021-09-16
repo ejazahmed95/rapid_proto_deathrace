@@ -2,7 +2,7 @@ import {Scenes, Keys, ObjTags, Images, Tags} from "../const";
 import Logger from "../utilities/logger";
 import DI from "../utilities/DI";
 import Player from "../engine/Player";
-import Phaser from "phaser";
+import Phaser, { Game } from "phaser";
 import GameObject from "../engine/GameObject";
 import {IGameObject, IPlayer} from "../types/types";
 import Texture = Phaser.Textures.Texture;
@@ -10,12 +10,19 @@ import Pedestrian from "../game/Pedestrian";
 import GameInfra from "../utilities/GameInfra";
 
 import GameConf from "../game/config";
+import EventManager from "../utilities/EventManager";
+import {GameEvents} from "../utilities/events";
+import InputManager from "../engine/InputManager";
 
 export default class GameScene extends Phaser.Scene {
   private gameTime: Date = new Date();
   private player: Player;
+  private pedestrianGroup: Phaser.GameObjects.Group;
+  private inputManager: InputManager;
   
   private pedestrians: Pedestrian[]=[];
+  private graves: GameObject[] = [];
+
   constructor() {
     super({
       key: Scenes.GAMEPLAY,
@@ -30,13 +37,16 @@ export default class GameScene extends Phaser.Scene {
     console.log('GameScene preload.');
   }
 
-
   create() {
-    let game = DI.Get("Game");
+    let eventManager: EventManager = DI.Get('EventManager');
+    eventManager.clearAll();
+    eventManager.addHandler(GameEvents.Killed_Pedestrian, this.onPedestrianKilled);
 
-    this.pFrameTime = new Date();
+    this.inputManager = new InputManager(this);
+    DI.Register('InputManager', this.inputManager);
+
     this.createFactories();
-    // let go = new GameObject(this, 400, 200, Images.Car, ObjTags.Player);
+
     //@ts-ignore
     this.player = this.add.player(300, 200);
 
@@ -49,15 +59,12 @@ export default class GameScene extends Phaser.Scene {
      this.pedestrianGroup.enableBody = true;
      this.pedestrianGroup.physicsBodyType = Phaser.Physics.Arcade;
 
-    // keyboard event
-    this.keys = this.input.keyboard.addKeys('W,S,A,D,R');
-
     let layout = (DI.Get("GameInfra") as GameInfra).layout;
     this.physics.world.setBounds(layout.Border, layout.Border, layout.GameWidth, layout.GameHeight);
 
     // register collider with group
-    this.physics.add.overlap(
-    this.player, this.pedestrianGroup, this.removeFromCollide, null, this);//this.player.onHitEnter, null, this);
+    this.physics.add.overlap(this.player, this.pedestrianGroup, this.onPedestrianKilled, null, this)
+    this.physics.add.overlap(this.pedestrianGroup, this.pedestrianGroup, this.onPedestrianSelfHit, null, this)
   }
 
   update() {
@@ -65,28 +72,30 @@ export default class GameScene extends Phaser.Scene {
     let deltaTime = curtTime - this.gameTime;
     this.gameTime = curtTime;
 
-    let x =
-      (this.keys.A.isDown ? -1 : (this.keys.D.isDown ? 1 : 0));
-    let y =
-      (this.keys.W.isDown ? -1 : (this.keys.S.isDown ? 1 : 0));
+    this.inputManager.update(deltaTime);
+    this.player.update(deltaTime);
 
-    this.player.move(x, y, deltaTime);
-    this.player.update();
-
-    // test code
-    if(this.keys.R.isDown)
     this.pedestrians.forEach(element => {
-      element.onSpawn();
-    });
+        element.update(deltaTime);
+      });
   }
 
-  removeFromCollide(player : Player, other: GameObject)
+  onPedestrianKilled(player: Player, others: GameObject)
   {
-    console.log('removeFromCollide' + other.getTag());
-    if(other.getTag() == ObjTags.Pedestrian)
+    console.log('onPedestrianKilled' + others.getTag());
+    if(others.getTag() == ObjTags.Pedestrian)
     {
-      this.pedestrianGroup.remove(other);
+      let pedestrian = others as Pedestrian;
+      pedestrian.onKill();
+      this.pedestrianGroup.remove(pedestrian);
+      this.graves.push(this.add.gameObject(pedestrian.x, pedestrian.y, Images.Cross, ObjTags.Grave));
     }
+  }
+
+  onPedestrianSelfHit(obj1: Pedestrian, obj2: Pedestrian)
+  {
+    obj1.onMoveReverse();
+    obj2.onFreeze();
   }
 
   createFactories() {

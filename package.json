@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "game": "^1.0.3",
+    "matter": "^0.2.0",
     "phaser": "^3.55.2"
   }
 }

@@ -7,6 +7,7 @@ import GameoverScene from "./scenes/GameoverScene";
 import DI from "./utilities/DI";
 import GameInfra from "./utilities/GameInfra";
 import ControlsScene from "./scenes/ControlsScene";
+import EventManager from "./utilities/EventManager";
 
 export default class ZombieApocalypse {
   private readonly config: Phaser.Types.Core.GameConfig;
@@ -29,10 +30,7 @@ export default class ZombieApocalypse {
       pixelArt: true,
     };
     this.game = new Phaser.Game(this.config);
-
     this.initializeDeps();
-
-    
 
     //bind methods
 
@@ -61,5 +59,6 @@ export default class ZombieApocalypse {
     DI.Register("Game", this.game);
     // @ts-ignore
     DI.Register("GameInfra", new GameInfra(this.game.config.width, this.game.config.height));
+    DI.Register("EventManager", new EventManager());
   }
 }
