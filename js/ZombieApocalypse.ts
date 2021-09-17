@@ -7,55 +7,58 @@ import DI from "./utilities/DI";
 import GameInfra from "./utilities/GameInfra";
 import ControlsScene from "./scenes/ControlsScene";
 import EventManager from "./utilities/EventManager";
+import SpawnManager from "./game/SpawnManager";
 
 export default class ZombieApocalypse {
-  private readonly config: Phaser.Types.Core.GameConfig;
-  private readonly game: Phaser.Game;
+    private readonly config: Phaser.Types.Core.GameConfig;
+    private readonly game: Phaser.Game;
 
-  constructor() {
-    this.config = {
-      type: Phaser.AUTO,
-      width: 640,
-      height: 1080,
-      physics: {
-        default: 'arcade',
-        arcade: {},
-      },
-      scene: [
-         MenuScene, ControlsScene, GameScene, GameoverScene
-      ],
-      pixelArt: true,
-    };
-    this.game = new Phaser.Game(this.config);
-    this.initializeDeps();
+    constructor() {
+        this.config = {
+            type: Phaser.AUTO,
+            width: 640,
+            height: 1080,
+            physics: {
+                default: 'arcade',
+                arcade: {},
+            },
+            scene: [
+                MenuScene, ControlsScene, GameScene, GameoverScene
+            ],
+            pixelArt: true,
+        };
+        this.game = new Phaser.Game(this.config);
+        this.initializeDeps();
 
-    //bind methods
+        //bind methods
 
-  }
+    }
 
-  init () {
-    Logger.i("zombie apocalypse file is initialized");
-  }
+    init() {
+        Logger.i("zombie apocalypse file is initialized");
+    }
 
-  preload() {
+    preload() {
 
-  }
+    }
 
-  create() {
+    create() {
 
-  }
+    }
 
-  update() {
+    update() {
 
-  }
+    }
 
-  initializeDeps() {
-    // @ts-ignore
-    this.game.testValue = "Some test value";
+    initializeDeps() {
+        // @ts-ignore
+        this.game.testValue = "Some test value";
 
-    DI.Register("Game", this.game);
-    // @ts-ignore
-    DI.Register("GameInfra", new GameInfra(this.game.config.width, this.game.config.height));
-    DI.Register("EventManager", new EventManager());
-  }
+        DI.Register("Game", this.game);
+        // @ts-ignore
+        DI.Register("GameInfra", new GameInfra(this.game.config.width, this.game.config.height));
+        DI.Register("EventManager", new EventManager());
+
+        DI.Register("SpawnManager", new SpawnManager());
+    }
 }

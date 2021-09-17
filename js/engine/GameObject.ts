@@ -2,27 +2,45 @@ import Phaser from 'phaser'
 import Texture = Phaser.Textures.Texture;
 
 export default class GameObject extends Phaser.Physics.Arcade.Sprite {
-  private tag: number;
-  protected speed: number;
+    protected tag: number;
+    protected enable: boolean = true;
+    protected id: number;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, sprite: string|Texture, tag: number) {
-    super(scene, x, y, sprite);
-    scene.add.existing(this);
-    scene.physics.add.existing(this);
-    this.body.allowGravity = false;
+    static IdBase: number = 0;
+    constructor(scene: Phaser.Scene, x: number, y: number, sprite: string | Texture, tag: number) {
+        super(scene, x, y, sprite);
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+        //@ts-ignore
+        this.body.allowGravity = false;
 
-    this.tag = tag;
-    this.speed = 1.0;
-  }
+        this.tag = tag;
+        this.id = GameObject.IdBase++;
+    }
 
-  getTag() {
-    return this.tag;
-  }
+    create() {
 
-  update() {}
+    }
 
-  move(_x: number, _y: number) {
-    this.x += _x * this.speed;
-    this.y += _y * this.speed;
-  }
+    update(deltaTime: number) {
+        if (this.enable == false)
+            return;
+    }
+
+    getTag() {
+        return this.tag;
+    }
+
+    getId() {
+        this.id;
+    }
+
+    setEnable(value: boolean) {
+        this.enable = value;
+        this.setVisible(value);
+    }
+
+    isEnable() {
+        return this.enable;
+    }
 }
