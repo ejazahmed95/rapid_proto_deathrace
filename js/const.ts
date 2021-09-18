@@ -38,7 +38,14 @@ export const Spritesheets = {
         "framesNum": 10,
         "frameRate": 5,
         "repeat": false
-    }
+    },
+	Zombie: {
+		"name": "pedestrian",
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"framesNum": 2,
+		"repeat": true
+	},
 }
 
 export const Audio = {

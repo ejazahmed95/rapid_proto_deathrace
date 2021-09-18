@@ -1,22 +1,20 @@
-
-import GameConf from "../game/config";
 import Logger from "../utilities/logger";
-import {Scenes, Images, Tags, Keys} from "../const";
+import {Scenes, Images, Tags, Keys, Spritesheets} from "../const";
 import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 import InputManager from "../engine/InputManager";
 
-export default class ControlsScene extends Phaser.Scene {
-	private inputManager: InputManager;
+export default class ArcadeScene extends Phaser.Scene {
+	private inputManager!: InputManager;
 
 	// Buttons
-	private frame: Phaser.GameObjects.Sprite;
-	private controlBg: Phaser.GameObjects.Sprite;
-	private leftButton: Phaser.GameObjects.Sprite;
-	private rightButton: Phaser.GameObjects.Sprite;
-	private upButton: Phaser.GameObjects.Sprite;
-	private downButton: Phaser.GameObjects.Sprite;
-	private fireButton: Phaser.GameObjects.Sprite;
+	private frame!: Phaser.GameObjects.Sprite;
+	private controlBg!: Phaser.GameObjects.Sprite;
+	private leftButton!: Phaser.GameObjects.Sprite;
+	private rightButton!: Phaser.GameObjects.Sprite;
+	private upButton!: Phaser.GameObjects.Sprite;
+	private downButton!: Phaser.GameObjects.Sprite;
+	private fireButton!: Phaser.GameObjects.Sprite;
 
 	constructor() {
 		super({
@@ -26,18 +24,16 @@ export default class ControlsScene extends Phaser.Scene {
 
 	init() {
 		Logger.i("scene initialized", Tags.Controls);
+	}
+
+	preload() {
+		this.loadImages();
 		this.inputManager = new InputManager(this);
 		DI.Register('InputManager', this.inputManager);
 	}
 
-	preload() {
-	}
-
-	loadImages() {
-		// this.load.setPath
-	}
-
 	create() {
+
 		let layout = (DI.Get("GameInfra") as GameInfra).layout;
 		// Complete Frame
 		this.frame = this.add.sprite(0, 0, Images.Frame);
@@ -63,11 +59,13 @@ export default class ControlsScene extends Phaser.Scene {
 		this.rightButton = this.add.sprite(buttonX + buttonSize*2, buttonY + buttonSize, Images.Button);
 		this.downButton = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize* 2, Images.Button);
 		this.fireButton = this.add.sprite(layout.TotalWidth - buttonX, buttonY + buttonSize, Images.Button);
+
+		this.scene.launch(Scenes.MENU, {});
 	}
 
 	update(time: number, delta: number) {
 		super.update(time, delta);
-
+		this.inputManager.update(delta);
 		this.resetButtons();
 		let input = this.inputManager.getInput();
 		if(input.has(Keys.Left)) this.highlightButton(this.leftButton);
@@ -87,5 +85,23 @@ export default class ControlsScene extends Phaser.Scene {
 
 	private highlightButton(button: Phaser.GameObjects.Sprite) {
 		button.tint = 0xee2222;
+	}
+
+	private loadImages() {
+		this.load.setPath("./assets/images");
+		for (let image in Images) {
+			// @ts-ignore
+			Logger.i(`loading asset: ${Images[image]}`, "LOAD");
+			// @ts-ignore
+			this.load.image(Images[image], Images[image] + ".png");
+		}
+
+		for (let image in Spritesheets) {
+			// @ts-ignore
+			Logger.i(`loading Spritesheets: ${Spritesheets[image]["path"]}`, "LOAD");
+			// @ts-ignore
+			let spriteConfig = Spritesheets[image];
+			this.load.spritesheet(spriteConfig["name"], spriteConfig["name"] + ".png", { frameWidth: spriteConfig["frameWidth"], frameHeight: spriteConfig["frameHeight"], endFrame: spriteConfig["framesNum"] });
+		}
 	}
 }

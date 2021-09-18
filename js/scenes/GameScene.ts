@@ -15,7 +15,6 @@ export default class GameScene extends Phaser.Scene {
     private gameTime: Date = new Date();
 
     private inputManager: InputManager;
-
     private spawnManager: SpawnManager;
 
     constructor() {
@@ -46,7 +45,6 @@ export default class GameScene extends Phaser.Scene {
         let deltaTime = curtTime - this.gameTime;
         this.gameTime = curtTime;
 
-        this.inputManager.update(deltaTime);
         this.spawnManager.update(deltaTime);
     }
 }

@@ -5,11 +5,11 @@ import Pedestrian from "../game/Pedestrian";
 import Grave from "../game/Grave";
 import Player from "../game/Player";
 import GameObject from "../engine/GameObject";
-import { LevelConfig } from "../const";
+import {LevelConfig} from "../const";
 
 import Zombie from "./Zombie";
 import EventManager from "../utilities/EventManager";
-import { GameEvents, PedestrianKillInfo } from "../utilities/events";
+import {GameEvents} from "../utilities/events";
 
 export default class SpawnManager {
     private pedestrians: Pedestrian[] = [];
@@ -75,7 +75,6 @@ export default class SpawnManager {
         scene.physics.add.overlap(this.player, this.pedestrianGroup, this.player.onColliderEnter, null);
         scene.physics.add.collider(this.player, this.gravesGroup, this.player.onColliderEnter, null);
 
-
     }
 
     update(deltaTime: number) {
@@ -109,33 +108,28 @@ export default class SpawnManager {
     createFactories(scene: Phaser.Scene) {
         Phaser.GameObjects.GameObjectFactory.register(
             'gameObject', function (x: number, y: number, sprite: Texture, tag: number, movable = true) {
-                const object = new GameObject(scene, x, y, sprite, tag);
-                return object;
+				return new GameObject(scene, x, y, sprite, tag);
             }
         )
 
         Phaser.GameObjects.GameObjectFactory.register('player',
             function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, speed: number, angleSpeed: number) {
-                const player = new Player(scene, x, y, speed, angleSpeed);
-                return player;
+				return new Player(scene, x, y, speed, angleSpeed);
             });
 
         Phaser.GameObjects.GameObjectFactory.register('pedestrian',
             function (x: number, y: number) {
-                const player = new Pedestrian(scene, x, y);
-                return player;
+				return new Pedestrian(scene, x, y);
             });
 
         Phaser.GameObjects.GameObjectFactory.register('grave',
             function (x: number, y: number) {
-                const grave = new Grave(scene, x, y);
-                return grave;
+				return new Grave(scene, x, y);
             });
 
         Phaser.GameObjects.GameObjectFactory.register('zombie',
             function (x: number, y: number) {
-                const zombie = new Zombie(scene, x, y);
-                return zombie;
+				return new Zombie(scene, x, y);
             });
     }
 }

@@ -1,8 +1,10 @@
-import { Images, Scenes, Spritesheets, Tags } from "../const";
+import {Images, Keys, Scenes, Spritesheets, Tags} from "../const";
 import GameConf from "../game/config";
 import Logger from "../utilities/logger";
 import GameObject from "../engine/GameObject";
 import Texture = Phaser.Textures.Texture;
+import InputManager from "../engine/InputManager";
+import DI from "../utilities/DI";
 
 export default class MenuScene extends Phaser.Scene {
     constructor() {
@@ -11,52 +13,34 @@ export default class MenuScene extends Phaser.Scene {
         });
     }
 
+	private inputManager!: InputManager;
+	private gameStarted: boolean = false;
+
     init() {
         Logger.i("scene initialized", Tags.Menu);
-    }
-    preload() {
-        this.loadImages();
+		this.inputManager = DI.Get("InputManager") as InputManager;
     }
 
-    temp(param1: any, param2: any, p3: any, p4: any) {
-
-    }
     create() {
-        this.scene.launch(Scenes.CONTROLS, GameConf);
+        // this.scene.launch(Scenes.CONTROLS, GameConf);
 
-        // for(let type in this.cache) {
-        //   console.log(type)
-        //
-        //   if (type != 'game') {
-        //     for (let entry in this.cache[type]) {
-        //       this.cache[type].remove(entry);
-        //     }
-        //   }
-        //
-        // }
+		this.add.text(190, 136, 'Main Menu', {
+			fontFamily: 'arcade-basic',
+			fontSize: '64'
+		}).scale = 2;
 
-        this.setFactories();
-        setTimeout(() => {
-            this.scene.start(Scenes.GAMEPLAY, GameConf)
-        }, 2);
+
+        // setTimeout(() => {
+        //     this.scene.start(Scenes.GAMEPLAY, GameConf)
+        // }, 2000);
     }
 
-    private loadImages() {
-        this.load.setPath("./assets/images");
-        for (let image in Images) {
-            Logger.i(`loading asset: ${Images[image]}`, "LOAD");
-            this.load.image(Images[image], Images[image] + ".png");
-        }
+	update(time: number, delta: number) {
+		super.update(time, delta);
 
-        for (let image in Spritesheets) {
-            Logger.i(`loading Spritesheets: ${Spritesheets[image]["path"]}`, "LOAD");
-            let spriteConfig = Spritesheets[image];
-            this.load.spritesheet(spriteConfig["name"], spriteConfig["name"] + ".png", { frameWidth: spriteConfig["frameWidth"], frameHeight: spriteConfig["frameHeight"], endFrame: spriteConfig["framesNum"] });
-            // this.load.multiatlas('pedestrian', 'pedestrian.json');
-        }
-    }
-
-    private setFactories() {
-
-    }
+		if(!this.gameStarted && this.inputManager.getInput().has(Keys.Action)) {
+			this.gameStarted = true;
+			this.scene.start(Scenes.GAMEPLAY, GameConf);
+		}
+	}
 }

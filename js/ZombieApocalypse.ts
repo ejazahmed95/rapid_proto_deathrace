@@ -5,7 +5,7 @@ import GameScene from "./scenes/GameScene";
 import GameoverScene from "./scenes/GameoverScene";
 import DI from "./utilities/DI";
 import GameInfra from "./utilities/GameInfra";
-import ControlsScene from "./scenes/ControlsScene";
+import ArcadeScene from "./scenes/ArcadeScene";
 import EventManager from "./utilities/EventManager";
 import SpawnManager from "./game/SpawnManager";
 
@@ -23,7 +23,7 @@ export default class ZombieApocalypse {
                 arcade: {},
             },
             scene: [
-                MenuScene, ControlsScene, GameScene, GameoverScene
+				ArcadeScene, MenuScene, GameScene, GameoverScene // Add a highscore scene
             ],
             pixelArt: true,
         };
@@ -58,7 +58,6 @@ export default class ZombieApocalypse {
         // @ts-ignore
         DI.Register("GameInfra", new GameInfra(this.game.config.width, this.game.config.height));
         DI.Register("EventManager", new EventManager());
-
         DI.Register("SpawnManager", new SpawnManager());
     }
 }

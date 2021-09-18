@@ -5,18 +5,24 @@ export interface GameConfig {
     ZombieCount: number,
 }
 
-export interface ObjectConfig {
-    id: number,
-    X: number,
-    Y: number,
-    Speed: number,
-    AngleSpeed: number
+export interface ImmovableObj {
+	id?: number,
+	x: number,
+	y: number
 }
 
+export interface MovableObj {
+	id?: number,
+	x: number,
+	y: number,
+	speed: number,
+	angleSpeed?: number,
+}
 export interface LevelConfig {
-    PlayerConfig: ObjectConfig,
-    ZombiesConfig: ObjectConfig[]
-    GravesConfig: ObjectConfig[]
+	Player: MovableObj,
+	Zombies: MovableObj[],
+	Graves: ImmovableObj[],
+	Pedestrians: MovableObj[]
 }
 
 export interface Layout {

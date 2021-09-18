@@ -1,4 +1,4 @@
-import { Keys } from '../const'
+import { Keys } from '../const';
 
 export default class InputManager {
     private keys: object;
