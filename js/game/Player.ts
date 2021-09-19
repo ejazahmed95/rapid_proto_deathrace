@@ -1,20 +1,21 @@
-import { Images, Keys, LevelConfig, ObjTags } from '../const';
+import { Images, Keys, ObjTags } from '../const';
 import MovableObject from '../engine/MovableObject';
 import GameObject from '../engine/GameObject';
 import DI from "../utilities/DI";
 import EventManager from '../utilities/EventManager';
-import { GameEvents } from '../utilities/events';
+import { GameEvents, PedestrianKillInfo, ZombieKillInfo } from '../utilities/events';
 import Pedestrian from './Pedestrian';
+import Zombie from './Zombie';
 
 export default class Player extends MovableObject {
     private eventManager: EventManager | undefined;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, speed: number, angleSpeed: number) {
-        super(scene, x, y, Images.Player, ObjTags.Player);
+    constructor(scene: Phaser.Scene, config: object) {
+        super(scene, config["x"], config["y"], Images.Player, ObjTags.Player);
         this.setCollideWorldBounds(true);
 
-        this.speed = speed;
-        this.angleSpeed = angleSpeed;
+        this.speed = config["speed"];
+        this.angleSpeed = config["angleSpeed"];
 
         this.onColliderEnter = this.onColliderEnter.bind(this);
 
@@ -37,12 +38,11 @@ export default class Player extends MovableObject {
             case ObjTags.Grave:
                 break;
             case ObjTags.Pedestrian:
-                let pedestrian = other as Pedestrian;
-                this.eventManager?.sendEvent(GameEvents.KilledPedestrian, { Pedestrian: pedestrian });
+                this.eventManager?.sendEvent(GameEvents.KilledPedestrian, { PedestrianId: other.getId(), PositionX: other.x, PositionY: other.y });
                 break;
             case ObjTags.Zombie:
                 // score up
-                this.eventManager?.sendEvent(GameEvents.KilledZombie, { ObjectID: other.getId() });
+                this.eventManager?.sendEvent(GameEvents.KilledZombie, { ZombieId: other.getId() });
                 break;
         }
     }

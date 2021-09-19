@@ -49,7 +49,7 @@ export default class MenuScene extends Phaser.Scene {
         }
 
         for (let image in Spritesheets) {
-            Logger.i(`loading Spritesheets: ${Spritesheets[image]["path"]}`, "LOAD");
+            Logger.i(`loading Spritesheets: ${Spritesheets[image]["name"]}`, "LOAD");
             let spriteConfig = Spritesheets[image];
             this.load.spritesheet(spriteConfig["name"], spriteConfig["name"] + ".png", { frameWidth: spriteConfig["frameWidth"], frameHeight: spriteConfig["frameHeight"], endFrame: spriteConfig["framesNum"] });
             // this.load.multiatlas('pedestrian', 'pedestrian.json');
