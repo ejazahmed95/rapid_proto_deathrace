@@ -4,7 +4,6 @@ import GameObject from '../engine/GameObject';
 import DI from "../utilities/DI";
 import EventManager from '../utilities/EventManager';
 import { GameEvents, PedestrianKillInfo, ZombieKillInfo } from '../utilities/events';
-import Pedestrian from './Pedestrian';
 import Zombie from './Zombie';
 
 export default class Player extends MovableObject {
@@ -34,6 +33,9 @@ export default class Player extends MovableObject {
 
     // we need to matain the collision status
     onColliderEnter(player: Player, other: GameObject) {
+        if (other.isEnable() == false)
+            return;
+
         switch (other.getTag()) {
             case ObjTags.Grave:
                 break;

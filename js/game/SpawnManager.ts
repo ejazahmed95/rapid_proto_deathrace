@@ -35,6 +35,7 @@ export default class SpawnManager {
         eventManager.addHandler(GameEvents.KilledPedestrian, this.onPedestrianKilled = this.onPedestrianKilled.bind(this));
         eventManager.addHandler(GameEvents.KilledZombie, this.onZombieKilled = this.onZombieKilled.bind(this));
         eventManager.addHandler(GameEvents.OffGrave, this.onGraveOff = this.onGraveOff.bind(this));
+        eventManager.addHandler(GameEvents.PedestrianConverted, this.onPedestrianConverted = this.onPedestrianConverted.bind(this));
 
         this.pedestrianGroup = scene.add.group();
         this.gravesGroup = scene.add.group();
@@ -101,12 +102,21 @@ export default class SpawnManager {
     onPedestrianKilled(info?: PedestrianKillInfo) {
         if (info) {
             let pId = info["PedestrianId"];
+            for (let i = 0; i < this.pedestrians.length; ++i) {
+                let pedestrian = this.pedestrians[i] as Pedestrian;
+                if (pedestrian.getId() == pId) {
+                    pedestrian.setEnable(false);
+                    this.pedestrianGroup?.remove(pedestrian);
+                    break;
+                }
+            }
+
             let x = info["PositionX"];
             let y = info["PositionY"];
             for (let i = 0; i < this.graves.length; ++i) {
                 let grave = this.graves[i] as Grave;
                 if (grave.isEnable() == false) {
-                    grave.reSpawn(x, y);
+                    grave.reSpawn(x, y)
                     return;
                 }
             }
@@ -134,6 +144,19 @@ export default class SpawnManager {
 
     onGraveOff(objectId?: number) {
         console.log("onGraveOff " + objectId);
+    }
+
+    onPedestrianConverted(info?: object) {
+        if (info) {
+            let _x = info["x"];
+            let _y = info["y"];
+
+            let config = { x: _x, y: _y, speed: 15 };
+            let zombie = this.scene.add.zombie(config);
+            this.zombies.push(zombie);
+            this.zombieGroup.add(zombie);
+            zombie.create();
+        }
     }
 
     createFactories(scene: Phaser.Scene) {

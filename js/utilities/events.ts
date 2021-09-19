@@ -5,7 +5,8 @@ export const GameEvents = {
     OnGrave: "OnGrave",
     OffGrave: "OffGrave",
     KilledZombie: "Killed_Zombie",
-    PedestrianPosUpdate: "PedestrianPosUpdate"
+    PedestrianPosUpdate: "PedestrianPosUpdate",
+    PedestrianConverted: "PedestrianConverted"
 }
 
 export interface PedestrianKillInfo {

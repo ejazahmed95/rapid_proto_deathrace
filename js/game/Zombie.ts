@@ -4,6 +4,7 @@ import GameObject from "../engine/GameObject";
 import EventManager from "../utilities/EventManager";
 import DI from "../utilities/DI";
 import { GameEvents, PedestrianKillInfo, PedestrianPositionInfo } from "../utilities/events";
+import Pedestrian from "./Pedestrian";
 
 const ZombieState = {
     Idle: 0,
@@ -80,6 +81,7 @@ export default class Zombie extends MovableObject {
         if (this.enable == false)
             return;
         super.update(deltaTime);
+        console.log("Zombie update " + this.getId() + ' ' + this.state + ' ' + this.isEnable());
 
         this.stateDuration += deltaTime;
         if (this.stateDuration >= this.stateDurationMax.get(this.state)) {
@@ -106,14 +108,19 @@ export default class Zombie extends MovableObject {
     }
 
     static onColliderEnter(object1: GameObject, object2: GameObject) {
-        console.log("Zombie onColliderEnter " + object1.getTag() + ' ' + object2.getTag());
-        if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Zombie) {
-            let zombie1 = object1 as Zombie;
-            zombie1.onDirReverse();
-            let zombie2 = object2 as Zombie;
-            zombie2.onChangeState(ZombieState.Idle);
-        } else if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Pedestrian) {
-
+        if (object1.isEnable() && object2.isEnable()) {
+            console.log("Zombie onColliderEnter " + object1.getTag() + ' ' + object2.getTag());
+            if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Zombie) {
+                let zombie1 = object1 as Zombie;
+                zombie1.onDirReverse();
+                let zombie2 = object2 as Zombie;
+                zombie2.onDirReverse();
+            } else if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Pedestrian) {
+                let pedestrian = object2 as Pedestrian;
+                pedestrian.setEnable(false);
+                let eventManager = DI.Get("EventManager") as EventManager;
+                eventManager.sendEvent(GameEvents.PedestrianConverted, { x: object1.x, y: object1.y });
+            }
         }
     }
 
