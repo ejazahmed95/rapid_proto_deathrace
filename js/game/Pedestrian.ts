@@ -2,11 +2,11 @@ import GameObject from "../engine/GameObject";
 import { Images, Spritesheets, ObjTags } from "../const";
 import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
+import MovableObject from "../engine/MovableObject";
 
-export default class Pedestrian extends GameObject {
+export default class Pedestrian extends MovableObject {
     static count = 0;
 
-    private id: number;
     private statusDuration: number;
     private movement: [number, number] = [0, 0];
     private boundX: [number, number] = [0, 0];

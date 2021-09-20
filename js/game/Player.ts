@@ -23,8 +23,8 @@ export default class Player extends MovableObject {
 
     update(deltaTime: number) {
         let inputs = this.inputManager.getInput();
-        let horizontal: number = inputs.has(Keys.Left) ? -1 : (inputs.has(Keys.Right) ? 1 : 0);
-        let vertical: number = inputs.has(Keys.Up) ? -1 : (inputs.has(Keys.Down) ? 1 : 0);
+        let horizontal: number = inputs.contains(Keys.Left) ? -1 : (inputs.contains(Keys.Right) ? 1 : 0);
+        let vertical: number = inputs.contains(Keys.Up) ? -1 : (inputs.contains(Keys.Down) ? 1 : 0);
 
         this.setAngularVelocity(this.angleSpeed * horizontal * deltaTime);
         let radians = this.angle / 180.0 * Math.PI;

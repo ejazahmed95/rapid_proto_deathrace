@@ -32,7 +32,7 @@ export default class GameObject extends Phaser.Physics.Arcade.Sprite {
     }
 
     getId() {
-        this.id;
+        return this.id;
     }
 
     setEnable(value: boolean) {

@@ -5,6 +5,8 @@ import GameObject from "../engine/GameObject";
 import Texture = Phaser.Textures.Texture;
 import InputManager from "../engine/InputManager";
 import DI from "../utilities/DI";
+import Options from "../ui/Options";
+import Point from "../utilities/Point";
 
 export default class MenuScene extends Phaser.Scene {
     constructor() {
@@ -23,12 +25,19 @@ export default class MenuScene extends Phaser.Scene {
 
     create() {
         // this.scene.launch(Scenes.CONTROLS, GameConf);
-
-		this.add.text(190, 136, 'Main Menu', {
-			fontFamily: 'arcade-basic',
-			fontSize: '64'
-		}).scale = 2;
-
+		new Options(this, {
+			fontFamily: "arcade-basic",
+			fontSize: 32,
+			padding: 10,
+			position: new Point(50, 50),
+			options: {
+				"Start": () => {
+					this.gameStarted = true;
+					this.scene.start(Scenes.GAMEPLAY, GameConf)
+				},
+				"Dummy Option": () => {Logger.i("Handling the dummy option", Tags.Menu)}
+			},
+		})
 
         // setTimeout(() => {
         //     this.scene.start(Scenes.GAMEPLAY, GameConf)
@@ -37,10 +46,5 @@ export default class MenuScene extends Phaser.Scene {
 
 	update(time: number, delta: number) {
 		super.update(time, delta);
-
-		if(!this.gameStarted && this.inputManager.getInput().has(Keys.Action)) {
-			this.gameStarted = true;
-			this.scene.start(Scenes.GAMEPLAY, GameConf);
-		}
 	}
 }

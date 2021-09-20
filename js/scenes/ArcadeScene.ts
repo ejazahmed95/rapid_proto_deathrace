@@ -68,11 +68,11 @@ export default class ArcadeScene extends Phaser.Scene {
 		this.inputManager.update(delta);
 		this.resetButtons();
 		let input = this.inputManager.getInput();
-		if(input.has(Keys.Left)) this.highlightButton(this.leftButton);
-		if(input.has(Keys.Up)) this.highlightButton(this.upButton);
-		if(input.has(Keys.Right)) this.highlightButton(this.rightButton);
-		if(input.has(Keys.Down)) this.highlightButton(this.downButton);
-		if(input.has(Keys.Action)) this.highlightButton(this.fireButton);
+		if(input.contains(Keys.Left)) this.highlightButton(this.leftButton);
+		if(input.contains(Keys.Up)) this.highlightButton(this.upButton);
+		if(input.contains(Keys.Right)) this.highlightButton(this.rightButton);
+		if(input.contains(Keys.Down)) this.highlightButton(this.downButton);
+		if(input.contains(Keys.Action)) this.highlightButton(this.fireButton);
 	}
 
 	private resetButtons() {

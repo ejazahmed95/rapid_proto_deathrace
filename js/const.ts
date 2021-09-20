@@ -10,7 +10,8 @@ export const Tags = {
     Infra: "INFRA",
     Asset: "ASSET",
     Controls: "CONTROLS",
-    Sound: "SOUND"
+    Sound: "SOUND",
+    Input: "INPUT",
 }
 
 export const Images = {

@@ -1,10 +1,15 @@
-import GameObjects = Phaser.GameObjects;
+import Player from "../game/Player";
 
 export interface GameConfig {
     PedestrianCount: number,
     ZombieCount: number,
 }
 
+export interface KeyState {
+	isJustDown: boolean,
+	held: boolean,
+	isJustUp: boolean,
+}
 export interface ImmovableObj {
 	id?: number,
 	x: number,
@@ -44,12 +49,10 @@ declare interface IPlayer extends IGameObject {
 
 }
 
-export declare namespace Phaser.GameObjects {
-    interface GameObjectFactory {
-        gameObject(): IGameObject
-    }
-
-    interface GameObjectFactory {
-        player(): IPlayer
-    }
+export interface LevelLoadInfo {
+	IsGameOver: boolean,
+	ShowHighScore: boolean,
+	CurrentLevel: number,
+	NextLevel: number,
+	ExtraLives?: number
 }
