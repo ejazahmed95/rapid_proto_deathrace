@@ -5,7 +5,9 @@ export const GameEvents = {
     OnGrave: "OnGrave",
     OffGrave: "OffGrave",
     KilledZombie: "Killed_Zombie",
-	InputChange: "InputChange"
+    PedestrianPosUpdate: "PedestrianPosUpdate",
+    PedestrianConverted: "PedestrianConverted",
+	InputChange: "InputChange",
 }
 
 export interface InputChangeInfo {
@@ -15,7 +17,13 @@ export interface InputChangeInfo {
 }
 
 export interface PedestrianKillInfo {
-    PedestrianId: number
+    PedestrianId: number,
+    PositionX: number,
+    PositionY: number
+}
+
+export interface ZombieKillInfo {
+    ZombieId: number
 }
 
 export interface ButtonPressInfo {
@@ -23,4 +31,8 @@ export interface ButtonPressInfo {
     Key: string,
 }
 
-
+export interface PedestrianPositionInfo {
+    X: number,
+    Y: number,
+    ID: number
+}

@@ -98,7 +98,7 @@ export default class ArcadeScene extends Phaser.Scene {
 
 		for (let image in Spritesheets) {
 			// @ts-ignore
-			Logger.i(`loading Spritesheets: ${Spritesheets[image]["path"]}`, "LOAD");
+			Logger.i(`loading Spritesheets: ${Spritesheets[image]["name"]}`, "LOAD");
 			// @ts-ignore
 			let spriteConfig = Spritesheets[image];
 			this.load.spritesheet(spriteConfig["name"], spriteConfig["name"] + ".png", { frameWidth: spriteConfig["frameWidth"], frameHeight: spriteConfig["frameHeight"], endFrame: spriteConfig["framesNum"] });

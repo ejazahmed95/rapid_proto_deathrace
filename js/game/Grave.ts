@@ -31,10 +31,4 @@ export default class Grave extends GameObject {
         if (value)
             this.play("grave_spawn");
     }
-
-    reSpawn(x: number, y: number) {
-        this.x = x;
-        this.y = y;
-        this.setEnable(true);
-    }
 }

@@ -43,4 +43,10 @@ export default class GameObject extends Phaser.Physics.Arcade.Sprite {
     isEnable() {
         return this.enable;
     }
+
+    reSpawn(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+        this.setEnable(true);
+    }
 }

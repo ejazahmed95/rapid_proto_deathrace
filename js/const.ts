@@ -40,13 +40,14 @@ export const Spritesheets = {
         "frameRate": 5,
         "repeat": false
     },
-	Zombie: {
-		"name": "pedestrian",
-		"frameWidth": 32,
-		"frameHeight": 32,
-		"framesNum": 2,
-		"repeat": true
-	},
+    ZombieIdle: {
+        "name": "zombie_idle",
+        "frameWidth": 32,
+        "frameHeight": 32,
+        "framesNum": 3,
+        "frameRate": 3,
+        "repeat": false
+    }
 }
 
 export const Audio = {
@@ -82,12 +83,12 @@ export const LevelConfig = {
             {
                 "x": 300,
                 "y": 400,
-                "speed": 20,
+                "speed": 10,
             },
             {
                 "x": 350,
                 "y": 400,
-                "speed": 20,
+                "speed": 10,
             },
         ],
         Graves: [
@@ -98,8 +99,9 @@ export const LevelConfig = {
         ],
         Pedestrians: [
             {
-                "x": 100,
-                "y": 100
+                "x": 200,
+                "y": 200,
+                "speed": 15,
             }
         ]
     }

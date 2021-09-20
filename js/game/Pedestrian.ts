@@ -1,26 +1,34 @@
-import GameObject from "../engine/GameObject";
+import MovableObject from "../engine/MovableObject";
 import { Images, Spritesheets, ObjTags } from "../const";
 import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
-import MovableObject from "../engine/MovableObject";
+import EventManager from "../utilities/EventManager";
+import { GameEvents } from "../utilities/events";
 
 export default class Pedestrian extends MovableObject {
-    static count = 0;
+    // after 10 + id's seconds broadcast position update
+    // every pedestrian's interval will be different
+    private interval: number = 0;
+    private INTERVAL_MAX: number = 0;
+    private eventManager: EventManager;
 
-    private statusDuration: number;
-    private movement: [number, number] = [0, 0];
+    private stateDuration: number = 0;
+    private walkDirection: [number, number] = [0, 0];
+
     private boundX: [number, number] = [0, 0];
     private boundY: [number, number] = [0, 0];
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, Spritesheets.Pedestrian["name"], ObjTags.Pedestrian);
-        //this.setCollideWorldBounds(true);
-        this.id = Pedestrian.count;
-        Pedestrian.count++;
-        this.statusDuration = 0;
+    constructor(scene: Phaser.Scene, config: object) {
+        super(scene, config["x"], config["y"], Spritesheets.Pedestrian["name"], ObjTags.Pedestrian);
+        this.setCollideWorldBounds(true);
+
+
         let layout = (DI.Get("GameInfra") as GameInfra).layout;
         this.boundX = [-layout.Border, layout.GameWidth + layout.Border];
         this.boundY = [-layout.Border, layout.GameHeight - layout.Border];
+
+        this.speed = config["speed"];
+        this.stateDuration = 3.0;
 
         this.anims.create({
             key: "walk",
@@ -29,50 +37,43 @@ export default class Pedestrian extends MovableObject {
             repeat: -1,
         });
         this.play('walk');
+
+        this.INTERVAL_MAX = 3 + this.id;
+
+        this.eventManager = DI.Get("EventManager") as EventManager;
     }
 
     update(deltaTime: number) {
+        if (this.enable == false)
+            return;
 
-        this.statusDuration -= deltaTime;
+
+        this.stateDuration -= deltaTime;
 
         if (this.x < this.boundX[0] || this.x > this.boundX[1])
-            this.statusDuration = 0;
+            this.stateDuration = 0;
         if (this.y < this.boundY[0] || this.y > this.boundY[1])
-            this.statusDuration = 0;
+            this.stateDuration = 0;
 
-        if (this.statusDuration <= 0) {
+        if (this.stateDuration <= 0) {
             let radio: number = Phaser.Math.FloatBetween(0, 1);
             if (radio <= 0.3) {
-                this.statusDuration = 1000; // ms
+                this.stateDuration = 1000; // ms
                 // do nothing
             } else {
-                this.statusDuration = 3000;
+                this.stateDuration = 3000;
                 // random move
-                this.movement[0] = Phaser.Math.Between(-1, 1);
-                this.movement[1] = Phaser.Math.Between(-1, 1);
+                this.walkDirection[0] = Phaser.Math.Between(-1, 1);
+                this.walkDirection[1] = Phaser.Math.Between(-1, 1);
             }
         }
 
-        this.setVelocity(this.movement[0] * deltaTime * this.speed, this.movement[1] * deltaTime * this.speed);
+        this.setVelocity(this.walkDirection[0] * deltaTime * this.speed, this.walkDirection[1] * deltaTime * this.speed);
 
-    }
-
-    onKill() {
-        this.visible = false;
-    }
-
-    onSpawn() {
-        this.visible = true;
-    }
-
-    onMoveReverse() {
-        this.statusDuration = 3000;
-        this.movement[0] = -this.movement[0];
-        this.movement[1] = -this.movement[1];
-    }
-
-    onFreeze() {
-        this.statusDuration = 3000;
-        this.movement = [0, 0];
+        this.interval += deltaTime;
+        if (this.interval >= this.INTERVAL_MAX) {
+            this.interval = 0;
+            this.eventManager.sendEvent(GameEvents.PedestrianPosUpdate, { x: this.x, y: this.y, id: this.id });
+        }
     }
 }
