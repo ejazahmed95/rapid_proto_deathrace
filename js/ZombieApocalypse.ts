@@ -8,6 +8,8 @@ import GameInfra from "./utilities/GameInfra";
 import ArcadeScene from "./scenes/ArcadeScene";
 import EventManager from "./utilities/EventManager";
 import SpawnManager from "./game/SpawnManager";
+import HUDScene from "./scenes/HUDScene";
+import Scheduler from "./utilities/Scheduler";
 
 export default class ZombieApocalypse {
     private readonly config: Phaser.Types.Core.GameConfig;
@@ -23,7 +25,7 @@ export default class ZombieApocalypse {
                 arcade: {},
             },
             scene: [
-				ArcadeScene, MenuScene, GameScene, GameoverScene // Add a highscore scene
+				ArcadeScene, MenuScene, HUDScene, GameScene, GameoverScene // Add a highscore scene
             ],
             pixelArt: true,
         };
@@ -58,6 +60,7 @@ export default class ZombieApocalypse {
         // @ts-ignore
         DI.Register("GameInfra", new GameInfra(this.game.config.width, this.game.config.height));
         DI.Register("EventManager", new EventManager());
+		DI.Register("Scheduler", new Scheduler());
         DI.Register("SpawnManager", new SpawnManager());
     }
 }

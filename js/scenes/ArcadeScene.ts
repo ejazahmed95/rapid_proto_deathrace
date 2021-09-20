@@ -3,6 +3,7 @@ import {Scenes, Images, Tags, Keys, Spritesheets} from "../const";
 import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 import InputManager from "../engine/InputManager";
+import Scheduler from "../utilities/Scheduler";
 
 export default class ArcadeScene extends Phaser.Scene {
 	private inputManager!: InputManager;
@@ -15,6 +16,7 @@ export default class ArcadeScene extends Phaser.Scene {
 	private upButton!: Phaser.GameObjects.Sprite;
 	private downButton!: Phaser.GameObjects.Sprite;
 	private fireButton!: Phaser.GameObjects.Sprite;
+	private scheduler!: Scheduler;
 
 	constructor() {
 		super({
@@ -24,6 +26,7 @@ export default class ArcadeScene extends Phaser.Scene {
 
 	init() {
 		Logger.i("scene initialized", Tags.Controls);
+		this.scheduler = DI.Get("Scheduler") as Scheduler;
 	}
 
 	preload() {
@@ -73,6 +76,8 @@ export default class ArcadeScene extends Phaser.Scene {
 		if(input.contains(Keys.Right)) this.highlightButton(this.rightButton);
 		if(input.contains(Keys.Down)) this.highlightButton(this.downButton);
 		if(input.contains(Keys.Action)) this.highlightButton(this.fireButton);
+
+		this.scheduler.update(delta);
 	}
 
 	private resetButtons() {

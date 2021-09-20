@@ -1,5 +1,9 @@
 import Player from "../game/Player";
 
+export interface IUpdate {
+	update(delta: number): void
+}
+
 export interface GameConfig {
     PedestrianCount: number,
     ZombieCount: number,

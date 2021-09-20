@@ -81,7 +81,7 @@ export default class Zombie extends MovableObject {
         if (this.enable == false)
             return;
         super.update(deltaTime);
-        console.log("Zombie update " + this.getId() + ' ' + this.state + ' ' + this.isEnable());
+        // console.log("Zombie update " + this.getId() + ' ' + this.state + ' ' + this.isEnable());
 
         this.stateDuration += deltaTime;
         if (this.stateDuration >= this.stateDurationMax.get(this.state)) {

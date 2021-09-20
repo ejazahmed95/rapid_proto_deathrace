@@ -33,6 +33,7 @@ export default class MenuScene extends Phaser.Scene {
 			options: {
 				"Start": () => {
 					this.gameStarted = true;
+					this.scene.launch(Scenes.HUD, {});
 					this.scene.start(Scenes.GAMEPLAY, GameConf)
 				},
 				"Dummy Option": () => {Logger.i("Handling the dummy option", Tags.Menu)}

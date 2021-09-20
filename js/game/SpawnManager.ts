@@ -22,6 +22,7 @@ export default class SpawnManager {
     private pedestrianGroup: Phaser.GameObjects.Group | undefined;
     private gravesGroup: Phaser.GameObjects.Group | undefined;
     private zombieGroup: Phaser.GameObjects.Group | undefined;
+	
 
     constructor() {
 

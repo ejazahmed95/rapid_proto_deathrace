@@ -54,6 +54,7 @@ export default class Options {
 	private generateOptions(config: UIConfig) {
 		let indent = config.padding*2 + config.fontSize;
 		let yPos = config.padding;
+		// @ts-ignore
 		for(let [key, value] of Object.entries(config.options)) {
 			let pos = config.position.add(indent, yPos);
 			let text = this.scene.add.text(pos.x, pos.y, key, {fontFamily: config.fontFamily, fontSize: `${config.fontSize}px`});
@@ -72,21 +73,6 @@ export default class Options {
 		let newPos = this.config.position.add(this.config.padding, this.config.padding + this.currentSelection*(this.config.padding + this.config.fontSize));
 		this.selectionSprite.x = newPos.x;
 		this.selectionSprite.y = newPos.y;
-	}
-
-
-	update(deltaTime: number) {
-		// let input = this.inputManager.getInput();
-		// if(input.contains(Keys.Action)) {
-		// 	this.optionsA[this.currentSelection].callback();
-		// 	return;
-		// }
-		//
-		// if(input.contains(Keys.Down)) {
-		// 	this.setSelection(this.currentSelection + 1);
-		// } else if(input.contains(Keys.Up)) {
-		// 	this.setSelection(this.currentSelection - 1);
-		// }
 	}
 
 	private onInput(info: InputChangeInfo) {

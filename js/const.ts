@@ -3,6 +3,8 @@ export const Scenes = {
     GAMEPLAY: "GAMEPLAY",
     GAME_OVER: "GAME_OVER",
     CONTROLS: "CONTROLS",
+    HUD: "HUD",
+    LOAD: "LOADING",
 }
 
 export const Tags = {
@@ -12,6 +14,7 @@ export const Tags = {
     Controls: "CONTROLS",
     Sound: "SOUND",
     Input: "INPUT",
+    HUD: "HUD",
 }
 
 export const Images = {
