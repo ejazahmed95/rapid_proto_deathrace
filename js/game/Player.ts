@@ -1,4 +1,4 @@
-import { Images, Keys, ObjTags } from '../const';
+import { Images, Keys, ObjTags, Spritesheets } from '../const';
 import MovableObject from '../engine/MovableObject';
 import GameObject from '../engine/GameObject';
 import DI from "../utilities/DI";
@@ -6,11 +6,17 @@ import EventManager from '../utilities/EventManager';
 import { GameEvents, PedestrianKillInfo, ZombieKillInfo } from '../utilities/events';
 import Zombie from './Zombie';
 
+const PlayerState = {
+    Idle: 0,
+    Move: 1
+}
+
 export default class Player extends MovableObject {
     private eventManager: EventManager | undefined;
+    private state: number = PlayerState.Idle;
 
     constructor(scene: Phaser.Scene, config: object) {
-        super(scene, config["x"], config["y"], Images.Player, ObjTags.Player);
+        super(scene, config["x"], config["y"], Spritesheets.PlayerIdle["name"], ObjTags.Player);
         this.setCollideWorldBounds(true);
 
         this.speed = config["speed"];
@@ -19,6 +25,32 @@ export default class Player extends MovableObject {
         this.onColliderEnter = this.onColliderEnter.bind(this);
 
         this.eventManager = DI.Get("EventManager") as EventManager;
+
+        this.anims.create({
+            key: "idle",
+            frames: this.anims.generateFrameNumbers(Spritesheets.PlayerIdle["name"], { start: 0, end: Spritesheets.PlayerIdle["framesNum"] - 1 }),
+            frameRate: Spritesheets.PlayerIdle["frameRate"],
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: "move",
+            frames: this.anims.generateFrameNumbers(Spritesheets.PlayerMove["name"], { start: 0, end: Spritesheets.PlayerMove["framesNum"] - 1 }),
+            frameRate: Spritesheets.PlayerMove["frameRate"],
+            repeat: -1,
+        });
+
+        this.play("idle");
+    }
+
+    onChangeState(newState: number) {
+        if (newState == this.state)
+            return;
+        if (newState == PlayerState.Idle)
+            this.play("idle");
+        else
+            this.play("move");
+        this.state = newState;
     }
 
     update(deltaTime: number) {
@@ -29,6 +61,8 @@ export default class Player extends MovableObject {
         this.setAngularVelocity(this.angleSpeed * horizontal * deltaTime);
         let radians = this.angle / 180.0 * Math.PI;
         this.setVelocity(-1 * vertical * this.speed * Math.sin(radians) * deltaTime, vertical * this.speed * Math.cos(radians) * deltaTime);
+
+        this.onChangeState(inputs.size == 0 ? PlayerState.Idle : PlayerState.Move);
     }
 
     // we need to matain the collision status

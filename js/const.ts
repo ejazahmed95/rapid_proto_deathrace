@@ -21,16 +21,10 @@ export const Images = {
     Cross: "cross",
     Button: "button",
     Frame: "frame",
+    Background: "background"
 }
 
 export const Spritesheets = {
-    Pedestrian: {
-        "name": "pedestrian",
-        "frameWidth": 32,
-        "frameHeight": 32,
-        "framesNum": 2,
-        "repeat": true
-    },
     GraveSpawn: {
         "name": "grave_spawn",
         "frameWidth": 32,
@@ -45,6 +39,46 @@ export const Spritesheets = {
         "frameHeight": 32,
         "framesNum": 3,
         "frameRate": 3,
+        "repeat": false
+    },
+    PedRun: {
+        "name": "ped_run",
+        "frameWidth": 48,
+        "frameHeight": 48,
+        "framesNum": 8,
+        "frameRate": 4,
+        "repeat": false
+    },
+    PedStand: {
+        "name": "ped_stand",
+        "frameWidth": 48,
+        "frameHeight": 48,
+        "framesNum": 8,
+        "frameRate": 4,
+        "repeat": false
+    },
+    PedDead: {
+        "name": "ped_dead",
+        "frameWidth": 48,
+        "frameHeight": 48,
+        "framesNum": 6,
+        "frameRate": 3,
+        "repeat": false
+    },
+    PlayerIdle: {
+        "name": "player_idle",
+        "frameWidth": 64,
+        "frameHeight": 64,
+        "framesNum": 6,
+        "frameRate": 3,
+        "repeat": false
+    },
+    PlayerMove: {
+        "name": "player_move",
+        "frameWidth": 64,
+        "frameHeight": 64,
+        "framesNum": 8,
+        "frameRate": 6,
         "repeat": false
     }
 }
@@ -75,19 +109,19 @@ export const LevelConfig = {
         Player: {
             "x": 200,
             "y": 300,
-            "speed": 20,
-            "angleSpeed": 20
+            "speed": 15,
+            "angleSpeed": 10
         },
         Zombies: [
             {
                 "x": 300,
                 "y": 400,
-                "speed": 10,
+                "speed": 8,
             },
             {
                 "x": 350,
                 "y": 400,
-                "speed": 10,
+                "speed": 4,
             },
         ],
         Graves: [
@@ -100,7 +134,8 @@ export const LevelConfig = {
             {
                 "x": 200,
                 "y": 200,
-                "speed": 15,
+                "speed": 6,
+                "scale": 1.0
             }
         ]
     }

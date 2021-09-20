@@ -81,7 +81,6 @@ export default class Zombie extends MovableObject {
         if (this.enable == false)
             return;
         super.update(deltaTime);
-        console.log("Zombie update " + this.getId() + ' ' + this.state + ' ' + this.isEnable());
 
         this.stateDuration += deltaTime;
         if (this.stateDuration >= this.stateDurationMax.get(this.state)) {
@@ -117,7 +116,7 @@ export default class Zombie extends MovableObject {
                 zombie2.onDirReverse();
             } else if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Pedestrian) {
                 let pedestrian = object2 as Pedestrian;
-                pedestrian.setEnable(false);
+                pedestrian.onKilled();
                 let eventManager = DI.Get("EventManager") as EventManager;
                 eventManager.sendEvent(GameEvents.PedestrianConverted, { x: object1.x, y: object1.y });
             }
