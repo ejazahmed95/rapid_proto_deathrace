@@ -8,7 +8,6 @@ import GameInfra from "../utilities/GameInfra";
 import InputManager from "../engine/InputManager";
 import SpawnManager from "../game/SpawnManager";
 
-
 import { LevelConfig } from "../const";
 
 export default class GameScene extends Phaser.Scene {

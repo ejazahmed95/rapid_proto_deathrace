@@ -1,4 +1,4 @@
-import {Images, Keys, Scenes, Spritesheets, Tags} from "../const";
+import {Constants, Images, Keys, Scenes, Spritesheets, Tags} from "../const";
 import GameConf from "../game/config";
 import Logger from "../utilities/logger";
 import GameObject from "../engine/GameObject";
@@ -7,16 +7,18 @@ import InputManager from "../engine/InputManager";
 import DI from "../utilities/DI";
 import Options from "../ui/Options";
 import Point from "../utilities/Point";
+import GameInfra from "../utilities/GameInfra";
 
 export default class MenuScene extends Phaser.Scene {
-    constructor() {
-        super({
-            key: Scenes.MENU,
-        });
-    }
-
+	private title: Phaser.GameObjects.Text;
 	private inputManager!: InputManager;
 	private gameStarted: boolean = false;
+
+	constructor() {
+		super({
+			key: Scenes.MENU,
+		});
+	}
 
     init() {
         Logger.i("scene initialized", Tags.Menu);
@@ -25,18 +27,21 @@ export default class MenuScene extends Phaser.Scene {
 
     create() {
         // this.scene.launch(Scenes.CONTROLS, GameConf);
+		let layout = (DI.Get("GameInfra") as GameInfra).layout;
+		this.title = this.add.text(layout.TotalWidth/4, layout.GameHeight/3, Constants.GAME_NAME, {fontFamily: "arcade-basic", fontSize: "64px", color: "red"});
 		new Options(this, {
 			fontFamily: "arcade-basic",
 			fontSize: 32,
 			padding: 10,
-			position: new Point(50, 50),
+			position: new Point(layout.TotalWidth/3, layout.GameHeight/2),
 			options: {
 				"Start": () => {
 					this.gameStarted = true;
 					this.scene.launch(Scenes.HUD, {});
 					this.scene.start(Scenes.GAMEPLAY, GameConf)
 				},
-				"Dummy Option": () => {Logger.i("Handling the dummy option", Tags.Menu)}
+				"Help": () => {Logger.i("Handling the dummy option", Tags.Menu)},
+				"About": () => {Logger.i("Handling the dummy option", Tags.Menu)}
 			},
 		})
 

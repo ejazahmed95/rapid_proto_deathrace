@@ -1,3 +1,7 @@
+export const Constants = {
+	GAME_NAME: "Death  Race",
+}
+
 export const Scenes = {
     MENU: "MENU",
     GAMEPLAY: "GAMEPLAY",
