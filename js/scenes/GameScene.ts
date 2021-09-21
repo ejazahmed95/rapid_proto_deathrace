@@ -59,8 +59,8 @@ export default class GameScene extends Phaser.Scene {
 		if(info.PedestrianCount == 0) {
 			this.scene.start(Scenes.GAME_OVER, levelFinishInfo);
 		} else {
-			Logger.e("NOT IMPLEMENTED");
-			// this.scene.start()
+			// Logger.e("NOT IMPLEMENTED");
+			this.scene.start(Scenes.LEVEL_FINISH, levelFinishInfo);
 		}
 	}
 }

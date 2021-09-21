@@ -9,6 +9,7 @@ export const Scenes = {
     CONTROLS: "CONTROLS",
     HUD: "HUD",
     LOAD: "LOADING",
+    LEVEL_FINISH: "LEVEL_FINISH",
 }
 
 export const Tags = {

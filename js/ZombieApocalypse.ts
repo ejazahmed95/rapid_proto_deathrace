@@ -10,6 +10,7 @@ import EventManager from "./utilities/EventManager";
 import SpawnManager from "./game/SpawnManager";
 import HUDScene from "./scenes/HUDScene";
 import Scheduler from "./utilities/Scheduler";
+import LevelFinishScene from "./scenes/LevelFinishScene";
 
 export default class ZombieApocalypse {
     private readonly config: Phaser.Types.Core.GameConfig;
@@ -25,7 +26,7 @@ export default class ZombieApocalypse {
                 arcade: {},
             },
             scene: [
-				ArcadeScene, MenuScene, HUDScene, GameScene, GameoverScene // Add a highscore scene
+				ArcadeScene, MenuScene, HUDScene, GameScene, GameoverScene, LevelFinishScene // Add a highscore scene
             ],
             pixelArt: true,
         };
