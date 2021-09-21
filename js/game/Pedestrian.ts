@@ -128,6 +128,7 @@ export default class Pedestrian extends MovableObject {
     onKilled() {
         this.enable == false;
         this.onChangeState(PedestrianState.Die);
+        this.speed = 0.0;
     }
 
     isEnable() {

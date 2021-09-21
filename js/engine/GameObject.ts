@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import Pedestrian from '../game/Pedestrian';
 import Texture = Phaser.Textures.Texture;
 
 export default class GameObject extends Phaser.Physics.Arcade.Sprite {
