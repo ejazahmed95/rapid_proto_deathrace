@@ -90,7 +90,8 @@ export default class Pedestrian extends MovableObject {
                 this.play("dead");
                 break;
             case PedestrianState.Dead:
-
+                let eventManager = DI.Get("EventManager") as EventManager;
+                eventManager.sendEvent(GameEvents.PedestrianConverted, { x:this.x, y: this.y, id: this.getId() });
                 break;
         }
 
