@@ -66,9 +66,9 @@ export default class Pedestrian extends MovableObject {
         this.INTERVAL_MAX = 3 + this.id;
         this.eventManager = DI.Get("EventManager") as EventManager;
 
-        this.stateDurationMax.set(PedestrianState.Idle, 800.0);
-        this.stateDurationMax.set(PedestrianState.Wander, 800.0);
-        this.stateDurationMax.set(PedestrianState.Die, 200.0);
+        this.stateDurationMax.set(PedestrianState.Idle, 3000.0);
+        this.stateDurationMax.set(PedestrianState.Wander,3000.0);
+        this.stateDurationMax.set(PedestrianState.Die, 1500.0);
         this.stateDurationMax.set(PedestrianState.Dead, 100.0);
     }
 
@@ -87,9 +87,12 @@ export default class Pedestrian extends MovableObject {
                 this.play("walk");
                 break;
             case PedestrianState.Die:
+                console.log("Change state into Die");
                 this.play("dead");
                 break;
             case PedestrianState.Dead:
+                this.visible = false;
+                console.log("Change state into Dead");
                 let eventManager = DI.Get("EventManager") as EventManager;
                 eventManager.sendEvent(GameEvents.PedestrianConverted, { x:this.x, y: this.y, id: this.getId() });
                 break;
