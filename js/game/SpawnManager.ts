@@ -83,7 +83,7 @@ export default class SpawnManager {
 
         scene.physics.add.collider(this.zombieGroup, this.zombieGroup, Zombie.onColliderEnter, null);
         scene.physics.add.collider(this.zombieGroup, this.gravesGroup, Zombie.onColliderEnter, null);
-        scene.physics.add.collider(this.zombieGroup, this.pedestrianGroup, Zombie.onColliderEnter, null);
+        scene.physics.add.overlap(this.zombieGroup, this.pedestrianGroup, Zombie.onColliderEnter, null);
     }
 
     update(deltaTime: number) {

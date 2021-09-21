@@ -117,7 +117,7 @@ export default class Zombie extends MovableObject {
                 zombie2.onDirReverse();
             } else if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Pedestrian) {
                 let pedestrian = object2 as Pedestrian;
-                pedestrian.setEnable(false);
+                pedestrian.onKilled();
                 let eventManager = DI.Get("EventManager") as EventManager;
                 eventManager.sendEvent(GameEvents.PedestrianConverted, { x: object1.x, y: object1.y, id: object2.getId() });
             }
