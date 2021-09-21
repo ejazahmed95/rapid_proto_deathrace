@@ -54,7 +54,13 @@ export const Spritesheets = {
         "framesNum": 3,
         "frameRate": 3,
         "repeat": false
-    }
+    },
+	Joystick: {
+		"name": "joystick",
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"framesNum": 9,
+	}
 }
 
 export const Audio = {

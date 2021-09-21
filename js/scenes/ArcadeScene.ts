@@ -18,6 +18,18 @@ export default class ArcadeScene extends Phaser.Scene {
 	private fireButton!: Phaser.GameObjects.Sprite;
 	private scheduler!: Scheduler;
 
+	private joystick!: Phaser.GameObjects.Sprite;
+	private joystickMapping: Record<string, number> = {
+		'A': 1,
+		'W': 7,
+		'D': 4,
+		'S': 6,
+		'AW': 3,
+		'AS': 2,
+		'WD': 8,
+		'DS': 5,
+	}
+
 	constructor() {
 		super({
 			key: Scenes.CONTROLS,
@@ -63,6 +75,8 @@ export default class ArcadeScene extends Phaser.Scene {
 		this.downButton = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize* 2, Images.Button);
 		this.fireButton = this.add.sprite(layout.TotalWidth - buttonX, buttonY + buttonSize, Images.Button);
 
+		this.joystick = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize, Spritesheets.Joystick["name"], 8);
+
 		this.scene.launch(Scenes.MENU, {});
 	}
 
@@ -76,6 +90,15 @@ export default class ArcadeScene extends Phaser.Scene {
 		if(input.contains(Keys.Right)) this.highlightButton(this.rightButton);
 		if(input.contains(Keys.Down)) this.highlightButton(this.downButton);
 		if(input.contains(Keys.Action)) this.highlightButton(this.fireButton);
+
+		let inputString = "";
+		if(input.contains(Keys.Left)) inputString += Keys.Left;
+		if(input.contains(Keys.Up)) inputString += Keys.Up;
+		if(input.contains(Keys.Right)) inputString += Keys.Right;
+		if(input.contains(Keys.Down)) inputString += Keys.Down;
+
+		let frameNumber = this.joystickMapping[inputString] || 9;
+		this.joystick.setFrame(frameNumber - 1);
 
 		this.scheduler.update(delta);
 	}
