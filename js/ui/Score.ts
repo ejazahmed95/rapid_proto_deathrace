@@ -11,8 +11,11 @@ export default class Score extends Text {
 
 	updateScore(newScore: number) {
 		this.score = newScore;
-		super.setText(this.score.toString());
+		super.setText(`Score: ${this.score}`);
 		// super.updateText();
 	}
 
+	add(points: number) {
+		this.updateScore(this.score + points);
+	}
 }

@@ -22,7 +22,7 @@ export default class ZombieApocalypse {
             height: 1080,
             physics: {
                 default: 'arcade',
-                arcade: {debug: true},
+                arcade: {},
             },
             scene: [
 				ArcadeScene, MenuScene, HUDScene, GameScene, GameoverScene // Add a highscore scene

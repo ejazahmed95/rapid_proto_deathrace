@@ -9,12 +9,16 @@ import InputManager from "../engine/InputManager";
 import SpawnManager from "../game/SpawnManager";
 
 import { LevelConfig } from "../const";
+import EventManager from "../utilities/EventManager";
+import {GameEvents, GameObjectsInfo, LevelFinishInfo} from "../utilities/events";
+import GAME_OVER = Phaser.Input.Events.GAME_OVER;
 
 export default class GameScene extends Phaser.Scene {
     private gameTime: Date = new Date();
 
     private inputManager: InputManager;
     private spawnManager: SpawnManager;
+	private eventManager: EventManager;
 
     constructor() {
         super({
@@ -25,6 +29,8 @@ export default class GameScene extends Phaser.Scene {
     init(gameConf: any) {
         Logger.i(`Game Config = ${JSON.stringify(gameConf)}`, "Game");
         this.inputManager = DI.Get("InputManager") as InputManager;
+		this.eventManager = DI.Get("EventManager") as EventManager;
+		this.eventManager.addHandler(GameEvents.LevelFinished, this.onLevelFinish.bind(this));
     }
 
     preload() {
@@ -39,11 +45,22 @@ export default class GameScene extends Phaser.Scene {
         this.physics.world.setBounds(layout.Border, layout.Border, layout.GameWidth, layout.GameHeight);
     }
 
-    update() {
-        let curtTime = new Date();
-        let deltaTime = curtTime - this.gameTime;
-        this.gameTime = curtTime;
+	update(time: number, delta: number) {
+		super.update(time, delta);
+		this.spawnManager.update(delta);
+	}
 
-        this.spawnManager.update(deltaTime);
-    }
+	private onLevelFinish(info: GameObjectsInfo) {
+		let levelFinishInfo: LevelFinishInfo = {
+			Objects: info,
+			Score: 130
+		}
+
+		if(info.PedestrianCount == 0) {
+			this.scene.start(Scenes.GAME_OVER, levelFinishInfo);
+		} else {
+			Logger.e("NOT IMPLEMENTED");
+			// this.scene.start()
+		}
+	}
 }

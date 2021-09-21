@@ -8,6 +8,17 @@ export const GameEvents = {
     PedestrianPosUpdate: "PedestrianPosUpdate",
     PedestrianConverted: "PedestrianConverted",
 	InputChange: "InputChange",
+	LevelFinished: "LevelFinished",
+}
+
+export interface LevelFinishInfo {
+	Objects: GameObjectsInfo,
+	Score: number,
+}
+
+export interface GameObjectsInfo {
+	ZombieCount: number,
+	PedestrianCount: number,
 }
 
 export interface InputChangeInfo {

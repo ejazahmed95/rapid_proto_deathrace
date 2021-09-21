@@ -119,7 +119,7 @@ export default class Zombie extends MovableObject {
                 let pedestrian = object2 as Pedestrian;
                 pedestrian.setEnable(false);
                 let eventManager = DI.Get("EventManager") as EventManager;
-                eventManager.sendEvent(GameEvents.PedestrianConverted, { x: object1.x, y: object1.y });
+                eventManager.sendEvent(GameEvents.PedestrianConverted, { x: object1.x, y: object1.y, id: object2.getId() });
             }
         }
     }

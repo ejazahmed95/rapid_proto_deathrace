@@ -9,20 +9,20 @@ import { LevelConfig, ObjTags } from "../const";
 
 import Zombie from "./Zombie";
 import EventManager from "../utilities/EventManager";
-import { GameEvents, PedestrianKillInfo, ZombieKillInfo } from "../utilities/events";
+import {GameEvents, GameObjectsInfo, PedestrianKillInfo, ZombieKillInfo} from "../utilities/events";
 
 export default class SpawnManager {
     private pedestrians: Pedestrian[] = [];
     private graves: Grave[] = [];
     private zombies: Zombie[] = [];
-    private player: Player | undefined;
+    private player!: Player;
 
-    private scene: Phaser.Scene | undefined;
+    private scene!: Phaser.Scene;
 
-    private pedestrianGroup: Phaser.GameObjects.Group | undefined;
-    private gravesGroup: Phaser.GameObjects.Group | undefined;
-    private zombieGroup: Phaser.GameObjects.Group | undefined;
-	
+    private pedestrianGroup!: Phaser.GameObjects.Group;
+    private gravesGroup!: Phaser.GameObjects.Group;
+    private zombieGroup!: Phaser.GameObjects.Group;
+	private eventManager!: EventManager;
 
     constructor() {
 
@@ -32,11 +32,11 @@ export default class SpawnManager {
         this.scene = scene;
         this.createFactories(scene);
 
-        let eventManager = DI.Get("EventManager") as EventManager;
-        eventManager.addHandler(GameEvents.KilledPedestrian, this.onPedestrianKilled = this.onPedestrianKilled.bind(this));
-        eventManager.addHandler(GameEvents.KilledZombie, this.onZombieKilled = this.onZombieKilled.bind(this));
-        eventManager.addHandler(GameEvents.OffGrave, this.onGraveOff = this.onGraveOff.bind(this));
-        eventManager.addHandler(GameEvents.PedestrianConverted, this.onPedestrianConverted = this.onPedestrianConverted.bind(this));
+        this.eventManager = DI.Get("EventManager") as EventManager;
+        this.eventManager.addHandler(GameEvents.KilledPedestrian, this.onPedestrianKilled = this.onPedestrianKilled.bind(this));
+        this.eventManager.addHandler(GameEvents.KilledZombie, this.onZombieKilled = this.onZombieKilled.bind(this));
+        this.eventManager.addHandler(GameEvents.OffGrave, this.onGraveOff = this.onGraveOff.bind(this));
+        this.eventManager.addHandler(GameEvents.PedestrianConverted, this.onPedestrianConverted = this.onPedestrianConverted.bind(this));
 
         this.pedestrianGroup = scene.add.group();
         this.gravesGroup = scene.add.group();
@@ -125,23 +125,53 @@ export default class SpawnManager {
             let grave = this.scene?.add.grave(x, y);
             this.graves.push(grave);
             this.gravesGroup?.add(grave);
+
+			if(this.getPedestrianCount() == 0) {
+				this.eventManager.sendEvent(GameEvents.LevelFinished, {ZombieCount: this.getZombieCount(), PedestrianCount: 0} as GameObjectsInfo);
+			}
         }
     }
 
     onZombieKilled(info?: ZombieKillInfo) {
         if (info) {
             let targetId = info["ZombieId"];
-
+			let remZombies = 0;
             this.zombies.forEach(element => {
                 let zombie = element as Zombie;
-
                 if (zombie.getId() == targetId) {
                     zombie.setEnable(false);
-                    return;
-                }
+                } else if(zombie.isEnable()) {
+					remZombies++;
+				}
             });
+
+			if(remZombies == 0) {
+				this.eventManager.sendEvent(GameEvents.LevelFinished, {ZombieCount: 0, PedestrianCount: this.getPedestrianCount()} as GameObjectsInfo);
+			}
         }
     }
+
+	private getPedestrianCount(): number {
+		let count = 0;
+		this.pedestrians.forEach(elem => {
+			let e = elem as Pedestrian;
+			if(e.isEnable()) {
+				count++;
+			}
+		});
+		return count;
+	}
+
+	private getZombieCount(): number {
+		let count = 0;
+		this.zombies.forEach(elem => {
+			let e = elem as Zombie;
+			if(e.isEnable()) {
+				count++;
+			}
+		});
+		return count;
+	}
 
     onGraveOff(objectId?: number) {
         console.log("onGraveOff " + objectId);
@@ -157,6 +187,10 @@ export default class SpawnManager {
             this.zombies.push(zombie);
             this.zombieGroup.add(zombie);
             zombie.create();
+
+			if(this.getPedestrianCount() == 0) {
+				this.eventManager.sendEvent(GameEvents.LevelFinished, {ZombieCount: this.getZombieCount(), PedestrianCount: 0} as GameObjectsInfo);
+			}
         }
     }
 
