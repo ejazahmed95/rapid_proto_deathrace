@@ -3,7 +3,7 @@ import { Images, Keys, ObjTags, Spritesheets } from '../const';
 import GameObject from "../engine/GameObject";
 import EventManager from "../utilities/EventManager";
 import DI from "../utilities/DI";
-import { GameEvents, PedestrianKillInfo, PedestrianPositionInfo } from "../utilities/events";
+import {GameEvents, PedestrianConvertInfo, PedestrianKillInfo, PedestrianPositionInfo} from "../utilities/events";
 import Pedestrian from "./Pedestrian";
 
 const ZombieState = {
@@ -119,9 +119,10 @@ export default class Zombie extends MovableObject {
                 let pedestrian = object2 as Pedestrian;
                 pedestrian.onKilled();
                 let eventManager = DI.Get("EventManager") as EventManager;
-                eventManager.sendEvent(GameEvents.PedestrianConverted, { x: object1.x, y: object1.y, id: object2.getId() });
+                eventManager.sendEvent(GameEvents.PedestrianConverted, { PositionX: object1.x, PositionY: object1.y, PedestrianId: object2.getId() } as PedestrianConvertInfo);
             }
         }
+
     }
 
     onPedestrianPositionUpdate(info: PedestrianPositionInfo) {

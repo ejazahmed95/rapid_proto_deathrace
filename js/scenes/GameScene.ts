@@ -12,6 +12,7 @@ import { LevelConfig } from "../const";
 import EventManager from "../utilities/EventManager";
 import {GameEvents, GameObjectsInfo, LevelFinishInfo} from "../utilities/events";
 import GAME_OVER = Phaser.Input.Events.GAME_OVER;
+import LevelManager from "../levels/LevelManager";
 
 export default class GameScene extends Phaser.Scene {
     private gameTime: Date = new Date();
@@ -30,6 +31,7 @@ export default class GameScene extends Phaser.Scene {
         Logger.i(`Game Config = ${JSON.stringify(gameConf)}`, "Game");
         this.inputManager = DI.Get("InputManager") as InputManager;
 		this.eventManager = DI.Get("EventManager") as EventManager;
+		// this.levelManager = DI.Get("LevelManager") as LevelManager;
 		this.eventManager.addHandler(GameEvents.LevelFinished, this.onLevelFinish.bind(this));
     }
 

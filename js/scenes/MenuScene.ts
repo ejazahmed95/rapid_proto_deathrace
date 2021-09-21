@@ -23,6 +23,7 @@ export default class MenuScene extends Phaser.Scene {
     init() {
         Logger.i("scene initialized", Tags.Menu);
 		this.inputManager = DI.Get("InputManager") as InputManager;
+		this.events.on('shutdown', () => { Logger.e("Menu scene is shutdown !", "EVENTS")});
     }
 
     create() {

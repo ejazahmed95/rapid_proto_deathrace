@@ -1,5 +1,5 @@
 export const Constants = {
-	GAME_NAME: "Death  Race",
+	GAME_NAME: "Life  Race",
 }
 
 export const Scenes = {

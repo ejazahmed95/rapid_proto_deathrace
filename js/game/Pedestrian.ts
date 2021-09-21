@@ -32,7 +32,7 @@ export default class Pedestrian extends MovableObject {
         super(scene, config["x"], config["y"], Spritesheets.PedStand["name"], ObjTags.Pedestrian);
 
         this.setCollideWorldBounds(true);
-        this.setScale(config["scale"]);
+        // this.setScale(config["scale"]);
 
 
         let layout = (DI.Get("GameInfra") as GameInfra).layout;
@@ -90,7 +90,7 @@ export default class Pedestrian extends MovableObject {
                 this.play("dead");
                 break;
             case PedestrianState.Dead:
-
+				this.setVisible(false);
                 break;
         }
 
@@ -126,7 +126,8 @@ export default class Pedestrian extends MovableObject {
     }
 
     onKilled() {
-        this.enable == false;
+        this.enable = false;
+		this.speed = 0;
         this.onChangeState(PedestrianState.Die);
     }
 

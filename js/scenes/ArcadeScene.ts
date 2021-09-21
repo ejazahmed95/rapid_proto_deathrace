@@ -16,6 +16,9 @@ export default class ArcadeScene extends Phaser.Scene {
 	private upButton!: Phaser.GameObjects.Sprite;
 	private downButton!: Phaser.GameObjects.Sprite;
 	private fireButton!: Phaser.GameObjects.Sprite;
+
+	private background!: Phaser.GameObjects.Sprite;
+
 	private scheduler!: Scheduler;
 
 	private joystick!: Phaser.GameObjects.Sprite;
@@ -69,13 +72,17 @@ export default class ArcadeScene extends Phaser.Scene {
 		let buttonX = layout.TotalWidth*0.2;
 		let buttonY = layout.TotalHeight - layout.ControlsHeight + layout.ControlsHeight*0.2;
 		let buttonSize = layout.ControlButtonSize + 10;
-		this.leftButton = this.add.sprite(buttonX, buttonY + buttonSize, Images.Button);
-		this.upButton = this.add.sprite(buttonX + buttonSize, buttonY, Images.Button);
-		this.rightButton = this.add.sprite(buttonX + buttonSize*2, buttonY + buttonSize, Images.Button);
-		this.downButton = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize* 2, Images.Button);
+		// this.leftButton = this.add.sprite(buttonX, buttonY + buttonSize, Images.Button);
+		// this.upButton = this.add.sprite(buttonX + buttonSize, buttonY, Images.Button);
+		// this.rightButton = this.add.sprite(buttonX + buttonSize*2, buttonY + buttonSize, Images.Button);
+		// this.downButton = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize* 2, Images.Button);
 		this.fireButton = this.add.sprite(layout.TotalWidth - buttonX, buttonY + buttonSize, Images.Button);
 
 		this.joystick = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize, Spritesheets.Joystick["name"], 8);
+		this.joystick.setScale(2,2);
+		this.background = this.add.sprite(0, 0, Images.Background);
+		this.background.setOrigin(0,0);
+		this.background.tint = 0x333333;
 
 		this.scene.launch(Scenes.MENU, {});
 	}
@@ -85,10 +92,10 @@ export default class ArcadeScene extends Phaser.Scene {
 		this.inputManager.update(delta);
 		this.resetButtons();
 		let input = this.inputManager.getInput();
-		if(input.contains(Keys.Left)) this.highlightButton(this.leftButton);
-		if(input.contains(Keys.Up)) this.highlightButton(this.upButton);
-		if(input.contains(Keys.Right)) this.highlightButton(this.rightButton);
-		if(input.contains(Keys.Down)) this.highlightButton(this.downButton);
+		// if(input.contains(Keys.Left)) this.highlightButton(this.leftButton);
+		// if(input.contains(Keys.Up)) this.highlightButton(this.upButton);
+		// if(input.contains(Keys.Right)) this.highlightButton(this.rightButton);
+		// if(input.contains(Keys.Down)) this.highlightButton(this.downButton);
 		if(input.contains(Keys.Action)) this.highlightButton(this.fireButton);
 
 		let inputString = "";
@@ -104,10 +111,10 @@ export default class ArcadeScene extends Phaser.Scene {
 	}
 
 	private resetButtons() {
-		this.leftButton.tint = 0xffffff;
-		this.upButton.tint = 0xffffff;
-		this.rightButton.tint = 0xffffff;
-		this.downButton.tint = 0xffffff;
+		// this.leftButton.tint = 0xffffff;
+		// this.upButton.tint = 0xffffff;
+		// this.rightButton.tint = 0xffffff;
+		// this.downButton.tint = 0xffffff;
 		this.fireButton.tint = 0xffffff;
 	}
 
