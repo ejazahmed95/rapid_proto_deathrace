@@ -17,7 +17,9 @@ export default class Player extends MovableObject {
 
     constructor(scene: Phaser.Scene, config: MovableObj) {
         super(scene, config.x, config.y, Spritesheets.PlayerIdle["name"], ObjTags.Player);
-        this.setCollideWorldBounds(true);
+		this.body.offset.x = 16;
+		this.body.offset.y = 16;
+		this.setCollideWorldBounds(true);
 
         this.speed = config.speed;
         this.angleSpeed = config.angleSpeed ? config.angleSpeed : 0;
@@ -81,7 +83,7 @@ export default class Player extends MovableObject {
                 break;
             case ObjTags.Zombie:
                 // score up
-                this.eventManager?.sendEvent(GameEvents.KilledZombie, { ZombieId: other.getId() } as ZombieKillInfo);
+                this.eventManager?.sendEvent(GameEvents.KilledZombie, { ZombieId: other.getId(), PositionX: other.x, PositionY: other.y } as ZombieKillInfo);
                 break;
         }
     }

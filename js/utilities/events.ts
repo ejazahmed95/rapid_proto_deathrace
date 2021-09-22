@@ -35,8 +35,16 @@ export interface PedestrianKillInfo {
     PositionY: number
 }
 
+export interface PedestrianConvertInfo {
+	PedestrianId: number,
+	PositionX: number,
+	PositionY: number
+}
+
 export interface ZombieKillInfo {
-    ZombieId: number
+    ZombieId: number,
+	PositionX: number,
+	PositionY: number
 }
 
 export interface WarriorKillInfo {

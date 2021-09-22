@@ -33,7 +33,7 @@ export default class Pedestrian extends MovableObject {
         super(scene, config.x, config.y, Spritesheets.PedStand["name"], ObjTags.Pedestrian);
 
         this.setCollideWorldBounds(true);
-        //this.setScale(config["scale"]);
+        // this.setScale(config["scale"]);
 
 
         let layout = (DI.Get("GameInfra") as GameInfra).layout;
@@ -93,14 +93,11 @@ export default class Pedestrian extends MovableObject {
                 this.walkDirection = [0, 0];
                 break;
             case PedestrianState.Dead:
-<<<<<<< HEAD
-                this.walkDirection = [0, 0];
-=======
-                this.visible = false;
-                console.log("Change state into Dead");
-                let eventManager = DI.Get("EventManager") as EventManager;
-                eventManager.sendEvent(GameEvents.PedestrianConverted, { x:this.x, y: this.y, id: this.getId() });
->>>>>>> d682dfa985174a94f30492d7f852328998716394
+				this.walkDirection = [0, 0];
+				this.visible = false;
+				console.log("Change state into Dead");
+				let eventManager = DI.Get("EventManager") as EventManager;
+				eventManager.sendEvent(GameEvents.PedestrianConverted, { x:this.x, y: this.y, id: this.getId() });
                 break;
         }
 
@@ -136,13 +133,8 @@ export default class Pedestrian extends MovableObject {
     }
 
     onKilled() {
-<<<<<<< HEAD
-        console.log("Pedestrian dead " + this.getId());
+		console.log("Pedestrian dead " + this.getId());
         this.enable = false;
-        this.speed = 0.0;
-=======
-        this.enable = false;
->>>>>>> d682dfa985174a94f30492d7f852328998716394
         this.onChangeState(PedestrianState.Die);
         this.speed = 0.0;
     }

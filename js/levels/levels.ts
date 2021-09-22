@@ -1,6 +1,5 @@
 import {LevelConfig} from "../types/types";
 
-
 const Level1Config: LevelConfig = {
 	Player: {
 		"x": 200,

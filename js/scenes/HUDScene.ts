@@ -46,7 +46,7 @@ export default class HUDScene extends Phaser.Scene {
 
 		// this.add.text(layout.Border*2, layout.Border*2, "0", {fontFamily: "arcade-basic", fontSize: `32px`});
 
-		this.timer = new Timer(this, layout.TotalWidth - layout.Border*2, layout.Border*2, "30", {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
+		this.timer = new Timer(this, layout.TotalWidth*0.7 + layout.Border*2, layout.Border*2, 30, {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
 		this.levelText = this.add.text(layout.TotalWidth/2, layout.Border*2, "Level 1", {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
 		// this.timer.setOrigin(this.timer.displayWidth, 0);
 
@@ -63,6 +63,7 @@ export default class HUDScene extends Phaser.Scene {
 
 	update(time: number, delta: number) {
 		super.update(time, delta);
+		this.timer.update(delta);
 		// this.centerText.updateText();
 	}
 

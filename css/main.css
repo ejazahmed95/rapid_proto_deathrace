@@ -50,6 +50,11 @@ hr {
   padding: 0;
 }
 
+body {
+	display: flex;
+	justify-content: center;
+	background: darkgrey;
+}
 /*
  * Remove the gap between audio, canvas, iframes,
  * images, videos and the bottom of their containers:

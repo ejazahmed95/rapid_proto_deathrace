@@ -1,5 +1,5 @@
 export const Constants = {
-    GAME_NAME: "Death  Race",
+	GAME_NAME: "Life  Race",
 }
 
 export const Scenes = {
@@ -151,19 +151,6 @@ export const LevelConfig = {
                 "y": 400,
                 "speed": 4,
             },
-            {
-                "x": 350,
-                "y": 100,
-                "speed": 4,
-<<<<<<< HEAD
-=======
-            },
-            {
-                "x": 250,
-                "y": 100,
-                "speed": 4,
->>>>>>> d682dfa985174a94f30492d7f852328998716394
-            }
         ],
         Graves: [
             {
@@ -184,34 +171,7 @@ export const LevelConfig = {
                 "x": 200,
                 "y": 200,
                 "speed": 6,
-<<<<<<< HEAD
-=======
                 "scale": 1.0
->>>>>>> d682dfa985174a94f30492d7f852328998716394
-            },
-            {
-                "x": 400,
-                "y": 200,
-                "speed": 6,
-<<<<<<< HEAD
-=======
-                "scale": 1.0
->>>>>>> d682dfa985174a94f30492d7f852328998716394
-            },
-            {
-                "x": 500,
-                "y": 320,
-                "speed": 6,
-<<<<<<< HEAD
-            }
-        ],
-        Pods: [
-            {
-                "x": 300,
-                "y": 360
-=======
-                "scale": 1.0
->>>>>>> d682dfa985174a94f30492d7f852328998716394
             }
         ]
     }

@@ -4,48 +4,53 @@ import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 import InputManager from "../engine/InputManager";
 import Scheduler from "../utilities/Scheduler";
+import LevelManager from "../levels/LevelManager";
 
 export default class ArcadeScene extends Phaser.Scene {
     private inputManager!: InputManager;
 
-    // Buttons
-    private frame!: Phaser.GameObjects.Sprite;
-    private controlBg!: Phaser.GameObjects.Sprite;
-    private leftButton!: Phaser.GameObjects.Sprite;
-    private rightButton!: Phaser.GameObjects.Sprite;
-    private upButton!: Phaser.GameObjects.Sprite;
-    private downButton!: Phaser.GameObjects.Sprite;
-    private fireButton!: Phaser.GameObjects.Sprite;
-    private scheduler!: Scheduler;
+	// Buttons
+	private frame!: Phaser.GameObjects.Sprite;
+	private controlBg!: Phaser.GameObjects.Sprite;
+	private leftButton!: Phaser.GameObjects.Sprite;
+	private rightButton!: Phaser.GameObjects.Sprite;
+	private upButton!: Phaser.GameObjects.Sprite;
+	private downButton!: Phaser.GameObjects.Sprite;
+	private fireButton!: Phaser.GameObjects.Sprite;
 
-    private joystick!: Phaser.GameObjects.Sprite;
-    private joystickMapping: Record<string, number> = {
-        'A': 1,
-        'W': 7,
-        'D': 4,
-        'S': 6,
-        'AW': 3,
-        'AS': 2,
-        'WD': 8,
-        'DS': 5,
-    }
+	private background!: Phaser.GameObjects.Sprite;
 
-    constructor() {
-        super({
-            key: Scenes.CONTROLS,
-        });
-    }
+	private scheduler!: Scheduler;
 
-    init() {
-        Logger.i("scene initialized", Tags.Controls);
-        this.scheduler = DI.Get("Scheduler") as Scheduler;
-    }
+	private joystick!: Phaser.GameObjects.Sprite;
+	private joystickMapping: Record<string, number> = {
+		'A': 1,
+		'W': 7,
+		'D': 4,
+		'S': 6,
+		'AW': 3,
+		'AS': 2,
+		'WD': 8,
+		'DS': 5,
+	}
+
+	constructor() {
+		super({
+			key: Scenes.CONTROLS,
+		});
+	}
+
+	init() {
+		Logger.i("scene initialized", Tags.Controls);
+		this.scheduler = DI.Get("Scheduler") as Scheduler;
+	}
 
     preload() {
         this.loadImages();
         this.loadAudios();
         this.inputManager = new InputManager(this);
         DI.Register('InputManager', this.inputManager);
+		DI.Register("LevelManager", new LevelManager());
     }
 
     create() {
@@ -70,13 +75,17 @@ export default class ArcadeScene extends Phaser.Scene {
         let buttonX = layout.TotalWidth * 0.2;
         let buttonY = layout.TotalHeight - layout.ControlsHeight + layout.ControlsHeight * 0.2;
         let buttonSize = layout.ControlButtonSize + 10;
-        this.leftButton = this.add.sprite(buttonX, buttonY + buttonSize, Images.Button);
-        this.upButton = this.add.sprite(buttonX + buttonSize, buttonY, Images.Button);
-        this.rightButton = this.add.sprite(buttonX + buttonSize * 2, buttonY + buttonSize, Images.Button);
-        this.downButton = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize * 2, Images.Button);
-        this.fireButton = this.add.sprite(layout.TotalWidth - buttonX, buttonY + buttonSize, Images.Button);
+        // this.leftButton = this.add.sprite(buttonX, buttonY + buttonSize, Images.Button);
+		// this.upButton = this.add.sprite(buttonX + buttonSize, buttonY, Images.Button);
+		// this.rightButton = this.add.sprite(buttonX + buttonSize*2, buttonY + buttonSize, Images.Button);
+		// this.downButton = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize* 2, Images.Button);
+		this.fireButton = this.add.sprite(layout.TotalWidth - buttonX, buttonY + buttonSize, Images.Button);
 
         this.joystick = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize, Spritesheets.Joystick["name"], 8);
+		this.joystick.setScale(2,2);
+		this.background = this.add.sprite(0, 0, Images.Background);
+		this.background.setOrigin(0,0);
+		this.background.tint = 0x333333;
 
         this.scene.launch(Scenes.MENU, {});
     }
@@ -86,11 +95,11 @@ export default class ArcadeScene extends Phaser.Scene {
         this.inputManager.update(delta);
         this.resetButtons();
         let input = this.inputManager.getInput();
-        if (input.contains(Keys.Left)) this.highlightButton(this.leftButton);
-        if (input.contains(Keys.Up)) this.highlightButton(this.upButton);
-        if (input.contains(Keys.Right)) this.highlightButton(this.rightButton);
-        if (input.contains(Keys.Down)) this.highlightButton(this.downButton);
-        if (input.contains(Keys.Action)) this.highlightButton(this.fireButton);
+        // if(input.contains(Keys.Left)) this.highlightButton(this.leftButton);
+		// if(input.contains(Keys.Up)) this.highlightButton(this.upButton);
+		// if(input.contains(Keys.Right)) this.highlightButton(this.rightButton);
+		// if(input.contains(Keys.Down)) this.highlightButton(this.downButton);
+		if(input.contains(Keys.Action)) this.highlightButton(this.fireButton);
 
         let inputString = "";
         if (input.contains(Keys.Left)) inputString += Keys.Left;
@@ -105,12 +114,12 @@ export default class ArcadeScene extends Phaser.Scene {
     }
 
     private resetButtons() {
-        this.leftButton.tint = 0xffffff;
-        this.upButton.tint = 0xffffff;
-        this.rightButton.tint = 0xffffff;
-        this.downButton.tint = 0xffffff;
-        this.fireButton.tint = 0xffffff;
-    }
+        // this.leftButton.tint = 0xffffff;
+		// this.upButton.tint = 0xffffff;
+		// this.rightButton.tint = 0xffffff;
+		// this.downButton.tint = 0xffffff;
+		this.fireButton.tint = 0xffffff;
+	}
 
     private highlightButton(button: Phaser.GameObjects.Sprite) {
         button.tint = 0xee2222;
