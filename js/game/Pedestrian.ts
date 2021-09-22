@@ -14,8 +14,9 @@ const PedestrianState = {
 }
 
 export default class Pedestrian extends MovableObject {
-    private state: number = PedestrianState.Idle;
-    private stateDurationMax: Map = new Map();
+    private pState: number = PedestrianState.Idle;
+    // @ts-ignore
+	private stateDurationMax: Map = new Map();
     private stateDuration: number = 0;
 
     private walkDirection: [number, number] = [0, 0];
@@ -101,17 +102,17 @@ export default class Pedestrian extends MovableObject {
                 break;
         }
 
-        this.state = newState;
+        this.pState = newState;
         this.stateDuration = 0.0;
 
         this.setVelocity(this.walkDirection[0] * this.speed * 15, this.walkDirection[1] * this.speed * 15);
     }
 
     update(deltaTime: number) {
-        if (this.enable || this.state == PedestrianState.Die) {
+        if (this.enable || this.pState == PedestrianState.Die) {
             this.stateDuration += deltaTime;
-            if (this.stateDuration >= this.stateDurationMax.get(this.state)) {
-                if (this.state == PedestrianState.Die) {
+            if (this.stateDuration >= this.stateDurationMax.get(this.pState)) {
+                if (this.pState == PedestrianState.Die) {
                     this.onChangeState(PedestrianState.Dead);
                     this.enable = false;
                 }
@@ -140,6 +141,6 @@ export default class Pedestrian extends MovableObject {
     }
 
     isEnable() {
-        return this.enable == true && this.state != PedestrianState.Die;
+        return this.enable == true && this.pState != PedestrianState.Die;
     }
 }

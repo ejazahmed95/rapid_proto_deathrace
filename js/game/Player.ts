@@ -13,7 +13,7 @@ const PlayerState = {
 
 export default class Player extends MovableObject {
     private eventManager: EventManager | undefined;
-    private state: number = PlayerState.Idle;
+    private pState: number = PlayerState.Idle;
 
     constructor(scene: Phaser.Scene, config: MovableObj) {
         super(scene, config.x, config.y, Spritesheets.PlayerIdle["name"], ObjTags.Player);
@@ -46,13 +46,13 @@ export default class Player extends MovableObject {
     }
 
     onChangeState(newState: number) {
-        if (newState == this.state)
+        if (newState == this.pState)
             return;
         if (newState == PlayerState.Idle)
             this.play("idle");
         else
             this.play("move");
-        this.state = newState;
+        this.pState = newState;
     }
 
     update(deltaTime: number) {
@@ -72,7 +72,7 @@ export default class Player extends MovableObject {
 
     // we need to matain the collision status
     onColliderEnter(player: Player, other: GameObject) {
-        if (other.isEnable() == false)
+        if (!other.isEnable())
             return;
 
         switch (other.getTag()) {

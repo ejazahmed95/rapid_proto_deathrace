@@ -23,7 +23,7 @@ export default class Pod extends GameObject {
     }
 
     update() {
-        if (this.isEnable() == false)
+        if (!this.isEnable())
             return;
     }
 
