@@ -4,6 +4,7 @@ import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 import InputManager from "../engine/InputManager";
 import Scheduler from "../utilities/Scheduler";
+import LevelManager from "../levels/LevelManager";
 
 export default class ArcadeScene extends Phaser.Scene {
     private inputManager!: InputManager;
@@ -49,6 +50,7 @@ export default class ArcadeScene extends Phaser.Scene {
         this.loadAudios();
         this.inputManager = new InputManager(this);
         DI.Register('InputManager', this.inputManager);
+		DI.Register("LevelManager", new LevelManager());
     }
 
     create() {

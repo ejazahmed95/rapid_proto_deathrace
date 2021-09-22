@@ -5,13 +5,12 @@ import Pedestrian from "../game/Pedestrian";
 import Grave from "../game/Grave";
 import Player from "../game/Player";
 import GameObject from "../engine/GameObject";
-import { LevelConfig, ObjTags } from "../const";
 
 import Zombie from "./Zombie";
 import EventManager from "../utilities/EventManager";
 import { GameEvents, GameObjectsInfo, PedestrianConvertInfo, PedestrianKillInfo, WarriorKillInfo, ZombieKillInfo } from "../utilities/events";
 import Pod from "./Pod";
-import { MovableObj } from "../types/types";
+import {LevelConfig, MovableObj} from "../types/types";
 import Warrior from "./Warrior";
 
 export default class SpawnManager {
@@ -34,11 +33,12 @@ export default class SpawnManager {
 
     }
 
-    init(scene: Phaser.Scene) {
+    init(scene: Phaser.Scene, levelConfig: LevelConfig) {
         this.scene = scene;
         this.createFactories(scene);
 
         this.eventManager = DI.Get("EventManager") as EventManager;
+
         this.eventManager.addHandler(GameEvents.KilledPedestrian, this.onPedestrianKilled = this.onPedestrianKilled.bind(this));
         this.eventManager.addHandler(GameEvents.KilledZombie, this.onZombieKilled = this.onZombieKilled.bind(this));
         this.eventManager.addHandler(GameEvents.OffGrave, this.onGraveOff = this.onGraveOff.bind(this));
@@ -50,8 +50,6 @@ export default class SpawnManager {
         this.gravesGroup = scene.add.group();
         this.zombieGroup = scene.add.group();
         this.warriorGroup = scene.add.group();
-
-        let levelConfig = LevelConfigs[0];
 
         // need change into pass config as parameter
         let playerConfig = levelConfig.Player;

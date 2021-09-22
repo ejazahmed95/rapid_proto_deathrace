@@ -17,9 +17,10 @@ import LevelManager from "../levels/LevelManager";
 export default class GameScene extends Phaser.Scene {
     private gameTime: Date = new Date();
 
-    private inputManager: InputManager;
-    private spawnManager: SpawnManager;
-    private eventManager: EventManager;
+    private inputManager!: InputManager;
+    private spawnManager!: SpawnManager;
+    private eventManager!: EventManager;
+	private levelManager!: LevelManager;
 
     constructor() {
         super({
@@ -31,11 +32,13 @@ export default class GameScene extends Phaser.Scene {
         Logger.i(`Game Config = ${JSON.stringify(gameConf)}`, "Game");
         this.inputManager = DI.Get("InputManager") as InputManager;
 		this.eventManager = DI.Get("EventManager") as EventManager;
-		// this.levelManager = DI.Get("LevelManager") as LevelManager;
+		this.levelManager = DI.Get("LevelManager") as LevelManager;
 
 		this.eventManager.addHandler(GameEvents.LevelFinished, this.onLevelFinish.bind(this));
 
         this.sound.play(AudioTrack.Background);
+
+		this.events.on('shutdown', () => this.onSceneShutdown());
     }
 
     preload() {
@@ -44,7 +47,7 @@ export default class GameScene extends Phaser.Scene {
 
     create() {
         this.spawnManager = DI.Get("SpawnManager") as SpawnManager;
-        this.spawnManager.init(this);
+        this.spawnManager.init(this, this.levelManager.loadNextLevel());
 
         let layout = (DI.Get("GameInfra") as GameInfra).layout;
         this.physics.world.setBounds(layout.Border, layout.Border, layout.GameWidth, layout.GameHeight);
@@ -70,4 +73,9 @@ export default class GameScene extends Phaser.Scene {
 
         this.sound.stopAll();
     }
+
+	private onSceneShutdown() {
+
+
+	}
 }
