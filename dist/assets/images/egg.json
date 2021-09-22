@@ -1,117 +1,117 @@
 {
 	"textures": [
 		{
-			"image": "player_move.png",
+			"image": "egg.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 256,
-				"h": 64
+				"w": 170,
+				"h": 34
 			},
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "moving4.png",
+					"filename": "egg_1.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"frame": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 64
+						"x": 1,
+						"y": 1,
+						"w": 32,
+						"h": 32
 					}
 				},
 				{
-					"filename": "moving5.png",
+					"filename": "egg_2.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"frame": {
-						"x": 64,
-						"y": 0,
-						"w": 64,
-						"h": 64
+						"x": 35,
+						"y": 1,
+						"w": 32,
+						"h": 32
 					}
 				},
 				{
-					"filename": "moving6.png",
+					"filename": "egg_3.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"frame": {
-						"x": 128,
-						"y": 0,
-						"w": 64,
-						"h": 64
+						"x": 69,
+						"y": 1,
+						"w": 32,
+						"h": 32
 					}
 				},
 				{
-					"filename": "moving7.png",
+					"filename": "egg_4.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"frame": {
-						"x": 192,
-						"y": 0,
-						"w": 64,
-						"h": 64
+						"x": 103,
+						"y": 1,
+						"w": 32,
+						"h": 32
 					}
 				},
 				{
-					"filename": "moving8.png",
+					"filename": "egg_5.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 32,
+						"h": 32
 					},
 					"frame": {
-						"x": 192,
-						"y": 0,
-						"w": 64,
-						"h": 64
+						"x": 137,
+						"y": 1,
+						"w": 32,
+						"h": 32
 					}
 				}
 			]
@@ -120,6 +120,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:9837a9f3e94b59a968fd60333f4505e7:73b8e4d4520a15d62cbcfc77f1ec5826:0536b6f15a1836fcc93b5112b2746ab8$"
+		"smartupdate": "$TexturePacker:SmartUpdate:a36a852b8e8f2db9c2480f6e57a79e6b:b8f55a05f78a66e14d7d2e7a8483de20:f2ac48b1c7b5b0a41ac50c4888a029cf$"
 	}
 }

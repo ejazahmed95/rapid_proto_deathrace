@@ -33,6 +33,10 @@ export const Images = {
     Background: "background"
 }
 
+export const AudioTrack = {
+    Background: "bgAudio",
+}
+
 export const Spritesheets = {
     GraveSpawn: {
         "name": "grave_spawn",
@@ -90,12 +94,19 @@ export const Spritesheets = {
         "frameRate": 6,
         "repeat": false
     },
-	Joystick: {
-		"name": "joystick",
-		"frameWidth": 32,
-		"frameHeight": 32,
-		"framesNum": 9,
-	}
+    Joystick: {
+        "name": "joystick",
+        "frameWidth": 32,
+        "frameHeight": 32,
+        "framesNum": 9,
+    },
+    Pod: {
+        "name": "egg",
+        "frameWidth": 32,
+        "frameHeight": 32,
+        "framesNum": 5,
+        "frameRate": 5
+    }
 }
 
 export const Audio = {
@@ -107,7 +118,9 @@ export const ObjTags = {
     Player: 0,
     Zombie: 1,
     Pedestrian: 2,
-    Grave: 3
+    Grave: 3,
+    Pod: 4,
+    Warrior: 5
 }
 
 export const Keys = {
@@ -143,6 +156,14 @@ export const LevelConfig = {
             {
                 "x": 400,
                 "y": 400
+            },
+            {
+                "x": 300,
+                "y": 320
+            },
+            {
+                "x": 200,
+                "y": 150
             }
         ],
         Pedestrians: [

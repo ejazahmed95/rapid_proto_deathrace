@@ -7,24 +7,26 @@ export const GameEvents = {
     KilledZombie: "Killed_Zombie",
     PedestrianPosUpdate: "PedestrianPosUpdate",
     PedestrianConverted: "PedestrianConverted",
-	InputChange: "InputChange",
-	LevelFinished: "LevelFinished",
+    InputChange: "InputChange",
+    LevelFinished: "LevelFinished",
+    SummonWarrior: "SummonWarrior",
+    KilledWarrior: "KilledWarrior"
 }
 
 export interface LevelFinishInfo {
-	Objects: GameObjectsInfo,
-	Score: number,
+    Objects: GameObjectsInfo,
+    Score: number,
 }
 
 export interface GameObjectsInfo {
-	ZombieCount: number,
-	PedestrianCount: number,
+    ZombieCount: number,
+    PedestrianCount: number,
 }
 
 export interface InputChangeInfo {
-	Key: string,
-	IsDown: boolean,
-	IsUp: boolean,
+    Key: string,
+    IsDown: boolean,
+    IsUp: boolean,
 }
 
 export interface PedestrianKillInfo {
@@ -43,6 +45,15 @@ export interface ZombieKillInfo {
     ZombieId: number,
 	PositionX: number,
 	PositionY: number
+}
+
+export interface WarriorKillInfo {
+    WarriorId: number
+}
+
+export interface PedestrianConvertInfo {
+    PositionX: number,
+    PositionY: number
 }
 
 export interface ButtonPressInfo {

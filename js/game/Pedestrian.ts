@@ -4,6 +4,7 @@ import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 import EventManager from "../utilities/EventManager";
 import { GameEvents } from "../utilities/events";
+import { MovableObj } from "../types/types";
 
 const PedestrianState = {
     Idle: 0,
@@ -28,8 +29,8 @@ export default class Pedestrian extends MovableObject {
     private boundX: [number, number] = [0, 0];
     private boundY: [number, number] = [0, 0];
 
-    constructor(scene: Phaser.Scene, config: object) {
-        super(scene, config["x"], config["y"], Spritesheets.PedStand["name"], ObjTags.Pedestrian);
+    constructor(scene: Phaser.Scene, config: MovableObj) {
+        super(scene, config.x, config.y, Spritesheets.PedStand["name"], ObjTags.Pedestrian);
 
         this.setCollideWorldBounds(true);
         // this.setScale(config["scale"]);
@@ -40,7 +41,7 @@ export default class Pedestrian extends MovableObject {
         this.boundY = [-layout.Border, layout.GameHeight - layout.Border];
 
         this.speed = config["speed"];
-        this.stateDuration = 3.0;
+        this.stateDuration = 3000;
 
         this.anims.create({
             key: "walk",
@@ -66,9 +67,9 @@ export default class Pedestrian extends MovableObject {
         this.INTERVAL_MAX = 3 + this.id;
         this.eventManager = DI.Get("EventManager") as EventManager;
 
-        this.stateDurationMax.set(PedestrianState.Idle, 800.0);
-        this.stateDurationMax.set(PedestrianState.Wander, 800.0);
-        this.stateDurationMax.set(PedestrianState.Die, 200.0);
+        this.stateDurationMax.set(PedestrianState.Idle, 3000.0);
+        this.stateDurationMax.set(PedestrianState.Wander,3000.0);
+        this.stateDurationMax.set(PedestrianState.Die, 1500.0);
         this.stateDurationMax.set(PedestrianState.Dead, 100.0);
     }
 
@@ -87,15 +88,23 @@ export default class Pedestrian extends MovableObject {
                 this.play("walk");
                 break;
             case PedestrianState.Die:
+                console.log("Change state into Die");
                 this.play("dead");
+                this.walkDirection = [0, 0];
                 break;
             case PedestrianState.Dead:
-				this.setVisible(false);
+				this.walkDirection = [0, 0];
+				this.visible = false;
+				console.log("Change state into Dead");
+				let eventManager = DI.Get("EventManager") as EventManager;
+				eventManager.sendEvent(GameEvents.PedestrianConverted, { x:this.x, y: this.y, id: this.getId() });
                 break;
         }
 
         this.state = newState;
         this.stateDuration = 0.0;
+
+        this.setVelocity(this.walkDirection[0] * this.speed * 15, this.walkDirection[1] * this.speed * 15);
     }
 
     update(deltaTime: number) {
@@ -112,8 +121,6 @@ export default class Pedestrian extends MovableObject {
                 }
             }
 
-            this.setVelocity(this.walkDirection[0] * deltaTime * this.speed, this.walkDirection[1] * deltaTime * this.speed);
-
             this.interval += deltaTime;
             if (this.interval >= this.INTERVAL_MAX) {
                 this.interval = 0;
@@ -126,9 +133,10 @@ export default class Pedestrian extends MovableObject {
     }
 
     onKilled() {
+		console.log("Pedestrian dead " + this.getId());
         this.enable = false;
-		this.speed = 0;
         this.onChangeState(PedestrianState.Die);
+        this.speed = 0.0;
     }
 
     isEnable() {

@@ -1,7 +1,7 @@
 import Player from "../game/Player";
 
 export interface IUpdate {
-	update(delta: number): void
+    update(delta: number): void
 }
 
 export interface GameConfig {
@@ -10,28 +10,28 @@ export interface GameConfig {
 }
 
 export interface KeyState {
-	isJustDown: boolean,
-	held: boolean,
-	isJustUp: boolean,
+    isJustDown: boolean,
+    held: boolean,
+    isJustUp: boolean,
 }
 export interface ImmovableObj {
-	id?: number,
-	x: number,
-	y: number
+    id?: number,
+    x: number,
+    y: number
 }
 
 export interface MovableObj {
-	id?: number,
-	x: number,
-	y: number,
-	speed: number,
-	angleSpeed?: number,
+    id?: number,
+    x: number,
+    y: number,
+    speed: number,
+    angleSpeed?: number,
 }
 export interface LevelConfig {
-	Player: MovableObj,
-	Zombies: MovableObj[],
-	Graves: ImmovableObj[],
-	Pedestrians: MovableObj[]
+    Player: MovableObj,
+    Zombies: MovableObj[],
+    Graves: ImmovableObj[],
+    Pedestrians: MovableObj[]
 }
 
 export interface Layout {
@@ -54,9 +54,9 @@ declare interface IPlayer extends IGameObject {
 }
 
 export interface LevelLoadInfo {
-	IsGameOver: boolean,
-	ShowHighScore: boolean,
-	CurrentLevel: number,
-	NextLevel: number,
-	ExtraLives?: number
+    IsGameOver: boolean,
+    ShowHighScore: boolean,
+    CurrentLevel: number,
+    NextLevel: number,
+    ExtraLives?: number
 }
