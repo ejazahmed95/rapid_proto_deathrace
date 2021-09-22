@@ -3,7 +3,7 @@ import MovableObject from '../engine/MovableObject';
 import GameObject from '../engine/GameObject';
 import DI from "../utilities/DI";
 import EventManager from '../utilities/EventManager';
-import { GameEvents, PedestrianKillInfo, ZombieKillInfo } from '../utilities/events';
+import { GameEvents, InputChangeInfo, PedestrianKillInfo, ZombieKillInfo } from '../utilities/events';
 import { MovableObj } from "../types/types"
 
 const PlayerState = {
@@ -41,6 +41,8 @@ export default class Player extends MovableObject {
         });
 
         this.play("idle");
+
+        this.eventManager.addHandler(GameEvents.InputChange, this.onKeyStateChange = this.onKeyStateChange.bind(this));
     }
 
     onChangeState(newState: number) {
@@ -64,8 +66,6 @@ export default class Player extends MovableObject {
 
         this.onChangeState(inputs.size == 0 ? PlayerState.Idle : PlayerState.Move);
 
-        if (inputs.contains(Keys.Reset))
-            this.eventManager?.sendEvent(GameEvents.SummonWarrior);
     }
 
     // we need to matain the collision status
@@ -88,5 +88,12 @@ export default class Player extends MovableObject {
 
     onColliderExit(object: GameObject) {
 
+    }
+
+    onKeyStateChange(info: InputChangeInfo) {
+        console.log("Player onKeyStateChange", info.Key);
+        if (info.Key == Keys.Action && info.IsDown == true) {
+            this.eventManager?.sendEvent(GameEvents.SummonWarrior);
+        }
     }
 }
