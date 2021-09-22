@@ -1,5 +1,5 @@
 export const Constants = {
-	GAME_NAME: "Death  Race",
+    GAME_NAME: "Death  Race",
 }
 
 export const Scenes = {
@@ -31,6 +31,10 @@ export const Images = {
     Button: "button",
     Frame: "frame",
     Background: "background"
+}
+
+export const AudioTrack = {
+    Background: "bgAudio",
 }
 
 export const Spritesheets = {
@@ -90,12 +94,19 @@ export const Spritesheets = {
         "frameRate": 6,
         "repeat": false
     },
-	Joystick: {
-		"name": "joystick",
-		"frameWidth": 32,
-		"frameHeight": 32,
-		"framesNum": 9,
-	}
+    Joystick: {
+        "name": "joystick",
+        "frameWidth": 32,
+        "frameHeight": 32,
+        "framesNum": 9,
+    },
+    Pod: {
+        "name": "egg",
+        "frameWidth": 32,
+        "frameHeight": 32,
+        "framesNum": 5,
+        "frameRate": 5
+    }
 }
 
 export const Audio = {
@@ -107,7 +118,9 @@ export const ObjTags = {
     Player: 0,
     Zombie: 1,
     Pedestrian: 2,
-    Grave: 3
+    Grave: 3,
+    Pod: 4,
+    Warrior: 5
 }
 
 export const Keys = {
@@ -138,11 +151,24 @@ export const LevelConfig = {
                 "y": 400,
                 "speed": 4,
             },
+            {
+                "x": 350,
+                "y": 100,
+                "speed": 4,
+            }
         ],
         Graves: [
             {
                 "x": 400,
                 "y": 400
+            },
+            {
+                "x": 300,
+                "y": 320
+            },
+            {
+                "x": 200,
+                "y": 150
             }
         ],
         Pedestrians: [
@@ -150,7 +176,22 @@ export const LevelConfig = {
                 "x": 200,
                 "y": 200,
                 "speed": 6,
-                "scale": 1.0
+            },
+            {
+                "x": 400,
+                "y": 200,
+                "speed": 6,
+            },
+            {
+                "x": 500,
+                "y": 320,
+                "speed": 6,
+            }
+        ],
+        Pods: [
+            {
+                "x": 300,
+                "y": 360
             }
         ]
     }

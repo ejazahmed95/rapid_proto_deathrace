@@ -4,6 +4,7 @@ import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 import EventManager from "../utilities/EventManager";
 import { GameEvents } from "../utilities/events";
+import { MovableObj } from "../types/types";
 
 const PedestrianState = {
     Idle: 0,
@@ -28,11 +29,11 @@ export default class Pedestrian extends MovableObject {
     private boundX: [number, number] = [0, 0];
     private boundY: [number, number] = [0, 0];
 
-    constructor(scene: Phaser.Scene, config: object) {
-        super(scene, config["x"], config["y"], Spritesheets.PedStand["name"], ObjTags.Pedestrian);
+    constructor(scene: Phaser.Scene, config: MovableObj) {
+        super(scene, config.x, config.y, Spritesheets.PedStand["name"], ObjTags.Pedestrian);
 
         this.setCollideWorldBounds(true);
-        this.setScale(config["scale"]);
+        //this.setScale(config["scale"]);
 
 
         let layout = (DI.Get("GameInfra") as GameInfra).layout;
@@ -40,7 +41,7 @@ export default class Pedestrian extends MovableObject {
         this.boundY = [-layout.Border, layout.GameHeight - layout.Border];
 
         this.speed = config["speed"];
-        this.stateDuration = 3.0;
+        this.stateDuration = 3000;
 
         this.anims.create({
             key: "walk",
@@ -88,14 +89,17 @@ export default class Pedestrian extends MovableObject {
                 break;
             case PedestrianState.Die:
                 this.play("dead");
+                this.walkDirection = [0, 0];
                 break;
             case PedestrianState.Dead:
-
+                this.walkDirection = [0, 0];
                 break;
         }
 
         this.state = newState;
         this.stateDuration = 0.0;
+
+        this.setVelocity(this.walkDirection[0] * this.speed * 15, this.walkDirection[1] * this.speed * 15);
     }
 
     update(deltaTime: number) {
@@ -112,8 +116,6 @@ export default class Pedestrian extends MovableObject {
                 }
             }
 
-            this.setVelocity(this.walkDirection[0] * deltaTime * this.speed, this.walkDirection[1] * deltaTime * this.speed);
-
             this.interval += deltaTime;
             if (this.interval >= this.INTERVAL_MAX) {
                 this.interval = 0;
@@ -126,7 +128,9 @@ export default class Pedestrian extends MovableObject {
     }
 
     onKilled() {
-        this.enable == false;
+        console.log("Pedestrian dead " + this.getId());
+        this.enable = false;
+        this.speed = 0.0;
         this.onChangeState(PedestrianState.Die);
     }
 

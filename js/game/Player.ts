@@ -4,7 +4,7 @@ import GameObject from '../engine/GameObject';
 import DI from "../utilities/DI";
 import EventManager from '../utilities/EventManager';
 import { GameEvents, PedestrianKillInfo, ZombieKillInfo } from '../utilities/events';
-import Zombie from './Zombie';
+import { MovableObj } from "../types/types"
 
 const PlayerState = {
     Idle: 0,
@@ -15,12 +15,12 @@ export default class Player extends MovableObject {
     private eventManager: EventManager | undefined;
     private state: number = PlayerState.Idle;
 
-    constructor(scene: Phaser.Scene, config: object) {
-        super(scene, config["x"], config["y"], Spritesheets.PlayerIdle["name"], ObjTags.Player);
+    constructor(scene: Phaser.Scene, config: MovableObj) {
+        super(scene, config.x, config.y, Spritesheets.PlayerIdle["name"], ObjTags.Player);
         this.setCollideWorldBounds(true);
 
-        this.speed = config["speed"];
-        this.angleSpeed = config["angleSpeed"];
+        this.speed = config.speed;
+        this.angleSpeed = config.angleSpeed ? config.angleSpeed : 0;
 
         this.onColliderEnter = this.onColliderEnter.bind(this);
 
@@ -63,6 +63,9 @@ export default class Player extends MovableObject {
         this.setVelocity(-1 * vertical * this.speed * Math.sin(radians) * deltaTime, vertical * this.speed * Math.cos(radians) * deltaTime);
 
         this.onChangeState(inputs.size == 0 ? PlayerState.Idle : PlayerState.Move);
+
+        if (inputs.contains(Keys.Reset))
+            this.eventManager?.sendEvent(GameEvents.SummonWarrior);
     }
 
     // we need to matain the collision status
@@ -74,11 +77,11 @@ export default class Player extends MovableObject {
             case ObjTags.Grave:
                 break;
             case ObjTags.Pedestrian:
-                this.eventManager?.sendEvent(GameEvents.KilledPedestrian, { PedestrianId: other.getId(), PositionX: other.x, PositionY: other.y });
+                this.eventManager?.sendEvent(GameEvents.KilledPedestrian, { PedestrianId: other.getId(), PositionX: other.x, PositionY: other.y } as PedestrianKillInfo);
                 break;
             case ObjTags.Zombie:
                 // score up
-                this.eventManager?.sendEvent(GameEvents.KilledZombie, { ZombieId: other.getId() });
+                this.eventManager?.sendEvent(GameEvents.KilledZombie, { ZombieId: other.getId() } as ZombieKillInfo);
                 break;
         }
     }

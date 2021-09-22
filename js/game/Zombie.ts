@@ -3,8 +3,10 @@ import { Images, Keys, ObjTags, Spritesheets } from '../const';
 import GameObject from "../engine/GameObject";
 import EventManager from "../utilities/EventManager";
 import DI from "../utilities/DI";
-import { GameEvents, PedestrianKillInfo, PedestrianPositionInfo } from "../utilities/events";
+import { GameEvents, PedestrianConvertInfo, PedestrianKillInfo, PedestrianPositionInfo, ZombieKillInfo } from "../utilities/events";
 import Pedestrian from "./Pedestrian";
+import { MovableObj } from "../types/types"
+import Warrior from "./Warrior";
 
 const ZombieState = {
     Idle: 0,
@@ -27,8 +29,8 @@ export default class Zombie extends MovableObject {
     private walkDirection: [number, number] = [0, 0];
     private halfStateDuration: number = 0;// random
 
-    constructor(scene: Phaser.Scene, config: object) {
-        super(scene, config["x"], config["y"], Spritesheets.ZombieIdle["name"], ObjTags.Zombie);
+    constructor(scene: Phaser.Scene, config: MovableObj) {
+        super(scene, config.x, config.y, Spritesheets.ZombieIdle["name"], ObjTags.Zombie);
         this.setCollideWorldBounds(true);
 
         let spriteConfig = Spritesheets.ZombieIdle;
@@ -40,9 +42,9 @@ export default class Zombie extends MovableObject {
             repeat: -1,
         });
 
-        this.stateDurationMax.set(ZombieState.Idle, 300.0);
-        this.stateDurationMax.set(ZombieState.Wander, 500.0);
-        this.stateDurationMax.set(ZombieState.Chase, 1000.0);
+        this.stateDurationMax.set(ZombieState.Idle, 3000.0);
+        this.stateDurationMax.set(ZombieState.Wander, 5000.0);
+        this.stateDurationMax.set(ZombieState.Chase, 5000.0);
 
         this.speed = config["speed"];
     }
@@ -109,17 +111,28 @@ export default class Zombie extends MovableObject {
 
     static onColliderEnter(object1: GameObject, object2: GameObject) {
         if (object1.isEnable() && object2.isEnable()) {
-            console.log("Zombie onColliderEnter " + object1.getTag() + ' ' + object2.getTag());
+
             if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Zombie) {
                 let zombie1 = object1 as Zombie;
                 zombie1.onDirReverse();
                 let zombie2 = object2 as Zombie;
                 zombie2.onDirReverse();
             } else if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Pedestrian) {
+                console.log("Zombie collider pedestrian ", object1.getId(), object2.getId());
                 let pedestrian = object2 as Pedestrian;
                 pedestrian.onKilled();
+
                 let eventManager = DI.Get("EventManager") as EventManager;
-                eventManager.sendEvent(GameEvents.PedestrianConverted, { x: object1.x, y: object1.y, id: object2.getId() });
+                eventManager.sendEvent(GameEvents.PedestrianConverted, { PositionX: object1.x, PositionY: object1.y } as PedestrianConvertInfo);
+            } else if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Warrior) {
+                console.log("Zombie collider warrior ", object1.getId(), object2.getId());
+                let eventManager = DI.Get("EventManager") as EventManager;
+
+                eventManager.sendEvent(GameEvents.KilledZombie, { ZombieId: object1.getId() } as ZombieKillInfo);
+
+                eventManager.sendEvent(GameEvents.KilledWarrior, { ZombieId: object1.getId() } as ZombieKillInfo);
+                let warrior = object2 as Warrior;
+                warrior.setEnable(false);
             }
         }
     }

@@ -9,20 +9,26 @@ import { LevelConfig, ObjTags } from "../const";
 
 import Zombie from "./Zombie";
 import EventManager from "../utilities/EventManager";
-import {GameEvents, GameObjectsInfo, PedestrianKillInfo, ZombieKillInfo} from "../utilities/events";
+import { GameEvents, GameObjectsInfo, PedestrianConvertInfo, PedestrianKillInfo, WarriorKillInfo, ZombieKillInfo } from "../utilities/events";
+import Pod from "./Pod";
+import { MovableObj } from "../types/types";
+import Warrior from "./Warrior";
 
 export default class SpawnManager {
     private pedestrians: Pedestrian[] = [];
     private graves: Grave[] = [];
     private zombies: Zombie[] = [];
     private player!: Player;
+    private pods: Pod[] = [];
+    private warriors: Warrior[] = [];
 
     private scene!: Phaser.Scene;
 
     private pedestrianGroup!: Phaser.GameObjects.Group;
     private gravesGroup!: Phaser.GameObjects.Group;
     private zombieGroup!: Phaser.GameObjects.Group;
-	private eventManager!: EventManager;
+    private warriorGroup!: Phaser.GameObjects.Group;
+    private eventManager!: EventManager;
 
     constructor() {
 
@@ -37,10 +43,13 @@ export default class SpawnManager {
         this.eventManager.addHandler(GameEvents.KilledZombie, this.onZombieKilled = this.onZombieKilled.bind(this));
         this.eventManager.addHandler(GameEvents.OffGrave, this.onGraveOff = this.onGraveOff.bind(this));
         this.eventManager.addHandler(GameEvents.PedestrianConverted, this.onPedestrianConverted = this.onPedestrianConverted.bind(this));
+        this.eventManager.addHandler(GameEvents.SummonWarrior, this.onWarriorSummoned = this.onWarriorSummoned.bind(this));
+        this.eventManager.addHandler(GameEvents.KilledWarrior, this.onWarriorKilled = this.onWarriorKilled.bind(this));
 
         this.pedestrianGroup = scene.add.group();
         this.gravesGroup = scene.add.group();
         this.zombieGroup = scene.add.group();
+        this.warriorGroup = scene.add.group();
 
         let levelConfig = LevelConfig.Level1;
 
@@ -76,6 +85,13 @@ export default class SpawnManager {
             this.pedestrians[id].create();
         }
 
+        let podsConfig = levelConfig.Pods;
+        this.pods = [];
+        for (let id in podsConfig) {
+            let config = podsConfig[id];
+            this.pods.push(scene.add.pod(config));
+        }
+
         // register collider with group
         scene.physics.add.collider(this.player, this.zombieGroup, this.player.onColliderEnter, null);
         scene.physics.add.overlap(this.player, this.pedestrianGroup, this.player.onColliderEnter, null);
@@ -84,6 +100,7 @@ export default class SpawnManager {
         scene.physics.add.collider(this.zombieGroup, this.zombieGroup, Zombie.onColliderEnter, null);
         scene.physics.add.collider(this.zombieGroup, this.gravesGroup, Zombie.onColliderEnter, null);
         scene.physics.add.overlap(this.zombieGroup, this.pedestrianGroup, Zombie.onColliderEnter, null);
+        scene.physics.add.overlap(this.zombieGroup, this.warriorGroup, Zombie.onColliderEnter, null);
     }
 
     update(deltaTime: number) {
@@ -102,7 +119,7 @@ export default class SpawnManager {
 
     onPedestrianKilled(info?: PedestrianKillInfo) {
         if (info) {
-            let pId = info["PedestrianId"];
+            let pId = info.PedestrianId;
             for (let i = 0; i < this.pedestrians.length; ++i) {
                 let pedestrian = this.pedestrians[i] as Pedestrian;
                 if (pedestrian.getId() == pId) {
@@ -112,8 +129,8 @@ export default class SpawnManager {
                 }
             }
 
-            let x = info["PositionX"];
-            let y = info["PositionY"];
+            let x = info.PositionX;
+            let y = info.PositionY;
             for (let i = 0; i < this.graves.length; ++i) {
                 let grave = this.graves[i] as Grave;
                 if (grave.isEnable() == false) {
@@ -126,61 +143,35 @@ export default class SpawnManager {
             this.graves.push(grave);
             this.gravesGroup?.add(grave);
 
-			if(this.getPedestrianCount() == 0) {
-				this.eventManager.sendEvent(GameEvents.LevelFinished, {ZombieCount: this.getZombieCount(), PedestrianCount: 0} as GameObjectsInfo);
-			}
+            if (this.getPedestrianCount() == 0) {
+                this.eventManager.sendEvent(GameEvents.LevelFinished, { ZombieCount: this.getZombieCount(), PedestrianCount: 0 } as GameObjectsInfo);
+            }
         }
     }
 
     onZombieKilled(info?: ZombieKillInfo) {
         if (info) {
-            let targetId = info["ZombieId"];
-			let remZombies = 0;
+            let targetId = info.ZombieId;
+            let remZombies = 0;
             this.zombies.forEach(element => {
                 let zombie = element as Zombie;
                 if (zombie.getId() == targetId) {
                     zombie.setEnable(false);
-                } else if(zombie.isEnable()) {
-					remZombies++;
-				}
+                } else if (zombie.isEnable()) {
+                    remZombies++;
+                }
             });
 
-			if(remZombies == 0) {
-				this.eventManager.sendEvent(GameEvents.LevelFinished, {ZombieCount: 0, PedestrianCount: this.getPedestrianCount()} as GameObjectsInfo);
-			}
+            if (remZombies == 0) {
+                this.eventManager.sendEvent(GameEvents.LevelFinished, { ZombieCount: 0, PedestrianCount: this.getPedestrianCount() } as GameObjectsInfo);
+            }
         }
     }
 
-	private getPedestrianCount(): number {
-		let count = 0;
-		this.pedestrians.forEach(elem => {
-			let e = elem as Pedestrian;
-			if(e.isEnable()) {
-				count++;
-			}
-		});
-		return count;
-	}
-
-	private getZombieCount(): number {
-		let count = 0;
-		this.zombies.forEach(elem => {
-			let e = elem as Zombie;
-			if(e.isEnable()) {
-				count++;
-			}
-		});
-		return count;
-	}
-
-    onGraveOff(objectId?: number) {
-        console.log("onGraveOff " + objectId);
-    }
-
-    onPedestrianConverted(info?: object) {
+    onPedestrianConverted(info?: PedestrianConvertInfo) {
         if (info) {
-            let _x = info["x"];
-            let _y = info["y"];
+            let _x = info.PositionX;
+            let _y = info.PositionY;
 
             let config = { x: _x, y: _y, speed: 15 };
             let zombie = this.scene.add.zombie(config);
@@ -188,38 +179,130 @@ export default class SpawnManager {
             this.zombieGroup.add(zombie);
             zombie.create();
 
-			if(this.getPedestrianCount() == 0) {
-				this.eventManager.sendEvent(GameEvents.LevelFinished, {ZombieCount: this.getZombieCount(), PedestrianCount: 0} as GameObjectsInfo);
-			}
+            if (this.getPedestrianCount() == 0) {
+                this.eventManager.sendEvent(GameEvents.LevelFinished, { ZombieCount: this.getZombieCount(), PedestrianCount: 0 } as GameObjectsInfo);
+            }
         }
+    }
+
+    onWarriorSummoned() {
+        let canSummon: boolean = false;
+        let targetPos: [number, number] = [0, 0];
+        let spawnPos: [number, number] = [0, 0];
+        this.pods.forEach(element => {
+            let pod = element as Pod;
+            if (pod.isEnable()) {
+                canSummon = true;
+                spawnPos = [pod.x, pod.y];
+                return;
+            }
+        });
+
+        if (canSummon == false)
+            return;
+
+        let distance: number = -1;
+        for (let i = 0; i < this.zombies.length; ++i) {
+            if (this.zombies[i].isEnable() == true) {
+                // no need to be very accurate
+                let dis = Math.abs(this.zombies[i].x - spawnPos[0]) + Math.abs(this.zombies[i].y - spawnPos[1]);
+                if (distance < 0 || dis < distance) {
+                    targetPos = [this.zombies[i].x, this.zombies[i].y];
+                    distance = dis;
+                }
+            }
+        }
+
+        // no live zombie left
+        if (distance <= 0)
+            return;
+
+        for (let i = 0; i < this.warriors.length; ++i) {
+            if (this.warriors[i].isEnable() == true) {
+                this.warriors[i].reSpawn(spawnPos[0], spawnPos[1]);
+                this.warriors[i].setTarget(targetPos[0], targetPos[1]);
+                this.warriorGroup.add(this.warriors[i]);
+                return;
+            }
+        }
+
+        let warrior = this.scene?.add.warrior(spawnPos[0], spawnPos[1]);
+        warrior.setTarget(targetPos[0], targetPos[1]);
+        this.warriorGroup.add(warrior);
+    }
+
+    onWarriorKilled(info: WarriorKillInfo) {
+        for (let i = 0; i < this.warriors.length; ++i) {
+            if (this.warriors[i].getId() == info.WarriorId) {
+                this.warriors[i].setEnable(false);
+                this.warriorGroup.remove(this.warriors[i]);
+                return;
+            }
+        }
+    }
+
+    private getPedestrianCount(): number {
+        let count = 0;
+        this.pedestrians.forEach(elem => {
+            let e = elem as Pedestrian;
+            if (e.isEnable()) {
+                count++;
+            }
+        });
+        return count;
+    }
+
+    private getZombieCount(): number {
+        let count = 0;
+        this.zombies.forEach(elem => {
+            let e = elem as Zombie;
+            if (e.isEnable()) {
+                count++;
+            }
+        });
+        return count;
+    }
+
+    onGraveOff(objectId?: number) {
+        console.log("onGraveOff " + objectId);
     }
 
     createFactories(scene: Phaser.Scene) {
         Phaser.GameObjects.GameObjectFactory.register(
             'gameObject', function (x: number, y: number, sprite: Texture, tag: number, movable = true) {
-				return new GameObject(scene, x, y, sprite, tag);
+                return new GameObject(scene, x, y, sprite, tag);
             }
         )
 
         Phaser.GameObjects.GameObjectFactory.register('player',
-            function (this: Phaser.GameObjects.GameObjectFactory, config: object) {
-				return new Player(scene, config);
+            function (this: Phaser.GameObjects.GameObjectFactory, config: MovableObj) {
+                return new Player(scene, config);
             });
 
         Phaser.GameObjects.GameObjectFactory.register('pedestrian',
-            function (config: object) {
-				return new Pedestrian(scene, config);
+            function (config: MovableObj) {
+                return new Pedestrian(scene, config);
             });
 
         Phaser.GameObjects.GameObjectFactory.register('grave',
             function (x: number, y: number) {
-				return new Grave(scene, x, y);
+                return new Grave(scene, x, y);
             });
 
         Phaser.GameObjects.GameObjectFactory.register('zombie',
-            function (config: object) {
+            function (config: MovableObj) {
                 const zombie = new Zombie(scene, config);
                 return zombie;
             });
+
+        Phaser.GameObjects.GameObjectFactory.register('pod', function (config: MovableObj) {
+            const pod = new Pod(scene, config);
+            return pod;
+        });
+
+        Phaser.GameObjects.GameObjectFactory.register('warrior', function (x: number, y: number) {
+            const warrior = new Warrior(scene, x, y);
+            return warrior;
+        });
     }
 }

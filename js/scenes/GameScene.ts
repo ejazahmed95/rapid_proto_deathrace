@@ -1,5 +1,5 @@
 
-import { Scenes } from "../const";
+import { AudioTrack, Scenes } from "../const";
 import Logger from "../utilities/logger";
 import DI from "../utilities/DI";
 import Phaser, { Game } from "phaser";
@@ -10,7 +10,7 @@ import SpawnManager from "../game/SpawnManager";
 
 import { LevelConfig } from "../const";
 import EventManager from "../utilities/EventManager";
-import {GameEvents, GameObjectsInfo, LevelFinishInfo} from "../utilities/events";
+import { GameEvents, GameObjectsInfo, LevelFinishInfo } from "../utilities/events";
 import GAME_OVER = Phaser.Input.Events.GAME_OVER;
 
 export default class GameScene extends Phaser.Scene {
@@ -18,7 +18,7 @@ export default class GameScene extends Phaser.Scene {
 
     private inputManager: InputManager;
     private spawnManager: SpawnManager;
-	private eventManager: EventManager;
+    private eventManager: EventManager;
 
     constructor() {
         super({
@@ -29,8 +29,10 @@ export default class GameScene extends Phaser.Scene {
     init(gameConf: any) {
         Logger.i(`Game Config = ${JSON.stringify(gameConf)}`, "Game");
         this.inputManager = DI.Get("InputManager") as InputManager;
-		this.eventManager = DI.Get("EventManager") as EventManager;
-		this.eventManager.addHandler(GameEvents.LevelFinished, this.onLevelFinish.bind(this));
+        this.eventManager = DI.Get("EventManager") as EventManager;
+        //this.eventManager.addHandler(GameEvents.LevelFinished, this.onLevelFinish.bind(this));
+
+        this.sound.play(AudioTrack.Background);
     }
 
     preload() {
@@ -45,22 +47,24 @@ export default class GameScene extends Phaser.Scene {
         this.physics.world.setBounds(layout.Border, layout.Border, layout.GameWidth, layout.GameHeight);
     }
 
-	update(time: number, delta: number) {
-		super.update(time, delta);
-		this.spawnManager.update(delta);
-	}
+    update(time: number, delta: number) {
+        super.update(time, delta);
+        this.spawnManager.update(delta);
+    }
 
-	private onLevelFinish(info: GameObjectsInfo) {
-		let levelFinishInfo: LevelFinishInfo = {
-			Objects: info,
-			Score: 130
-		}
+    private onLevelFinish(info: GameObjectsInfo) {
+        let levelFinishInfo: LevelFinishInfo = {
+            Objects: info,
+            Score: 130
+        }
 
-		if(info.PedestrianCount == 0) {
-			this.scene.start(Scenes.GAME_OVER, levelFinishInfo);
-		} else {
-			// Logger.e("NOT IMPLEMENTED");
-			this.scene.start(Scenes.LEVEL_FINISH, levelFinishInfo);
-		}
-	}
+        if (info.PedestrianCount == 0) {
+            this.scene.start(Scenes.GAME_OVER, levelFinishInfo);
+        } else {
+            // Logger.e("NOT IMPLEMENTED");
+            this.scene.start(Scenes.LEVEL_FINISH, levelFinishInfo);
+        }
+
+        this.sound.stopAll();
+    }
 }
