@@ -31,7 +31,9 @@ export default class Pedestrian extends MovableObject {
     private boundY: [number, number] = [0, 0];
 
     constructor(scene: Phaser.Scene, config: MovableObj) {
-        super(scene, config.x, config.y, Spritesheets.PedStand["name"], ObjTags.Pedestrian);
+        super(scene, config.x, config.y, Images.Square, ObjTags.Pedestrian);
+		this.body.offset.x = 10;
+		this.body.offset.y = 10;
 
         this.setCollideWorldBounds(true);
         // this.setScale(config["scale"]);

@@ -16,7 +16,7 @@ export default class Player extends MovableObject {
     private pState: number = PlayerState.Idle;
 
     constructor(scene: Phaser.Scene, config: MovableObj) {
-        super(scene, config.x, config.y, Spritesheets.PlayerIdle["name"], ObjTags.Player);
+        super(scene, config.x, config.y, Images.Square, ObjTags.Player);
 		this.body.offset.x = 16;
 		this.body.offset.y = 16;
 		this.setCollideWorldBounds(true);

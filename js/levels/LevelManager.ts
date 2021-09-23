@@ -13,7 +13,6 @@ export default class LevelManager {
 		}
 		return LevelManager.generateLevel(this.currentLevel);
 	}
-
 	public getLevelConfig() {
 	}
 
@@ -28,5 +27,9 @@ export default class LevelManager {
 			Graves: [],
 			Pedestrians: [],
 		} as LevelConfig;
+	}
+
+	reset() {
+		this.currentLevel = -1;
 	}
 }

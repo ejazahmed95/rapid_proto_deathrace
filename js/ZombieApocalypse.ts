@@ -23,7 +23,7 @@ export default class ZombieApocalypse {
             height: 1080,
             physics: {
                 default: 'arcade',
-                arcade: {debug:false },
+                arcade: {debug:true  },
             },
 			backgroundColor: "#ffffff",
             scene: [

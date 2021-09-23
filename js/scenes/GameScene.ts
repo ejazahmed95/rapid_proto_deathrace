@@ -37,7 +37,6 @@ export default class GameScene extends Phaser.Scene {
 
 		this.levelConfig = this.levelManager.loadNextLevel();
 		this.eventManager.addHandler(GameEvents.LevelFinished, this.onLevelFinish.bind(this));
-		this.eventManager.sendEvent(GameEvents.GameStarted, {});
 
         this.sound.play(AudioTrack.Background);
 
@@ -49,6 +48,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
+		Logger.i(`Game Scene Created`);
+		this.eventManager.sendEvent(GameEvents.GameStarted, {Level: this.levelManager.getCurrentLevel()});
         this.spawnManager = DI.Get("SpawnManager") as SpawnManager;
         this.spawnManager.init(this, this.levelConfig);
 

@@ -88,7 +88,7 @@ export default class ArcadeScene extends Phaser.Scene {
 		this.background.setOrigin(0,0);
 		this.background.tint = 0x333333;
 		// this.cabinet = this.add.sprite(0,0, Images.Cabinet).setOrigin(0,0);
-
+		this.scene.launch(Scenes.HUD, {});
         this.scene.launch(Scenes.MENU, {});
     }
 
