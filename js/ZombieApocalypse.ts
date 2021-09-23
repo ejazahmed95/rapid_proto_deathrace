@@ -23,7 +23,7 @@ export default class ZombieApocalypse {
             height: 1080,
             physics: {
                 default: 'arcade',
-                arcade: {debug:true  },
+                arcade: {debug:false },
             },
 			backgroundColor: "#ffffff",
             scene: [
@@ -57,6 +57,7 @@ export default class ZombieApocalypse {
     initializeDeps() {
         // @ts-ignore
         this.game.testValue = "Some test value";
+
         DI.Register("Game", this.game);
         // @ts-ignore
         DI.Register("GameInfra", new GameInfra(this.game.config.width, this.game.config.height));

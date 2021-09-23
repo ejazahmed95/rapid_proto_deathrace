@@ -121,8 +121,6 @@ export default class Zombie extends MovableObject {
                 console.log("Zombie collider pedestrian ", object1.getId(), object2.getId());
                 let pedestrian = object2 as Pedestrian;
 				pedestrian.onKilled();
-                let eventManager = DI.Get("EventManager") as EventManager;
-                eventManager.sendEvent(GameEvents.PedestrianConverted, { PositionX: object1.x, PositionY: object1.y } as PedestrianConvertInfo);
             } else if (object1.getTag() == ObjTags.Zombie && object2.getTag() == ObjTags.Warrior) {
                 console.log("Zombie collider warrior ", object1.getId(), object2.getId());
                 let eventManager = DI.Get("EventManager") as EventManager;
