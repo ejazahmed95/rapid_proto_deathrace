@@ -28,12 +28,12 @@ export default class MenuScene extends Phaser.Scene {
     create() {
         // this.scene.launch(Scenes.CONTROLS, GameConf);
 		let layout = (DI.Get("GameInfra") as GameInfra).layout;
-		this.title = this.add.text(layout.TotalWidth/4, layout.GameHeight/3, Constants.GAME_NAME, {fontFamily: "arcade-basic", fontSize: "64px", color: "red"});
+		this.title = this.add.text(layout.Border + layout.GameWidth*0.3, layout.GameHeight/3, Constants.GAME_NAME, {fontFamily: "arcade-basic", fontSize: "64px", color: "red"});
 		this.options = new Options(this, {
 			fontFamily: "arcade-basic",
 			fontSize: 32,
 			padding: 10,
-			position: new Point(layout.TotalWidth/3, layout.GameHeight/2),
+			position: new Point(layout.Border + layout.GameWidth*0.38, layout.GameHeight/2),
 			options: {
 				"Start": () => {
 					this.gameStarted = true;

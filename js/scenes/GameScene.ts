@@ -39,7 +39,6 @@ export default class GameScene extends Phaser.Scene {
 		this.eventManager.addHandler(GameEvents.LevelFinished, this.onLevelFinish.bind(this));
 
         this.sound.play(AudioTrack.Background);
-
 		this.events.on('shutdown', () => this.onSceneShutdown());
     }
 
@@ -54,7 +53,7 @@ export default class GameScene extends Phaser.Scene {
         this.spawnManager.init(this, this.levelConfig);
 
         let layout = (DI.Get("GameInfra") as GameInfra).layout;
-        this.physics.world.setBounds(layout.Border, layout.Border, layout.GameWidth, layout.GameHeight);
+        this.physics.world.setBounds(layout.Border + 20, layout.Border + 60, layout.GameWidth - 40, layout.GameHeight - 180);
     }
 
     update(time: number, delta: number) {

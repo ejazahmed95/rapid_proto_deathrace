@@ -74,20 +74,24 @@ export default class ArcadeScene extends Phaser.Scene {
         this.controlBg.alpha = 0.5;
 
         let buttonX = layout.TotalWidth * 0.2;
-        let buttonY = layout.TotalHeight - layout.ControlsHeight + layout.ControlsHeight * 0.2;
+        let buttonY = layout.TotalHeight - layout.Border;
         let buttonSize = layout.ControlButtonSize + 10;
         // this.leftButton = this.add.sprite(buttonX, buttonY + buttonSize, Images.Button);
 		// this.upButton = this.add.sprite(buttonX + buttonSize, buttonY, Images.Button);
 		// this.rightButton = this.add.sprite(buttonX + buttonSize*2, buttonY + buttonSize, Images.Button);
 		// this.downButton = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize* 2, Images.Button);
-		this.fireButton = this.add.sprite(layout.TotalWidth - buttonX, buttonY + buttonSize, Images.Button);
 
-        this.joystick = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize, Spritesheets.Joystick["name"], 8);
-		this.joystick.setScale(2,2);
-		this.background = this.add.sprite(0, 0, Images.Background);
+		this.background = this.add.sprite(layout.Border, layout.Border, Images.Background);
+		this.background.displayWidth = layout.GameWidth;
+		this.background.displayHeight = layout.GameHeight;
 		this.background.setOrigin(0,0);
 		this.background.tint = 0x333333;
-		// this.cabinet = this.add.sprite(0,0, Images.Cabinet).setOrigin(0,0);
+		this.cabinet = this.add.sprite(0,0, Images.Cabinet).setOrigin(0,0);
+
+		this.joystick = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize, Spritesheets.Joystick["name"], 8);
+		this.joystick.setScale(2,2);
+		this.fireButton = this.add.sprite(layout.TotalWidth - buttonX, buttonY + buttonSize, Images.Button);
+
 		this.scene.launch(Scenes.HUD, {});
         this.scene.launch(Scenes.MENU, {});
     }

@@ -20,6 +20,7 @@ export default class Player extends MovableObject {
 		this.body.offset.x = 16;
 		this.body.offset.y = 16;
 		this.setCollideWorldBounds(true);
+		this.setScale(1.2, 1.2);
 
         this.speed = config.speed;
         this.angleSpeed = config.angleSpeed ? config.angleSpeed : 0;

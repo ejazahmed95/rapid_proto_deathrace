@@ -7,11 +7,11 @@ export default class GameInfra {
 	public layout: Layout;
 
 	constructor(width: number, height: number) {
-		let borderSize = 24;
+		let borderSize = 120;
 		let controlButtonSize = 32;
 		let gameSize = width - borderSize * 2;
 		this.layout = {
-			Border: 24,
+			Border: borderSize,
 			ControlButtonSize: 32,
 			ControlsHeight: height - width,
 			ControlsWidth: width,

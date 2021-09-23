@@ -38,15 +38,15 @@ export default class HUDScene extends Phaser.Scene {
 	create() {
 		Logger.i("HUD created", Tags.HUD);
 		let layout = this.gameInfra.layout;
-		this.score = new Score(this, layout.Border*2, layout.Border*2, `Score: - `, {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
+		this.score = new Score(this, layout.Border*1.2, layout.Border*1.5, `Score: - `, {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
 		this.score.setOrigin(0,0);
 
 		// this.add.text(layout.Border*2, layout.Border*2, "0", {fontFamily: "arcade-basic", fontSize: `32px`});
 
-		this.timer = new Timer(this, layout.TotalWidth*0.7 + layout.Border*2, layout.Border*2, 30, {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
+		this.timer = new Timer(this, layout.Border + layout.GameWidth*0.8, layout.Border*1.5, 30, {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
 		this.timer.cancel();
 
-		this.levelText = this.add.text(layout.TotalWidth/2, layout.Border*2, "Level -", {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
+		this.levelText = this.add.text(layout.Border + layout.GameWidth*0.4, layout.Border*1.5, "Level -", {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
 		// this.timer.setOrigin(this.timer.displayWidth, 0);
 		let hs = this.cache.json.get("hs");
 		console.log(JSON.stringify(hs));

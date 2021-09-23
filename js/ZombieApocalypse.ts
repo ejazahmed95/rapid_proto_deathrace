@@ -19,7 +19,7 @@ export default class ZombieApocalypse {
     constructor() {
         this.config = {
             type: Phaser.AUTO,
-            width: 640,
+            width: 1080,
             height: 1080,
             physics: {
                 default: 'arcade',

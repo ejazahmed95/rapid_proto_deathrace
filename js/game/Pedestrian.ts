@@ -34,6 +34,7 @@ export default class Pedestrian extends MovableObject {
         super(scene, config.x, config.y, Images.Square, ObjTags.Pedestrian);
 		this.body.offset.x = 10;
 		this.body.offset.y = 10;
+		this.setScale(1.2, 1.2);
 
         this.setCollideWorldBounds(true);
         // this.setScale(config["scale"]);

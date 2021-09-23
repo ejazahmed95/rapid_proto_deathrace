@@ -32,7 +32,7 @@ export default class Zombie extends MovableObject {
     constructor(scene: Phaser.Scene, config: MovableObj) {
         super(scene, config.x, config.y, Spritesheets.ZombieIdle["name"], ObjTags.Zombie);
         this.setCollideWorldBounds(true);
-
+		this.setScale(1.2, 1.2);
         let spriteConfig = Spritesheets.ZombieIdle;
 
         this.anims.create({
