@@ -414,7 +414,6 @@ export default class SpawnManager {
 		this.eventManager.removeHandlers(GameEvents.PedestrianConverted);
 		this.eventManager.removeHandlers(GameEvents.SummonWarrior);
 		this.eventManager.removeHandlers(GameEvents.KilledWarrior);
-		this.eventManager.removeHandlers(GameEvents.InputChange);
 	}
 
 }

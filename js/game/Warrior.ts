@@ -22,6 +22,7 @@ export default class Warrior extends MovableObject {
 
 		this.play("chase");
 		this.speed = 8;
+		this.setCollideWorldBounds(true);
     }
 
     create() {
@@ -30,7 +31,7 @@ export default class Warrior extends MovableObject {
 
     setTarget(targetId: number) {
 		console.log("Warrior start chase ", targetId);
-		
+
 		this.targetId = targetId;
 		this.getTargetPos();
     }
