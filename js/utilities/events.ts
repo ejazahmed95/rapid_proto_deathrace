@@ -10,7 +10,8 @@ export const GameEvents = {
     InputChange: "InputChange",
     LevelFinished: "LevelFinished",
     SummonWarrior: "SummonWarrior",
-    KilledWarrior: "KilledWarrior"
+    KilledWarrior: "KilledWarrior",
+	GameStarted: "GameStarted",
 }
 
 export interface LevelFinishInfo {

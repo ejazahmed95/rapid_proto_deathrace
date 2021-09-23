@@ -318,4 +318,13 @@ export default class SpawnManager {
             return warrior;
         });
     }
+
+	cleanup() {
+		this.eventManager.removeHandlers(GameEvents.KilledPedestrian);
+		this.eventManager.removeHandlers(GameEvents.KilledZombie);
+		this.eventManager.removeHandlers(GameEvents.OffGrave);
+		this.eventManager.removeHandlers(GameEvents.PedestrianConverted);
+		this.eventManager.removeHandlers(GameEvents.SummonWarrior);
+		this.eventManager.removeHandlers(GameEvents.KilledWarrior);
+	}
 }

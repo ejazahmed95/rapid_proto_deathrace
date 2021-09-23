@@ -25,6 +25,7 @@ export default class ZombieApocalypse {
                 default: 'arcade',
                 arcade: {debug:false },
             },
+			backgroundColor: "#ffffff",
             scene: [
 				ArcadeScene, MenuScene, HUDScene, GameScene, GameoverScene, LevelFinishScene // Add a highscore scene
             ],
@@ -56,7 +57,6 @@ export default class ZombieApocalypse {
     initializeDeps() {
         // @ts-ignore
         this.game.testValue = "Some test value";
-
         DI.Register("Game", this.game);
         // @ts-ignore
         DI.Register("GameInfra", new GameInfra(this.game.config.width, this.game.config.height));

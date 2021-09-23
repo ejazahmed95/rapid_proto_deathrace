@@ -19,6 +19,10 @@ export default class EventManager {
     }
   }
 
+  public removeHandlers(eventName: string) {
+	  this.eventHandlers[eventName] = [];
+  }
+
   public sendEvent(eventName: string, eventData?: object) {
     let handlers = this.eventHandlers[eventName] || [];
     for(let handler of handlers) {

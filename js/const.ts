@@ -2,6 +2,12 @@ export const Constants = {
 	GAME_NAME: "Life  Race",
 }
 
+export const Scoring = {
+	ZombieKillPoints: 100,
+	PedestrianSavePoints: 200,
+	PedestrianKillPoints: -100,
+}
+
 export const Scenes = {
     MENU: "MENU",
     GAMEPLAY: "GAMEPLAY",
@@ -30,7 +36,8 @@ export const Images = {
     Cross: "cross",
     Button: "button",
     Frame: "frame",
-    Background: "background"
+    Background: "background",
+	Cabinet: "cabinet",
 }
 
 export const AudioTrack = {

@@ -33,6 +33,9 @@ export default class Options {
 	private optionsA: OptionConf[]=[];
 	private config: UIConfig;
 
+	private eventManager!: EventManager
+	private handler: (info: any) => void;
+
 	constructor(scene: Scene, config: UIConfig) {
 		this.scene = scene;
 		this.config = config;
@@ -48,7 +51,9 @@ export default class Options {
 
 		this.setSelection(0);
 
-		(DI.Get("EventManager") as EventManager).addHandler(GameEvents.InputChange, (info: any) => this.onInput(info));
+		this.eventManager = DI.Get("EventManager") as EventManager;
+		this.handler = (info: any) => this.onInput(info);
+		this.eventManager.addHandler(GameEvents.InputChange, this.handler);
 	}
 
 	private generateOptions(config: UIConfig) {
@@ -86,5 +91,10 @@ export default class Options {
 		} else if(info.Key === Keys.Up) {
 			this.setSelection(this.currentSelection - 1);
 		}
+	}
+
+	destroy() {
+		this.eventManager.removeHandler(GameEvents.InputChange, this.handler);
+		this.eventManager.removeHandlers(GameEvents.InputChange);
 	}
 }

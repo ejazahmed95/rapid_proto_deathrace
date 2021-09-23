@@ -7,7 +7,8 @@ import EventManager from "../utilities/EventManager";
 import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 import Logger from "../utilities/logger";
-import {GameEvents, ZombieKillInfo} from "../utilities/events";
+import {GameEvents, GameObjectsInfo, ZombieKillInfo} from "../utilities/events";
+import LevelManager from "../levels/LevelManager";
 
 export default class HUDScene extends Phaser.Scene {
 	private score!: Score;
@@ -49,15 +50,10 @@ export default class HUDScene extends Phaser.Scene {
 		this.timer = new Timer(this, layout.TotalWidth*0.7 + layout.Border*2, layout.Border*2, 30, {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
 		this.levelText = this.add.text(layout.TotalWidth/2, layout.Border*2, "Level 1", {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
 		// this.timer.setOrigin(this.timer.displayWidth, 0);
-
 		let hs = this.cache.json.get("hs");
 		console.log(JSON.stringify(hs));
-		// hs.Scores.push({
-		// 	Name: "Ejaz",
-		// 	Score: 25,
-		// })
-		// console.log(JSON.stringify(hs));
-		// this.cache.json.add("hs", hs);
+
+		this.eventManager.addHandler(GameEvents.GameStarted, ()=>this.updateHUD());
 	}
 
 
@@ -73,5 +69,13 @@ export default class HUDScene extends Phaser.Scene {
 
 	private OnPedestrianKilled() {
 
+	}
+
+	private updateHUD() {
+		this.eventManager.addHandler(GameEvents.LevelFinished, (info: GameObjectsInfo) => {
+			this.score.add(info.PedestrianCount*200);
+		});
+		let level = (DI.Get("LevelManger") as LevelManager).getCurrentLevel();
+		this.levelText.setText(`Level ${level}`);
 	}
 }

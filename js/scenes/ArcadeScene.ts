@@ -18,6 +18,7 @@ export default class ArcadeScene extends Phaser.Scene {
 	private downButton!: Phaser.GameObjects.Sprite;
 	private fireButton!: Phaser.GameObjects.Sprite;
 
+	private cabinet!: Phaser.GameObjects.Sprite;
 	private background!: Phaser.GameObjects.Sprite;
 
 	private scheduler!: Scheduler;
@@ -86,6 +87,7 @@ export default class ArcadeScene extends Phaser.Scene {
 		this.background = this.add.sprite(0, 0, Images.Background);
 		this.background.setOrigin(0,0);
 		this.background.tint = 0x333333;
+		// this.cabinet = this.add.sprite(0,0, Images.Cabinet).setOrigin(0,0);
 
         this.scene.launch(Scenes.MENU, {});
     }

@@ -13,6 +13,7 @@ export default class MenuScene extends Phaser.Scene {
 	private title: Phaser.GameObjects.Text;
 	private inputManager!: InputManager;
 	private gameStarted: boolean = false;
+	private options!: Options;
 
 	constructor() {
 		super({
@@ -23,14 +24,14 @@ export default class MenuScene extends Phaser.Scene {
     init() {
         Logger.i("scene initialized", Tags.Menu);
 		this.inputManager = DI.Get("InputManager") as InputManager;
-		this.events.on('shutdown', () => { Logger.e("Menu scene is shutdown !", "EVENTS")});
+		this.events.on('shutdown', () => { this.onShutdown(); });
     }
 
     create() {
         // this.scene.launch(Scenes.CONTROLS, GameConf);
 		let layout = (DI.Get("GameInfra") as GameInfra).layout;
 		this.title = this.add.text(layout.TotalWidth/4, layout.GameHeight/3, Constants.GAME_NAME, {fontFamily: "arcade-basic", fontSize: "64px", color: "red"});
-		new Options(this, {
+		this.options = new Options(this, {
 			fontFamily: "arcade-basic",
 			fontSize: 32,
 			padding: 10,
@@ -53,5 +54,9 @@ export default class MenuScene extends Phaser.Scene {
 
 	update(time: number, delta: number) {
 		super.update(time, delta);
+	}
+
+	private onShutdown() {
+		this.options.destroy();
 	}
 }

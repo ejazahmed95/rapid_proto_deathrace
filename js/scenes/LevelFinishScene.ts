@@ -8,28 +8,32 @@ import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 
 export default class LevelFinishScene extends Phaser.Scene {
-  constructor() {
-    super({
-      key: Scenes.LEVEL_FINISH,
-    });
-  }
+	private options!: Options;
+	constructor() {
+		super({
+		  key: Scenes.LEVEL_FINISH,
+		});
+	}
 
-  init() {}
-  preload() {}
-  create() {
-	  this.add.text(260, 300, "Level Completed", {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
-	  let layout = (DI.Get("GameInfra") as GameInfra).layout;
-	  new Options(this, {
+	init() {}
+	preload() {}
+	create() {
+		this.add.text(260, 300, "Level Completed", {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
+		let layout = (DI.Get("GameInfra") as GameInfra).layout;
+		this.options = new Options(this, {
 		  fontFamily: "arcade-basic",
 		  fontSize: 32,
 		  padding: 10,
 		  position: new Point(layout.TotalWidth/3, layout.GameHeight/2 + 50),
 		  options: {
 			  "Continue": () => {
-				  this.scene.start(Scenes.GAMEPLAY, GameConf)
+				  this.scene.start(Scenes.GAMEPLAY, GameConf);
 			  },
 			  "Exit": () => { this.scene.start(Scenes.MENU, {})},
 		  },
-	  })
-  }
+		});
+		this.events.on('shutdown', () => {
+			this.options.destroy();
+		})
+	}
 }

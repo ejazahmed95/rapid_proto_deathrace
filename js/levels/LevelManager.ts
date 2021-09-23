@@ -6,7 +6,6 @@ export default class LevelManager {
 	constructor() {
 
 	}
-
 	public loadNextLevel(): LevelConfig {
 		this.currentLevel++;
 		if(this.currentLevel < LevelsConf.length) {
@@ -16,6 +15,10 @@ export default class LevelManager {
 	}
 
 	public getLevelConfig() {
+	}
+
+	getCurrentLevel() : number {
+		return this.currentLevel;
 	}
 
 	private static generateLevel(currentLevel: number): LevelConfig {
