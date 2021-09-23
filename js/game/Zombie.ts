@@ -32,7 +32,7 @@ export default class Zombie extends MovableObject {
     constructor(scene: Phaser.Scene, config: MovableObj) {
         super(scene, config.x, config.y, Spritesheets.ZombieIdle["name"], ObjTags.Zombie);
         this.setCollideWorldBounds(true);
-		this.setScale(1.2, 1.2);
+		this.setScale(0.75, 0.75);
         let spriteConfig = Spritesheets.ZombieIdle;
 
         this.anims.create({
@@ -40,6 +40,13 @@ export default class Zombie extends MovableObject {
             frames: this.anims.generateFrameNumbers(spriteConfig["name"], { start: 0, end: spriteConfig["framesNum"] - 1 }),
             frameRate: spriteConfig["frameRate"],
             repeat: -1,
+        });
+
+        this.anims.create({
+            key: "zombie_spawn",
+            frames: this.anims.generateFrameNumbers(Spritesheets.Zombie_Spawn["name"], { start: 0, end: Spritesheets.Zombie_Spawn["framesNum"] - 1 }),
+            frameRate: Spritesheets.Zombie_Spawn["frameRate"],
+            repeat: 0,
         });
 
         this.stateDurationMax.set(ZombieState.Idle, 3000.0);
@@ -50,7 +57,8 @@ export default class Zombie extends MovableObject {
     }
 
     create() {
-        this.onChangeState(ZombieState.Idle);
+        this.play("zombie_spawn");
+        //this.onChangeState(ZombieState.Idle);
         let eventManager = DI.Get("EventManager") as EventManager;
         eventManager.addHandler(GameEvents.PedestrianPosUpdate, this.onPedestrianPositionUpdate = this.onPedestrianPositionUpdate.bind(this));
     }
