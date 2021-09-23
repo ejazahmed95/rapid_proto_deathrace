@@ -37,6 +37,7 @@ export const Images = {
     Frame: "frame",
     Background: "background",
 	Cabinet: "cabinet",
+	Button: "btn"
 }
 
 export const AudioTrack = {

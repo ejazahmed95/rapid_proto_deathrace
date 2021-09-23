@@ -2,8 +2,8 @@ import {LevelConfig} from "../types/types";
 
 const Level1Config: LevelConfig = {
 	Player: {
-		"x": 330,
-		"y": 330,
+		"x": 530,
+		"y": 530,
 		"speed": 15,
 		"angleSpeed": 10
 	},
@@ -55,12 +55,13 @@ const Level1Config: LevelConfig = {
 			"speed": 6,
 		}
 	],
-	Eggs: [],
+	Eggs:[],
 }
+
 const Level2Config: LevelConfig = {
 	Player: {
-		"x": 330,
-		"y": 330,
+		"x": 530,
+		"y": 530,
 		"speed": 15,
 		"angleSpeed": 10
 	},
@@ -91,74 +92,92 @@ const Level2Config: LevelConfig = {
 			"y": 390,
 			"speed": 4,
 		},
-{
-	"x": 700,
-	"y": 700,
-	"speed": 4,
-},
-{
-	"x": 820,
-	"y": 830,
-	"speed": 4,
-}
-],
-Graves: [
-	{
-		"x": 425,
-		"y": 440
-	},
-	{
-		"x": 665,
-		"y": 440
-	},
-	{
-		"x": 425,
-		"y": 650
-	},
-	{
-		"x": 665,
-		"y": 650
-	}
-],
+		{
+			"x": 700,
+			"y": 700,
+			"speed": 4,
+		},
+		{
+			"x": 820,
+			"y": 830,
+			"speed": 4,
+		}
+	],
+	Graves: [
+		{
+			"x": 425,
+			"y": 440
+		},
+		{
+			"x": 665,
+			"y": 440
+		},
+		{
+			"x": 425,
+			"y": 650
+		},
+		{
+			"x": 665,
+			"y": 650
+		}
+	],
 	Pedestrians: [
-	{
-		"x": 775,
-		"y": 517,
-		"speed": 6,
-	},
-	{
-		"x": 800,
-		"y": 517,
-		"speed": 6,
-	},
-	{
-		"x": 825,
-		"y": 517,
-		"speed": 6,
-	},
+		{
+			"x": 775,
+			"y": 517,
+			"speed": 6,
+		},
+		{
+			"x": 800,
+			"y": 517,
+			"speed": 6,
+		},
+		{
+			"x": 825,
+			"y": 517,
+			"speed": 6,
+		},
 
 		{
 			"x": 775,
 			"y": 575,
 			"speed": 6,
 		},
-{
-	"x": 800,
-	"y": 575,
-	"speed": 6,
-},
-{
-	"x": 825,
-	"y": 575,
-	"speed": 6,
+		{
+			"x": 800,
+			"y": 575,
+			"speed": 6,
+		},
+		{
+			"x": 825,
+			"y": 575,
+			"speed": 6,
+		}
+	],
+	Eggs: [
+		{
+			"x": 345,
+			"y": 360,
+		},
+		{
+			"x": 735,
+			"y": 360,
+		},
+		{
+			"x": 345,
+			"y": 690,
+		},
+		{
+			"x": 735,
+			"y": 690,
+		}
+	]
 }
-],
-	Eggs: [],
-}
+
 const Level3Config: LevelConfig = {
 	Player: {
-		"x": 330,
-		"y": 330,
+		"x": 530,
+		"y": 530,
 		"speed": 20,
 		"angleSpeed": 20
 	},
@@ -280,12 +299,12 @@ const Level3Config: LevelConfig = {
 			speed: 10,
 		}
 	],
-	Eggs: [],
+	Eggs:[],
 }
 const Level4Config: LevelConfig = {
 	Player: {
-		"x": 330,
-		"y": 330,
+		"x": 530,
+		"y": 530,
 		"speed": 20,
 		"angleSpeed": 20
 	},
@@ -427,12 +446,30 @@ const Level4Config: LevelConfig = {
 			"speed": 10,
 		}
 	],
-	Eggs: [],
+	Eggs: [
+		{
+			"x": 345,
+			"y": 360,
+		},
+		{
+			"x": 735,
+			"y": 360,
+		},
+		{
+			"x": 345,
+			"y": 690,
+		},
+		{
+			"x": 735,
+			"y": 690,
+		}
+	]
 }
+
 const Level5Config: LevelConfig = {
 	Player: {
-		"x": 330,
-		"y": 330,
+		"x": 530,
+		"y": 530,
 		"speed": 20,
 		"angleSpeed": 20
 	},
@@ -468,8 +505,8 @@ const Level5Config: LevelConfig = {
 			"y": 475
 		},
 		{
-			"x": 430,
-			"y": 275
+			"x": 630,
+			"y": 475
 		},
 		{
 			"x": 470,
@@ -533,10 +570,11 @@ const Level5Config: LevelConfig = {
 		}
 	]
 }
+
 export default [
+	Level5Config,
 	Level1Config,
 	Level2Config,
 	Level3Config,
 	Level4Config,
-	Level5Config
 ]
