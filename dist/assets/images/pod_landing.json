@@ -1,96 +1,96 @@
 {
 	"textures": [
 		{
-			"image": "player_move.png",
+			"image": "pod_landing.png",
 			"format": "RGBA8888",
 			"size": {
 				"w": 192,
-				"h": 64
+				"h": 48
 			},
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "car1.png",
+					"filename": "landing1.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					},
 					"frame": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					}
 				},
 				{
-					"filename": "car3.png",
+					"filename": "landing2.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					},
 					"frame": {
-						"x": 0,
+						"x": 48,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					}
 				},
 				{
-					"filename": "car2.png",
+					"filename": "landing3.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					},
 					"frame": {
-						"x": 64,
+						"x": 96,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					}
 				},
 				{
-					"filename": "car4.png",
+					"filename": "landing4.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					},
 					"frame": {
-						"x": 128,
+						"x": 144,
 						"y": 0,
-						"w": 64,
-						"h": 64
+						"w": 48,
+						"h": 48
 					}
 				}
 			]
@@ -99,6 +99,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:bb51401cf18daf4867b83e38fd628a4d:64e84a20cc199c000c24a77e98cbc575:0536b6f15a1836fcc93b5112b2746ab8$"
+		"smartupdate": "$TexturePacker:SmartUpdate:557e48312a9185676b089b99b2c4a62b:526f74555ce998c55a33314ff083fb06:5fdb306ff1bc6e229880cbbcc59703f4$"
 	}
 }

@@ -23,6 +23,8 @@ export default class GameScene extends Phaser.Scene {
 	private levelManager!: LevelManager;
 	private levelConfig!: LevelConfig;
 
+	private bgAudio!: Phaser.Sound.BaseSound;
+
     constructor() {
         super({
             key: Scenes.GAMEPLAY,
@@ -38,7 +40,8 @@ export default class GameScene extends Phaser.Scene {
 		this.levelConfig = this.levelManager.loadNextLevel();
 		this.eventManager.addHandler(GameEvents.LevelFinished, this.onLevelFinish.bind(this));
 
-        this.sound.play(AudioTrack.Background);
+        this.bgAudio = this.sound.add(AudioTrack.Background, {volume: 0.5});
+
 		this.events.on('shutdown', () => this.onSceneShutdown());
     }
 
@@ -54,7 +57,9 @@ export default class GameScene extends Phaser.Scene {
 
         let layout = (DI.Get("GameInfra") as GameInfra).layout;
         this.physics.world.setBounds(layout.Border + 20, layout.Border + 60, layout.GameWidth - 40, layout.GameHeight - 180);
-    }
+
+		this.bgAudio.play();
+	}
 
     update(time: number, delta: number) {
         super.update(time, delta);

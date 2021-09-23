@@ -15,6 +15,8 @@ import Pod from "./Pod";
 import {LevelConfig, MovableObj} from "../types/types";
 import Warrior from "./Warrior";
 import Logger from "../utilities/logger";
+import {AudioTrack} from "../const";
+import Phaser from "phaser";
 
 export default class SpawnManager {
     private pedestrians: Pedestrian[] = [];
@@ -33,6 +35,10 @@ export default class SpawnManager {
     private warriorGroup!: Phaser.GameObjects.Group;
     private eventManager!: EventManager;
 
+	private pedDeadAudio!: Phaser.Sound.BaseSound;
+	private zombieDeadAudio!: Phaser.Sound.BaseSound;
+	private pedInfectAudio!: Phaser.Sound.BaseSound;
+
     constructor() {
 
     }
@@ -40,6 +46,10 @@ export default class SpawnManager {
     init(scene: Phaser.Scene, levelConfig: LevelConfig) {
         this.scene = scene;
         this.createFactories(scene);
+
+		this.pedDeadAudio = scene.sound.add(AudioTrack.PedDead);
+		this.zombieDeadAudio = scene.sound.add(AudioTrack.ZombieDead);
+		this.pedInfectAudio = scene.sound.add(AudioTrack.PedInfect);
 
         this.eventManager = DI.Get("EventManager") as EventManager;
 
@@ -70,7 +80,6 @@ export default class SpawnManager {
         }
 
         let graveConfig = levelConfig.Graves;
-		Logger.e(JSON.stringify(graveConfig));
         this.graves = [];
         for (let id in graveConfig) {
             let config = graveConfig[id];
@@ -80,7 +89,6 @@ export default class SpawnManager {
         }
 
 		let eggConf = levelConfig.Eggs;
-		Logger.e(JSON.stringify(eggConf));
 		this.eggs = [];
 		for (let id in eggConf) {
 			let config = eggConf[id];
@@ -98,12 +106,7 @@ export default class SpawnManager {
             this.pedestrians[id].create();
         }
 
-        let podsConfig = levelConfig.Pods;
         this.pods = [];
-        for (let id in podsConfig) {
-            let config = podsConfig[id];
-            this.pods.push(scene.add.pod(config));
-        }
 
         // register collider with group
         scene.physics.add.collider(this.player, this.zombieGroup, this.player.onColliderEnter, null);
@@ -133,10 +136,22 @@ export default class SpawnManager {
 			let egg = element as Egg;
 			egg.update(deltaTime);
 		});
+
+		this.warriors.forEach(element => {
+			let warrior = element as Warrior;
+			warrior.update(deltaTime);
+		})
+
+		this.pods.forEach(element => {
+			let pod = element as Pod;
+			pod.update(deltaTime);
+		})
     }
 
     onPedestrianKilled(info?: PedestrianKillInfo) {
         if (info) {
+			this.pedDeadAudio.play();
+
             let pId = info.PedestrianId;
             for (let i = 0; i < this.pedestrians.length; ++i) {
                 let pedestrian = this.pedestrians[i] as Pedestrian;
@@ -169,6 +184,8 @@ export default class SpawnManager {
 
     onZombieKilled(info?: ZombieKillInfo) {
         if (info) {
+			this.zombieDeadAudio.play();
+
             let targetId = info.ZombieId;
             let remZombies = 0;
             this.zombies.forEach(element => {
@@ -203,6 +220,8 @@ export default class SpawnManager {
 
     onPedestrianConverted(info?: PedestrianConvertInfo) {
         if (info) {
+			this.pedInfectAudio.play();
+
             let _x = info.PositionX;
             let _y = info.PositionY;
 
@@ -219,35 +238,43 @@ export default class SpawnManager {
     }
 
     onWarriorSummoned() {
-		// Fetch Egg
+		let eggIdle: boolean = false;
+		let spawnPos: [number, number] = [0, 0];
+		this.eggs.forEach(element => {
+			let egg = element as Egg;
+			if(egg.isEnable())
+			{
+				spawnPos = [egg.x, egg.y];
+				egg.setEnable(false);
+				eggIdle = true;
+				return;
+			}
+		});
 
-		// Destroy Egg
-
-		// Create Pod
-
-		// Drop to position
+		if(!eggIdle)
+			return;
 
 		// Open Pod
-
-		// Destroy Pod
-
-		// Create Warrior
-
-        let canSummon: boolean = false;
+        let podIdle: boolean = false;
         let targetPos: [number, number] = [0, 0];
-        let spawnPos: [number, number] = [0, 0];
+
         this.pods.forEach(element => {
             let pod = element as Pod;
             if (pod.isEnable()) {
-                canSummon = true;
-                spawnPos = [pod.x, pod.y];
+				podIdle = true;
+				pod.setEnable(true);
+				pod.onActive(spawnPos[0], spawnPos[1]);
                 return;
             }
         });
-        console.log("onWarriorSummoned spawnPos", spawnPos);
 
-        if (canSummon == false)
-            return;
+		if(podIdle == false) {
+			let newPod = this.scene.add.pod(this.scene, spawnPos[0], spawnPos[1]);
+			this.pods.push(newPod);
+			newPod.onActive(spawnPos[0], spawnPos[1]);
+		}
+
+        console.log("onWarriorSummoned spawnPos", spawnPos);
 
         let distance: number = -1;
         for (let i = 0; i < this.zombies.length; ++i) {
@@ -265,19 +292,26 @@ export default class SpawnManager {
         if (distance <= 0)
             return;
 
-        for (let i = 0; i < this.warriors.length; ++i) {
-            if (this.warriors[i].isEnable() == true) {
-                this.warriors[i].reSpawn(spawnPos[0], spawnPos[1]);
-                this.warriors[i].setTarget(targetPos[0], targetPos[1]);
-                this.warriorGroup.add(this.warriors[i]);
-                return;
-            }
-        }
-
-        let warrior = this.scene?.add.warrior(spawnPos[0], spawnPos[1]);
-        warrior.setTarget(targetPos[0], targetPos[1]);
-        this.warriorGroup.add(warrior);
+		this.scene.time.delayedCall(3000, this.onWarriorSpawn, [spawnPos, targetPos], this);
     }
+
+	onWarriorSpawn(spawnPos: [number, number], targetPos: [number, number])
+	{
+		// Create Warrior
+		for (let i = 0; i < this.warriors.length; ++i) {
+			if (this.warriors[i].isEnable() == true) {
+				this.warriors[i].reSpawn(spawnPos[0], spawnPos[1]);
+				this.warriors[i].setTarget(targetPos[0], targetPos[1]);
+				this.warriorGroup.add(this.warriors[i]);
+				return;
+			}
+		}
+
+		let warrior = this.scene?.add.warrior(spawnPos[0], spawnPos[1]);
+		warrior.setTarget(targetPos[0], targetPos[1]);
+		this.warriors.push(warrior);
+		this.warriorGroup.add(warrior);
+	}
 
     onWarriorKilled(info: WarriorKillInfo) {
         for (let i = 0; i < this.warriors.length; ++i) {
@@ -348,8 +382,8 @@ export default class SpawnManager {
                 return zombie;
             });
 
-        Phaser.GameObjects.GameObjectFactory.register('pod', function (config: MovableObj) {
-            const pod = new Pod(scene, config);
+        Phaser.GameObjects.GameObjectFactory.register('pod', function (x: number, y: number) {
+            const pod = new Pod(scene, x, y);
             return pod;
         });
 

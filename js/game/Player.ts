@@ -1,10 +1,11 @@
-import { Images, Keys, ObjTags, Spritesheets } from '../const';
+import {AudioTrack, Images, Keys, ObjTags, Spritesheets} from '../const';
 import MovableObject from '../engine/MovableObject';
 import GameObject from '../engine/GameObject';
 import DI from "../utilities/DI";
 import EventManager from '../utilities/EventManager';
 import { GameEvents, InputChangeInfo, PedestrianKillInfo, ZombieKillInfo } from '../utilities/events';
 import { MovableObj } from "../types/types"
+import Phaser from "phaser";
 
 const PlayerState = {
     Idle: 0,
@@ -14,6 +15,9 @@ const PlayerState = {
 export default class Player extends MovableObject {
     private eventManager: EventManager | undefined;
     private pState: number = PlayerState.Idle;
+	private carMoveAudio!: Phaser.Sound.BaseSound;
+
+	private carMove: boolean = false;
 
     constructor(scene: Phaser.Scene, config: MovableObj) {
         super(scene, config.x, config.y, Images.Square, ObjTags.Player);
@@ -29,12 +33,14 @@ export default class Player extends MovableObject {
 
         this.eventManager = DI.Get("EventManager") as EventManager;
 
-        this.anims.create({
-            key: "idle",
-            frames: this.anims.generateFrameNumbers(Spritesheets.PlayerIdle["name"], { start: 0, end: Spritesheets.PlayerIdle["framesNum"] - 1 }),
-            frameRate: Spritesheets.PlayerIdle["frameRate"],
-            repeat: -1,
-        });
+		this.carMoveAudio = scene.sound.add(AudioTrack.CarMove);
+
+        // this.anims.create({
+        //     key: "idle",
+        //     frames: this.anims.generateFrameNumbers(Spritesheets.PlayerIdle["name"], { start: 0, end: Spritesheets.PlayerIdle["framesNum"] - 1 }),
+        //     frameRate: Spritesheets.PlayerIdle["frameRate"],
+        //     repeat: -1,
+        // });
 
         this.anims.create({
             key: "move",
@@ -43,7 +49,7 @@ export default class Player extends MovableObject {
             repeat: -1,
         });
 
-        this.play("idle");
+        this.play("move");
 
         this.eventManager.addHandler(GameEvents.InputChange, this.onKeyStateChange = this.onKeyStateChange.bind(this));
     }
@@ -51,15 +57,16 @@ export default class Player extends MovableObject {
     onChangeState(newState: number) {
         if (newState == this.pState)
             return;
-        if (newState == PlayerState.Idle)
-            this.play("idle");
-        else
-            this.play("move");
+        // if (newState == PlayerState.Idle)
+        //     this.play("idle");
+        // else
+        //     this.play("move");
         this.pState = newState;
     }
 
     update(deltaTime: number) {
         let inputs = this.inputManager.getInput();
+		this.onInputStateChange(inputs.size as number);
         let horizontal: number = inputs.contains(Keys.Left) ? -1 : (inputs.contains(Keys.Right) ? 1 : 0);
         let vertical: number = inputs.contains(Keys.Up) ? -1 : (inputs.contains(Keys.Down) ? 1 : 0);
 
@@ -70,6 +77,19 @@ export default class Player extends MovableObject {
         this.onChangeState(inputs.size == 0 ? PlayerState.Idle : PlayerState.Move);
 
     }
+
+	onInputStateChange(size: number)
+	{
+		let newState = size > 0;
+		// if(newState != this.carMove)
+		// {
+		// 	this.carMove = newState;
+		// 	if(newState)
+		// 		this.carMoveAudio.play();
+		// 	else
+		// 		this.carMoveAudio.stop();
+		// }
+	}
 
     // we need to matain the collision status
     onColliderEnter(player: Player, other: GameObject) {

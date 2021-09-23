@@ -41,7 +41,11 @@ export const Images = {
 }
 
 export const AudioTrack = {
-    Background: "bgAudio",
+    Background: "main_song",
+	CarMove: "sfx_vehicle_carloop1",
+	PedDead: "sfx_deathscream_human14",
+	ZombieDead: "sfx_deathscream_alien1",
+	PedInfect: "sfx_deathscream_alien4"
 }
 
 export const Spritesheets = {
@@ -97,8 +101,8 @@ export const Spritesheets = {
         "name": "player_move",
         "frameWidth": 64,
         "frameHeight": 64,
-        "framesNum": 4,
-        "frameRate": 4,
+        "framesNum": 3,
+        "frameRate": 3,
         "repeat": false
     },
     Joystick: {
@@ -128,6 +132,13 @@ export const Spritesheets = {
 		"framesNum": 10,
 		"frameRate": 5
 	},
+	Warrior_Move:{
+		"name": "warrior_move",
+		"frameWidth": 96,
+		"frameHeight": 96,
+		"framesNum": 7,
+		"frameRate": 5
+	}
 }
 
 export const Audio = {

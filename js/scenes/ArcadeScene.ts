@@ -155,8 +155,13 @@ export default class ArcadeScene extends Phaser.Scene {
         for (let audio in AudioTrack) {
             // @ts-ignore
             Logger.i(`loading audio asset: ${AudioTrack[audio]}`, "LOAD");
-            // @ts-ignore
-            this.load.audio(AudioTrack[audio], AudioTrack[audio] + ".mp3");
+			// @ts-ignore
+			if(AudioTrack[audio] == "main_song")
+				// @ts-ignore
+            	this.load.audio(AudioTrack[audio], AudioTrack[audio] + ".mp3");
+			else
+				// @ts-ignore
+				this.load.audio(AudioTrack[audio], AudioTrack[audio] + ".wav");
         }
     }
 }
