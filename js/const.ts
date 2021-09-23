@@ -70,7 +70,7 @@ export const Spritesheets = {
         "frameWidth": 64,
         "frameHeight": 64,
         "framesNum": 3,
-        "frameRate": 3,
+        "frameRate": 5,
         "repeat": false
     },
     PedRun: {

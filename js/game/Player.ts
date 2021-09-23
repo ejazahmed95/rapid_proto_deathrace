@@ -51,7 +51,7 @@ export default class Player extends MovableObject {
 
         this.play("move");
 
-        this.eventManager.addHandler(GameEvents.InputChange, this.onKeyStateChange = this.onKeyStateChange.bind(this));
+		this.eventManager.addHandler(GameEvents.InputChange, this.onKeyStateChange = this.onKeyStateChange.bind(this));
     }
 
     onChangeState(newState: number) {
@@ -119,4 +119,8 @@ export default class Player extends MovableObject {
             console.log("player summon warrior");
         }
     }
+
+	cleanup() {
+		this.eventManager?.removeHandlers(GameEvents.InputChange);
+	}
 }
