@@ -1,9 +1,13 @@
 import { ObjTags, Spritesheets } from "../const";
 import MovableObject from "../engine/MovableObject";
+import SpawnManager from "./SpawnManager";
+import DI from "../utilities/DI";
 
 export default class Warrior extends MovableObject {
 	private walkDirection: [number, number] = [0, 0];
 	private targetPos: [number, number] = [0, 0];
+	private targetId: number = 0;
+	private interval: number = 0;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, Spritesheets.Warrior_Move["name"], ObjTags.Warrior);
@@ -24,16 +28,31 @@ export default class Warrior extends MovableObject {
 
     }
 
-    setTarget(x: number, y: number) {
-		console.log("Warrior start chase ", x, y);
-		this.targetPos = [x, y];
-        let offset = [x - this.x, y - this.y];
-        this.walkDirection = [offset[0] > 0 ? 1 : (offset[0] < 0 ? -1 : 0), offset[1] > 0 ? 1 : (offset[1] < 0 ? -1 : 0)];
+    setTarget(targetId: number) {
+		console.log("Warrior start chase ", targetId);
+		
+		this.targetId = targetId;
+		this.getTargetPos();
     }
+
+	getTargetPos()
+	{
+		let spawnManager = DI.Get("SpawnManager") as SpawnManager;
+		this.targetPos = spawnManager.onGetZombiePos(this.targetId);
+        let offset = [this.targetPos[0] - this.x, this.targetPos[1] - this.y];
+        this.walkDirection = [offset[0] > 0 ? 1 : (offset[0] < 0 ? -1 : 0), offset[1] > 0 ? 1 : (offset[1] < 0 ? -1 : 0)];
+	}
 
     update(deltaTime: number) {
         if (this.enable == false)
             return;
+
+		this.interval += deltaTime;
+		if(this.interval >= 3000)
+		{
+			this.getTargetPos();
+			this.interval = 0;
+		}
 
 		let offset = [this.targetPos[0] - this.x, this.targetPos[1] - this.y];
 		if(Math.abs(offset[0]) > Math.abs(offset[1]))

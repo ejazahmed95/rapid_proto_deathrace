@@ -240,23 +240,24 @@ export default class SpawnManager {
     onWarriorSummoned() {
 		let eggIdle: boolean = false;
 		let spawnPos: [number, number] = [0, 0];
-		this.eggs.forEach(element => {
-			let egg = element as Egg;
+        for (let i = 0; i < this.eggs.length; ++i) {
+            let egg = this.eggs[i] as Egg;
 			if(egg.isEnable())
 			{
+                console.log("egg set false");
 				spawnPos = [egg.x, egg.y];
 				egg.setEnable(false);
 				eggIdle = true;
-				return;
+				break;
 			}
-		});
+        }
 
 		if(!eggIdle)
 			return;
 
 		// Open Pod
         let podIdle: boolean = false;
-        let targetPos: [number, number] = [0, 0];
+        let targetId: number = 0;//[number, number] = [0, 0];
 
         this.pods.forEach(element => {
             let pod = element as Pod;
@@ -282,7 +283,7 @@ export default class SpawnManager {
                 // no need to be very accurate
                 let dis = Math.abs(this.zombies[i].x - spawnPos[0]) + Math.abs(this.zombies[i].y - spawnPos[1]);
                 if (distance < 0 || dis < distance) {
-                    targetPos = [this.zombies[i].x, this.zombies[i].y];
+                    targetId = this.zombies[i].getId();//[this.zombies[i].x, this.zombies[i].y];
                     distance = dis;
                 }
             }
@@ -292,23 +293,23 @@ export default class SpawnManager {
         if (distance <= 0)
             return;
 
-		this.scene.time.delayedCall(3000, this.onWarriorSpawn, [spawnPos, targetPos], this);
+		this.scene.time.delayedCall(3000, this.onWarriorSpawn, [spawnPos, targetId], this);
     }
 
-	onWarriorSpawn(spawnPos: [number, number], targetPos: [number, number])
+	onWarriorSpawn(spawnPos: [number, number], targetId: number)
 	{
 		// Create Warrior
 		for (let i = 0; i < this.warriors.length; ++i) {
 			if (this.warriors[i].isEnable() == true) {
 				this.warriors[i].reSpawn(spawnPos[0], spawnPos[1]);
-				this.warriors[i].setTarget(targetPos[0], targetPos[1]);
+				this.warriors[i].setTarget(targetId);
 				this.warriorGroup.add(this.warriors[i]);
 				return;
 			}
 		}
 
 		let warrior = this.scene?.add.warrior(spawnPos[0], spawnPos[1]);
-		warrior.setTarget(targetPos[0], targetPos[1]);
+		warrior.setTarget(targetId);
 		this.warriors.push(warrior);
 		this.warriorGroup.add(warrior);
 	}
@@ -347,6 +348,19 @@ export default class SpawnManager {
 
     onGraveOff(objectId?: number) {
         console.log("onGraveOff " + objectId);
+    }
+
+    onGetZombiePos(zombieID: number): [number, number]
+    {
+        for(let i = 0; i < this.zombies.length; ++i)
+        {
+            let zombie = this.zombies[i] as Zombie;
+
+            if(zombie.getId() == zombieID)
+            {
+                return [zombie.x, zombie.y];
+            }
+        }
     }
 
     createFactories(scene: Phaser.Scene) {
@@ -401,4 +415,5 @@ export default class SpawnManager {
 		this.eventManager.removeHandlers(GameEvents.SummonWarrior);
 		this.eventManager.removeHandlers(GameEvents.KilledWarrior);
 	}
+    
 }
