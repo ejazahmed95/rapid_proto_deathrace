@@ -18,7 +18,7 @@ export default class LevelFinishScene extends Phaser.Scene {
 	init() {}
 	preload() {}
 	create() {
-		this.add.text(260, 300, "Level Completed", {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
+		this.add.text(250, 300, "Level Completed", {fontFamily: "arcade-basic", fontSize: `64px`} as TextStyle);
 		let layout = (DI.Get("GameInfra") as GameInfra).layout;
 		this.options = new Options(this, {
 		  fontFamily: "arcade-basic",
@@ -29,7 +29,7 @@ export default class LevelFinishScene extends Phaser.Scene {
 			  "Continue": () => {
 				  this.scene.start(Scenes.GAMEPLAY, GameConf);
 			  },
-			  "Exit": () => { this.scene.start(Scenes.MENU, {})},
+			  // "Exit": () => { this.scene.start(Scenes.MENU, {})},
 		  },
 		});
 		this.events.on('shutdown', () => {

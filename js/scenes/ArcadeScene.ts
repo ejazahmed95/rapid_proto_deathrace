@@ -74,7 +74,7 @@ export default class ArcadeScene extends Phaser.Scene {
         this.controlBg.alpha = 0.5;
 
         let buttonX = layout.TotalWidth * 0.2;
-        let buttonY = layout.TotalHeight - layout.Border;
+        let buttonY = layout.TotalHeight - layout.Border*1.4;
         let buttonSize = layout.ControlButtonSize + 10;
         // this.leftButton = this.add.sprite(buttonX, buttonY + buttonSize, Images.Button);
 		// this.upButton = this.add.sprite(buttonX + buttonSize, buttonY, Images.Button);
@@ -89,8 +89,8 @@ export default class ArcadeScene extends Phaser.Scene {
 		this.cabinet = this.add.sprite(0,0, Images.Cabinet).setOrigin(0,0);
 
 		this.joystick = this.add.sprite(buttonX + buttonSize, buttonY + buttonSize, Spritesheets.Joystick["name"], 8);
-		this.joystick.setScale(2,2);
-		this.fireButton = this.add.sprite(layout.TotalWidth - buttonX, buttonY + buttonSize, Images.Button);
+		this.joystick.setScale(4,4);
+		this.fireButton = this.add.sprite(layout.TotalWidth - buttonX, buttonY + buttonSize*2, Spritesheets.Button["name"]).setScale(2,2);
 
 		this.scene.launch(Scenes.HUD, {});
         this.scene.launch(Scenes.MENU, {});
@@ -105,7 +105,7 @@ export default class ArcadeScene extends Phaser.Scene {
 		// if(input.contains(Keys.Up)) this.highlightButton(this.upButton);
 		// if(input.contains(Keys.Right)) this.highlightButton(this.rightButton);
 		// if(input.contains(Keys.Down)) this.highlightButton(this.downButton);
-		if(input.contains(Keys.Action)) this.highlightButton(this.fireButton);
+		if(input.contains(Keys.Action)) this.fireButton.setFrame(1);
 
         let inputString = "";
         if (input.contains(Keys.Left)) inputString += Keys.Left;
@@ -124,7 +124,8 @@ export default class ArcadeScene extends Phaser.Scene {
 		// this.upButton.tint = 0xffffff;
 		// this.rightButton.tint = 0xffffff;
 		// this.downButton.tint = 0xffffff;
-		this.fireButton.tint = 0xffffff;
+		// this.fireButton.tint = 0xffffff;
+		this.fireButton.setFrame(0);
 	}
 
     private highlightButton(button: Phaser.GameObjects.Sprite) {

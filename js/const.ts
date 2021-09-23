@@ -34,7 +34,6 @@ export const Images = {
     Zombie: "car",
     Square: "placeholder_square",
     Cross: "cross",
-    Button: "button",
     Frame: "frame",
     Background: "background",
 	Cabinet: "cabinet",
@@ -57,6 +56,14 @@ export const Spritesheets = {
         "frameRate": 5,
         "repeat": false
     },
+	Button: {
+		"name": "button",
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"framesNum": 2,
+		"frameRate": 5,
+		"repeat": false
+	},
     ZombieIdle: {
         "name": "zombie_idle",
         "frameWidth": 32,

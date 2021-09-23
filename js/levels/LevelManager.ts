@@ -21,11 +21,13 @@ export default class LevelManager {
 	}
 
 	private static generateLevel(currentLevel: number): LevelConfig {
+		return LevelsConf[LevelsConf.length - 1];
 		return {
 			Player: {} as MovableObj,
 			Zombies: [],
 			Graves: [],
 			Pedestrians: [],
+			Eggs: [],
 		} as LevelConfig;
 	}
 

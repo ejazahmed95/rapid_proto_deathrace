@@ -18,13 +18,13 @@ export default class GameoverScene extends Phaser.Scene {
   init() {}
   preload() {}
   create() {
-	  this.add.text(260, 300, "Game Over", {fontFamily: "arcade-basic", fontSize: `32px`} as TextStyle);
+	  this.add.text(300, 300, "Game Over", {fontFamily: "arcade-basic", fontSize: `64px`} as TextStyle);
 	  // this.add.text(200, 360, "(Press SPACE to restart)", {fontFamily: "arcade-basic", fontSize: `24px`} as TextStyle);
 	  this.options = new Options(this, {
 		  fontFamily: "arcade-basic",
 		  fontSize: 24,
 		  padding: 10,
-		  position: new Point(200, 360),
+		  position: new Point(400, 500),
 		  options: {
 			  "Restart": () => {
 				  this.scene.start(Scenes.GAMEPLAY, GameConf);
