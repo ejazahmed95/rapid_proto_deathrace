@@ -34,6 +34,8 @@ export default class Pod extends GameObject {
     }
 
     update(deltaTime: number) {
+		if(!this.enable)
+			return;
 		this.lifeTime += deltaTime;
 		if(this.lifeTime >= this.landTime && !this.opened) {
 			this.play("open");
