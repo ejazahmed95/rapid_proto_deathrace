@@ -7,6 +7,7 @@ export default class Pod extends GameObject {
 	private openTime: number = 2000; // ms
 	private lifeTime: number = 0;
 	private opened: boolean = false;
+	private actived: boolean = false;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, Spritesheets.Pod_Landing["name"], ObjTags.Pod);
@@ -30,13 +31,11 @@ export default class Pod extends GameObject {
     }
 
     create() {
-        this.play("spawn");
     }
 
     update(deltaTime: number) {
-        if (!this.isEnable())
-            return;
-
+		if(!this.enable)
+			return;
 		this.lifeTime += deltaTime;
 		if(this.lifeTime >= this.landTime && !this.opened) {
 			this.play("open");
@@ -50,6 +49,7 @@ export default class Pod extends GameObject {
     // active the pod, spawn warrior and destroy
     onActive(x: number, y: number) {
 		this.setEnable(true);
+		this.actived = true;
 		this.lifeTime = 0;
 		this.opened = false;
 		this.play("spawn");
@@ -58,4 +58,9 @@ export default class Pod extends GameObject {
 		console.log("target pos", x, y);
 		this.setVelocity(0, (y + 100) / 1.0);
     }
+
+	isEnable()
+	{
+		return this.enable && !this.actived;
+	}
 }
