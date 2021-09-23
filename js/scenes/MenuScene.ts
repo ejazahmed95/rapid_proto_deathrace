@@ -1,8 +1,6 @@
-import {Constants, Images, Keys, Scenes, Spritesheets, Tags} from "../const";
+import {Constants, Scenes, Tags} from "../const";
 import GameConf from "../game/config";
 import Logger from "../utilities/logger";
-import GameObject from "../engine/GameObject";
-import Texture = Phaser.Textures.Texture;
 import InputManager from "../engine/InputManager";
 import DI from "../utilities/DI";
 import Options from "../ui/Options";

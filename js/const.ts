@@ -107,13 +107,27 @@ export const Spritesheets = {
         "frameHeight": 32,
         "framesNum": 9,
     },
-    Pod: {
-        "name": "egg",
-        "frameWidth": 32,
-        "frameHeight": 32,
-        "framesNum": 5,
-        "frameRate": 5
-    }
+	Egg: {
+		"name": "egg",
+		"frameWidth": 64,
+		"frameHeight": 64,
+		"framesNum": 6,
+		"frameRate": 5
+	},
+	Pod_Landing: {
+		"name": "pod_landing",
+		"frameWidth": 48,
+		"frameHeight": 48,
+		"framesNum": 4,
+		"frameRate": 4
+	},
+	Pod_Opening: {
+		"name": "pod_opening",
+		"frameWidth": 48,
+		"frameHeight": 48,
+		"framesNum": 10,
+		"frameRate": 5
+	},
 }
 
 export const Audio = {

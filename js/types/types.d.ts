@@ -31,7 +31,8 @@ export interface LevelConfig {
     Player: MovableObj,
     Zombies: MovableObj[],
     Graves: ImmovableObj[],
-    Pedestrians: MovableObj[]
+    Pedestrians: MovableObj[],
+	Eggs: ImmovableObj[],
 }
 
 export interface Layout {

@@ -93,7 +93,7 @@ export default class Player extends MovableObject {
     }
 
     onKeyStateChange(info: InputChangeInfo) {
-        if (info.Key == Keys.Action && info.IsDown == true) {
+        if (info.Key == Keys.Action && info.IsDown) {
             this.eventManager?.sendEvent(GameEvents.SummonWarrior);
         }
     }

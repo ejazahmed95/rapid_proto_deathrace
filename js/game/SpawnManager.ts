@@ -1,3 +1,5 @@
+import Egg from "./Egg";
+
 export { LevelConfig } from "../const"
 import Texture = Phaser.Textures.Texture;
 import DI from "../utilities/DI";
@@ -12,10 +14,12 @@ import { GameEvents, GameObjectsInfo, PedestrianConvertInfo, PedestrianKillInfo,
 import Pod from "./Pod";
 import {LevelConfig, MovableObj} from "../types/types";
 import Warrior from "./Warrior";
+import Logger from "../utilities/logger";
 
 export default class SpawnManager {
     private pedestrians: Pedestrian[] = [];
     private graves: Grave[] = [];
+    private eggs: Egg[] = [];
     private zombies: Zombie[] = [];
     private player!: Player;
     private pods: Pod[] = [];
@@ -66,6 +70,7 @@ export default class SpawnManager {
         }
 
         let graveConfig = levelConfig.Graves;
+		Logger.e(JSON.stringify(graveConfig));
         this.graves = [];
         for (let id in graveConfig) {
             let config = graveConfig[id];
@@ -73,6 +78,16 @@ export default class SpawnManager {
             this.gravesGroup.add(this.graves[id]);
             this.graves[id].create();
         }
+
+		let eggConf = levelConfig.Eggs;
+		Logger.e(JSON.stringify(eggConf));
+		this.eggs = [];
+		for (let id in eggConf) {
+			let config = eggConf[id];
+			this.eggs.push(scene.add.egg(config.x, config.y));
+			this.gravesGroup.add(this.eggs[id]);
+			this.eggs[id].create();
+		}
 
         let pedestrianConfig = levelConfig.Pedestrians;
         this.pedestrians = [];
@@ -113,6 +128,11 @@ export default class SpawnManager {
             let zombie = element as Zombie;
             zombie.update(deltaTime);
         });
+
+		this.eggs.forEach(element => {
+			let egg = element as Egg;
+			egg.update(deltaTime);
+		});
     }
 
     onPedestrianKilled(info?: PedestrianKillInfo) {
@@ -199,6 +219,20 @@ export default class SpawnManager {
     }
 
     onWarriorSummoned() {
+		// Fetch Egg
+
+		// Destroy Egg
+
+		// Create Pod
+
+		// Drop to position
+
+		// Open Pod
+
+		// Destroy Pod
+
+		// Create Warrior
+
         let canSummon: boolean = false;
         let targetPos: [number, number] = [0, 0];
         let spawnPos: [number, number] = [0, 0];
@@ -302,6 +336,11 @@ export default class SpawnManager {
             function (x: number, y: number) {
                 return new Grave(scene, x, y);
             });
+
+		Phaser.GameObjects.GameObjectFactory.register('egg',
+			function (x: number, y: number) {
+				return new Egg(scene, x, y);
+			});
 
         Phaser.GameObjects.GameObjectFactory.register('zombie',
             function (config: MovableObj) {

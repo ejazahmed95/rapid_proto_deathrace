@@ -11,18 +11,13 @@ const Level1Config: LevelConfig = {
 		{
 			"x": 300,
 			"y": 400,
-			"speed": 8,
+			"speed": 4,
 		},
 		{
 			"x": 350,
 			"y": 400,
 			"speed": 4,
 		},
-		{
-			"x": 350,
-			"y": 100,
-			"speed": 4,
-		}
 	],
 	Graves: [
 		{
@@ -33,10 +28,6 @@ const Level1Config: LevelConfig = {
 			"x": 300,
 			"y": 320
 		},
-		{
-			"x": 200,
-			"y": 150
-		}
 	],
 	Pedestrians: [
 		{
@@ -53,6 +44,12 @@ const Level1Config: LevelConfig = {
 			"x": 500,
 			"y": 320,
 			"speed": 6,
+		}
+	],
+	Eggs: [
+		{
+			"x": 200,
+			"y": 150
 		}
 	]
 }
@@ -120,7 +117,8 @@ const Level2Config: LevelConfig = {
 			"y": 320,
 			"speed": 6,
 		}
-	]
+	],
+	Eggs: []
 }
 
 const Level3Config: LevelConfig = {
@@ -154,7 +152,8 @@ const Level3Config: LevelConfig = {
 			"y": 100,
 			speed: 10,
 		}
-	]
+	],
+	Eggs: []
 }
 const Level4Config: LevelConfig = {
 	Player: {
@@ -187,7 +186,8 @@ const Level4Config: LevelConfig = {
 			"y": 100,
 			speed: 10,
 		}
-	]
+	],
+	Eggs: []
 }
 
 const Level5Config: LevelConfig = {
@@ -221,7 +221,8 @@ const Level5Config: LevelConfig = {
 			"y": 100,
 			speed: 10,
 		}
-	]
+	],
+	Eggs: []
 }
 
 export default [
