@@ -3,7 +3,7 @@ import { Images, Spritesheets, ObjTags } from "../const";
 import DI from "../utilities/DI";
 import GameInfra from "../utilities/GameInfra";
 import EventManager from "../utilities/EventManager";
-import { GameEvents } from "../utilities/events";
+import { GameEvents, PedestrianConvertInfo } from "../utilities/events";
 import { MovableObj } from "../types/types";
 
 const PedestrianState = {
@@ -97,7 +97,7 @@ export default class Pedestrian extends MovableObject {
 				this.visible = false;
 				console.log("Change state into Dead");
 				let eventManager = DI.Get("EventManager") as EventManager;
-				eventManager.sendEvent(GameEvents.PedestrianConverted, { x:this.x, y: this.y, id: this.getId() });
+				eventManager.sendEvent(GameEvents.PedestrianConverted, { PositionX:this.x, PositionY: this.y } as PedestrianConvertInfo);
                 break;
         }
 
