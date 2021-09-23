@@ -58,9 +58,9 @@ export const Spritesheets = {
         "repeat": false
     },
     ZombieIdle: {
-        "name": "zombie_idle",
-        "frameWidth": 32,
-        "frameHeight": 32,
+        "name": "zombie_move",
+        "frameWidth": 64,
+        "frameHeight": 64,
         "framesNum": 3,
         "frameRate": 3,
         "repeat": false
@@ -138,7 +138,14 @@ export const Spritesheets = {
 		"frameHeight": 96,
 		"framesNum": 7,
 		"frameRate": 5
-	}
+	},
+    Zombie_Spawn:{
+        "name": "zombie_spawn",
+        "frameWidth": 64,
+        "frameHeight": 64,
+        "framesNum": 15,
+        "frameRate": 15
+    }
 }
 
 export const Audio = {
