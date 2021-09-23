@@ -210,6 +210,7 @@ export default class SpawnManager {
                 return;
             }
         });
+        console.log("onWarriorSummoned spawnPos", spawnPos);
 
         if (canSummon == false)
             return;

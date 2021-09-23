@@ -97,8 +97,8 @@ export const Spritesheets = {
         "name": "player_move",
         "frameWidth": 64,
         "frameHeight": 64,
-        "framesNum": 8,
-        "frameRate": 6,
+        "framesNum": 4,
+        "frameRate": 4,
         "repeat": false
     },
     Joystick: {
